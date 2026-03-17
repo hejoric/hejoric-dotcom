@@ -1,19 +1,21 @@
 # Hejoric-dotcom
 
-🌐 **Hejoric-dotcom** is my personal site and living portfolio — a “GitHub for life.”  
+**Hejoric-dotcom** is my personal site and living portfolio — a “GitHub for life.”  
 It tracks my progress across skills, projects, content creation, and habits, while showcasing my work and growth over time.
+
+insert AI generated README SLOP, sorry
 
 ---
 
-## 💡 Vision
+ Vision
 
-This site is more than a portfolio — it’s a progress journal.  
+This site is more than a portfolio kinda like a progress journal.  
 I want to show not just my finished projects but also **how consistently I’ve been practicing, learning, and building**.  
 Think of it as a central hub where personal development, creative content, and career growth intersect.
 
 ---
 
-## 🏆 Tracked Areas
+Tracked Areas
 
 - 🎹 **Music:** Piano, guitar, and other instruments  
 - 💻 **Programming & AI/ML:** Projects, learning progress, code commits  
@@ -24,7 +26,7 @@ Think of it as a central hub where personal development, creative content, and c
 
 ---
 
-## ✨ Features
+##  Features
 
 - **Profile Dashboard:** Central hub with bio, highlights, and goals  
 - **Consistency Tracker:** Graphs/charts like GitHub’s contribution grid to track habits and progress  
@@ -35,7 +37,7 @@ Think of it as a central hub where personal development, creative content, and c
 
 ---
 
-## 🛠️ Tech Stack (Planned)
+##  Tech Stack (Planned)
 
 - **Frontend:** React + Tailwind CSS (modern, clean UI)  
 - **Backend:** Node.js/Express or Django/FastAPI (logging & API endpoints)  
@@ -45,7 +47,7 @@ Think of it as a central hub where personal development, creative content, and c
 
 ---
 
-## 📈 Roadmap
+##  Roadmap
 
 - ✅ Initial wireframe & design  
 - 🔧 React frontend setup  
@@ -56,7 +58,7 @@ Think of it as a central hub where personal development, creative content, and c
 
 ---
 
-## 💼 Career Impact
+## Career Impact
 
 Hejoric-dotcom demonstrates:  
 - Full-stack web development (React + backend APIs)  
@@ -66,12 +68,10 @@ Hejoric-dotcom demonstrates:
 
 ---
 
-## 📬 Contact
+##  Contact
 
 - **YouTube:** [link here]  
 - **LinkedIn:** [link here]  
-- **Portfolio:** [Hejoric-dotcom once deployed]  
+- **Portfolio:** hejoric.com 
 
----
 
-*Made with ❤️ by Jose Herrera. A personal hub for growth, creativity, and showing the process behind the progress.*
