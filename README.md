@@ -1,77 +1,75 @@
-# Hejoric-dotcom
+# hejoric.com
 
-**Hejoric-dotcom** is my personal site and living portfolio — a “GitHub for life.”  
-It tracks my progress across skills, projects, content creation, and habits, while showcasing my work and growth over time.
+Personal site, portfolio, and living progress journal of Jose R. Herrera.
 
-insert AI generated README SLOP, sorry
+The idea is simple: a GitHub contribution graph, but for everything — code, music, languages, fitness, content creation. Not just finished projects, but consistency over time.
 
----
+## Stack
 
- Vision
+- **Next.js 14** (App Router) + TypeScript
+- **Tailwind CSS v3** — no component libraries, everything hand-built
+- **Prisma** + **Neon** (serverless Postgres)
+- **NextAuth v5** — GitHub OAuth, single-admin auth gate
+- **next-mdx-remote** + rehype-pretty-code for blog posts
+- **next-themes** for dark/light mode
+- Deployed on **Vercel**
 
-This site is more than a portfolio kinda like a progress journal.  
-I want to show not just my finished projects but also **how consistently I’ve been practicing, learning, and building**.  
-Think of it as a central hub where personal development, creative content, and career growth intersect.
+## What's in here
 
----
+**`/`** — Hero with headshot, featured projects from DB, short about blurb
 
-Tracked Areas
+**`/projects`** — Filterable grid of project cards, pulled from Postgres. Filter by tech tag client-side.
 
-- 🎹 **Music:** Piano, guitar, and other instruments  
-- 💻 **Programming & AI/ML:** Projects, learning progress, code commits  
-- 🌏 **Languages:** Japanese, Korean, French (including JLPT prep)  
-- 🏋️ **Fitness:** Workouts, nutrition, progress logs  
-- 🎥 **Content Creation:** YouTube videos, vlogs, motivational content  
-- 🚀 **Career Development:** Internships, certifications, personal projects  
+**`/blog`** — Blog post list from DB. Individual posts at `/blog/[slug]` render MDX files from `content/blog/` with syntax highlighting.
 
----
+**`/tracker`** — "Consistency Log" — five GitHub-style heatmaps (code, music, languages, fitness, content), each showing 52 weeks of activity data from the `ActivityLog` table.
 
-##  Features
+**`/admin`** — Auth-gated admin panel (GitHub OAuth, single email check). Forms to log activity entries and add projects. Blog posts are created by dropping an MDX file in `content/blog/` and inserting metadata into the DB.
 
-- **Profile Dashboard:** Central hub with bio, highlights, and goals  
-- **Consistency Tracker:** Graphs/charts like GitHub’s contribution grid to track habits and progress  
-- **Projects Log:** Record milestones across coding, music, and other skills  
-- **Content Feed:** Pull in YouTube videos, blog posts, or notes automatically  
-- **Goals & Achievements:** Show current goals and mark completed ones  
-- **Public Portfolio:** Shareable with recruiters, collaborators, or friends  
+**`/api/activity`** — GET (heatmap data) + POST (log entry, auth required)
 
----
+**`/api/projects`** — GET (all projects) + POST (add project, auth required)
 
-##  Tech Stack (Planned)
+## Local dev
 
-- **Frontend:** React + Tailwind CSS (modern, clean UI)  
-- **Backend:** Node.js/Express or Django/FastAPI (logging & API endpoints)  
-- **Database:** MongoDB or Postgres (store progress logs, goals, habits)  
-- **APIs:** YouTube API, Notion/Trello API integration for automated logging  
-- **Deployment:** Vercel/Netlify (frontend) + Railway/Heroku (backend)  
+```
+npm install
+npx prisma generate
+npx prisma db push
+npx tsx prisma/seed.ts
+npm run dev
+```
 
----
+Needs a `.env.local` with `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, `GITHUB_ID`, `GITHUB_SECRET`. See `.env.example`.
 
-##  Roadmap
+Neon requires two DB URLs — pooled for the Prisma client at runtime, direct/unpooled for migrations.
 
-- ✅ Initial wireframe & design  
-- 🔧 React frontend setup  
-- 🖥 Build habit tracker component (GitHub-style heatmap)  
-- 📺 YouTube integration for content feed  
-- 🚀 Deploy MVP for public access  
-- 🌟 Future: Social version, leaderboards, public “commit history” for habits  
+## Managing content
 
----
+**Blog:** Add `content/blog/your-slug.mdx`, then insert a row into `BlogPost` (via `npx prisma studio` or the Neon dashboard) with `published: true`.
 
-## Career Impact
+**Tracker:** Use the admin page at `/admin`, or POST to `/api/activity`, or edit directly in Prisma Studio.
 
-Hejoric-dotcom demonstrates:  
-- Full-stack web development (React + backend APIs)  
-- UI/UX design and frontend creativity (Tailwind, Figma mockups)  
-- Cloud integration and data tracking  
-- Personal initiative and consistency — showing real-life progress alongside projects  
+**Projects:** Admin page or POST to `/api/projects`.
 
----
+## Project structure
 
-##  Contact
-
-- **YouTube:** [link here]  
-- **LinkedIn:** [link here]  
-- **Portfolio:** hejoric.com 
-
-
+```
+app/
+  layout.tsx            Root layout, ThemeProvider, JSON-LD
+  page.tsx              Homepage
+  projects/page.tsx
+  blog/page.tsx
+  blog/[slug]/page.tsx  MDX renderer
+  tracker/page.tsx      Heatmap grids
+  admin/page.tsx        Auth-gated admin
+  api/                  REST endpoints
+  sitemap.ts
+  robots.ts
+components/             Navbar, Footer, ThemeToggle, HeroSection,
+                        ProjectCard, BlogCard, HeatmapGrid,
+                        HeatmapTracker, admin forms
+lib/                    Prisma client, NextAuth config, utils
+content/blog/           MDX blog posts
+prisma/                 Schema + seed script
+```
