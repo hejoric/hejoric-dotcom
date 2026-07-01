@@ -12,9 +12,10 @@ export default function HeroSection() {
           <p className="mt-2 text-lg text-text-secondary sm:text-xl">
             @hejoric
           </p>
-          {/* TODO: replace with real bio copy */}
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary">
-            CS student. Builder. Lifelong learner.
+            CS student at UVA and full-stack developer. I build things that solve
+            real problems — from a self-hosted ERP for a family retail business to
+            Django and JavaFX apps. AWS Cloud Practitioner certified.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Link

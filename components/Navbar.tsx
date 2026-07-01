@@ -10,7 +10,7 @@ const navLinks = [
   { href: "/tracker", label: "Tracker" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ authSlot }: { authSlot?: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -41,6 +41,7 @@ export default function Navbar() {
           >
             Resume
           </a>
+          {authSlot}
           <ThemeToggle />
         </div>
 
@@ -96,6 +97,7 @@ export default function Navbar() {
             >
               Resume
             </a>
+            {authSlot}
           </div>
         </div>
       )}

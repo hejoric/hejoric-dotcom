@@ -39,13 +39,14 @@ export default async function HomePage() {
         <h2 className="text-2xl font-bold tracking-tight text-text-primary">
           About
         </h2>
-        {/* TODO: replace with real bio copy */}
         <p className="mt-4 max-w-2xl leading-relaxed text-text-secondary">
-          I&apos;m a CS senior at UVA who loves building things that matter. From
-          full-stack web apps to inventory systems for small businesses in
-          Bolivia, I care about writing clean code that solves real problems.
-          When I&apos;m not coding, you&apos;ll find me practicing piano, studying
-          Japanese, or at the gym.
+          I&apos;m a Computer Science student at the University of Virginia
+          (BS, expected 2027), after an AS in Engineering at Northern Virginia
+          Community College. I build full-stack software that solves real
+          problems — recently a self-hosted Odoo ERP for a family retail
+          business, a Django student-org platform, and a JavaFX course-review
+          app. When I&apos;m not coding, you&apos;ll find me at the piano,
+          studying Japanese and Korean, or at the gym.
         </p>
         <Link
           href="/about"

@@ -9,21 +9,49 @@ function randomInt(min: number, max: number): number {
 }
 
 async function main() {
-  await prisma.project.upsert({
-    where: { id: "seed-project-1" },
-    update: {},
-    create: {
-      id: "seed-project-1",
-      title: "Smart Inventory System",
+  const projects = [
+    {
+      id: "seed-retail-erp",
+      title: "Retail ERP Deployment",
       description:
-        "A full-stack inventory management and sales analytics platform built for small family-owned stores in Bolivia. Designed to replace manual pen-and-paper workflows with real-time tracking across multiple store locations.",
-      techStack: ["Python", "FastAPI", "React", "PostgreSQL", "SQLAlchemy"],
-      githubUrl: "https://github.com/hejoric/inventory-system",
+        "Deployed and self-hosted Odoo 18 Community ERP on a Linux VPS to replace a family retail business's legacy Monica 9 system, running the stack in Docker behind a Cloudflare Tunnel. Migrated 500+ active products into PostgreSQL and configured point-of-sale, multi-location inventory, cash control, and tiered pricelists with role-based permissions for a pilot handling 500+ daily transactions.",
+      techStack: ["Odoo", "Docker", "PostgreSQL", "Linux", "Cloudflare"],
+      githubUrl: null,
       liveUrl: null,
       featured: true,
       order: 0,
     },
-  });
+    {
+      id: "seed-tsa-helper",
+      title: "TSA Helper",
+      description:
+        "Owned deployment and DevOps on a 5-person Agile team shipping a Django student-organization platform (tasks, finance, documents, messaging) to Heroku with Gunicorn, WhiteNoise, and PostgreSQL. Configured AWS S3 storage via django-storages and built a Discord-style multi-channel messaging feature with emoji reactions, reply threading, pinned messages, and live autoscroll.",
+      techStack: ["Django", "PostgreSQL", "AWS S3", "Heroku", "JavaScript"],
+      githubUrl: null,
+      liveUrl: null,
+      featured: true,
+      order: 1,
+    },
+    {
+      id: "seed-course-review",
+      title: "Course Review CRUD App",
+      description:
+        "Full-stack JavaFX application that lets students create, read, update, and delete course reviews with user authentication and persistent SQLite storage. Designed a relational schema using JDBC with proper foreign key constraints, and implemented secure password hashing and input validation to prevent SQL injection. Built in a team of 3 using Git.",
+      techStack: ["Java", "JavaFX", "SQLite", "JDBC"],
+      githubUrl: null,
+      liveUrl: null,
+      featured: false,
+      order: 2,
+    },
+  ];
+
+  for (const project of projects) {
+    await prisma.project.upsert({
+      where: { id: project.id },
+      update: project,
+      create: project,
+    });
+  }
 
   await prisma.blogPost.upsert({
     where: { slug: "hello-world" },
@@ -34,6 +62,8 @@ async function main() {
       excerpt:
         "Welcome to my blog. This is where I'll share thoughts on code, learning, and building things that matter.",
       tags: ["personal", "intro"],
+      content:
+        "# Hello, World!\n\nWelcome to my corner of the internet. This is where I'll write about the things I'm building, the things I'm learning, and the occasional detour into piano, languages, or the gym.\n\nMore soon.",
       published: true,
       publishedAt: new Date(),
     },

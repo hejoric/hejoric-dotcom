@@ -1,14 +1,13 @@
 import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
+import { auth, isAdmin } from "@/lib/auth";
 import AdminActivityForm from "@/components/AdminActivityForm";
 import AdminProjectForm from "@/components/AdminProjectForm";
-
-const ADMIN_EMAIL = "hejoric@outlook.com"; 
+import AdminBlogForm from "@/components/AdminBlogForm";
 
 export default async function AdminPage() {
   const session = await auth();
 
-  if (!session?.user?.email || session.user.email !== ADMIN_EMAIL) {
+  if (!isAdmin(session?.user?.email)) {
     redirect("/");
   }
 
@@ -18,7 +17,7 @@ export default async function AdminPage() {
         Admin
       </h1>
       <p className="mt-2 text-text-secondary">
-        Logged in as {session.user.email}
+        Logged in as {session?.user?.email}
       </p>
 
       <div className="mt-10 space-y-12">
@@ -31,17 +30,7 @@ export default async function AdminPage() {
         </div>
 
         <div className="rounded-lg border border-border p-6">
-          <h2 className="text-lg font-semibold text-text-primary">
-            New Blog Post
-          </h2>
-          <p className="mt-2 text-sm text-text-secondary">
-            Blog posts are created by adding an MDX file to{" "}
-            <code className="rounded bg-surface px-1 py-0.5 text-xs">
-              /content/blog/your-slug.mdx
-            </code>{" "}
-            and inserting metadata via the database. Use Prisma Studio or a
-            direct DB insert for now.
-          </p>
+          <AdminBlogForm />
         </div>
       </div>
     </div>

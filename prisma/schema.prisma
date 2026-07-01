@@ -34,6 +34,7 @@ model BlogPost {
   slug        String    @unique
   title       String
   excerpt     String
+  content     String?
   tags        String[]
   published   Boolean   @default(false)
   publishedAt DateTime?

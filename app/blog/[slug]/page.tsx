@@ -39,12 +39,18 @@ export default async function BlogPostPage({ params }: Props) {
 
   if (!post || !post.published) notFound();
 
+  // Prefer DB content (created via the admin panel); fall back to an MDX file
+  // in content/blog/ for legacy/file-based posts.
   let source: string;
-  try {
-    const filePath = join(process.cwd(), "content", "blog", `${params.slug}.mdx`);
-    source = await readFile(filePath, "utf-8");
-  } catch {
-    source = `# ${post.title}\n\n*Content coming soon.*`;
+  if (post.content && post.content.trim()) {
+    source = post.content;
+  } else {
+    try {
+      const filePath = join(process.cwd(), "content", "blog", `${params.slug}.mdx`);
+      source = await readFile(filePath, "utf-8");
+    } catch {
+      source = `# ${post.title}\n\n*Content coming soon.*`;
+    }
   }
 
   return (
