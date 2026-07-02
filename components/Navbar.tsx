@@ -1,46 +1,62 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
+  { href: "/tracker", label: "Tracker" },
   { href: "/projects", label: "Projects" },
   { href: "/blog", label: "Blog" },
-  { href: "/tracker", label: "Tracker" },
+  { href: "/about", label: "About" },
 ];
+
+function LogoMark() {
+  return (
+    <span className="grid grid-cols-2 gap-[2px]" aria-hidden>
+      <span className="h-[7px] w-[7px] rounded-[2px] bg-code" />
+      <span className="h-[7px] w-[7px] rounded-[2px] bg-music" />
+      <span className="h-[7px] w-[7px] rounded-[2px] bg-fitness" />
+      <span className="h-[7px] w-[7px] rounded-[2px] bg-language" />
+    </span>
+  );
+}
 
 export default function Navbar({ authSlot }: { authSlot?: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
         <Link
           href="/"
-          className="text-lg font-semibold tracking-tight text-text-primary transition-opacity duration-150 hover:opacity-70"
+          className="flex items-center gap-3 transition-opacity duration-150 hover:opacity-70"
         >
-          hejoric
+          <LogoMark />
+          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-text-primary">
+            Jose R. Herrera
+          </span>
         </Link>
 
-        <div className="hidden items-center gap-6 md:flex">
+        <div className="hidden items-center gap-7 md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-text-secondary transition-opacity duration-150 hover:text-text-primary hover:opacity-70"
+              className={
+                isActive(link.href)
+                  ? "border-b-[1.5px] border-text-primary pb-0.5 text-sm font-medium text-text-primary"
+                  : "text-sm text-text-secondary transition-opacity duration-150 hover:text-text-primary hover:opacity-70"
+              }
             >
               {link.label}
             </Link>
           ))}
-          <a
-            href="/resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-white transition-opacity duration-150 hover:opacity-70"
-          >
-            Resume
-          </a>
           {authSlot}
           <ThemeToggle />
         </div>
@@ -49,7 +65,7 @@ export default function Navbar({ authSlot }: { authSlot?: React.ReactNode }) {
           <ThemeToggle />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="flex h-9 w-9 items-center justify-center rounded-md border border-border"
+            className="flex h-9 w-9 items-center justify-center text-text-secondary transition-opacity duration-150 hover:text-text-primary hover:opacity-70"
             aria-label="Toggle menu"
           >
             <svg
@@ -84,19 +100,15 @@ export default function Navbar({ authSlot }: { authSlot?: React.ReactNode }) {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="text-sm text-text-secondary transition-opacity duration-150 hover:text-text-primary"
+                className={
+                  isActive(link.href)
+                    ? "text-sm font-medium text-text-primary"
+                    : "text-sm text-text-secondary transition-opacity duration-150 hover:text-text-primary"
+                }
               >
                 {link.label}
               </Link>
             ))}
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block rounded-md bg-accent px-3 py-1.5 text-center text-sm font-medium text-white transition-opacity duration-150 hover:opacity-70"
-            >
-              Resume
-            </a>
             {authSlot}
           </div>
         </div>

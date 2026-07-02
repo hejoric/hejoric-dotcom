@@ -2,7 +2,7 @@ import Link from "next/link";
 import { auth, signIn, signOut, isAdmin } from "@/lib/auth";
 
 const buttonClass =
-  "rounded-md border border-border px-3 py-1.5 text-sm font-medium text-text-primary transition-opacity duration-150 hover:opacity-70";
+  "text-[11px] font-semibold uppercase tracking-[0.12em] text-text-muted transition-opacity duration-150 hover:text-text-primary hover:opacity-70";
 
 export default async function AuthButton() {
   const session = await auth();
