@@ -1,18 +1,30 @@
 import Link from "next/link";
 import HeroSection from "@/components/HeroSection";
+import LedgerSection from "@/components/LedgerSection";
 import ProjectCard from "@/components/ProjectCard";
 import { prisma } from "@/lib/prisma";
 
 export default async function HomePage() {
-  const featuredProjects = await prisma.project.findMany({
-    where: { featured: true },
-    orderBy: { order: "asc" },
-    take: 2,
-  });
+  const ledgerStart = new Date();
+  ledgerStart.setDate(ledgerStart.getDate() - 364);
+
+  const [featuredProjects, activityLogs] = await Promise.all([
+    prisma.project.findMany({
+      where: { featured: true },
+      orderBy: { order: "asc" },
+      take: 2,
+    }),
+    prisma.activityLog.findMany({
+      where: { date: { gte: ledgerStart } },
+      select: { date: true, category: true, count: true },
+    }),
+  ]);
 
   return (
     <>
       <HeroSection />
+
+      <LedgerSection logs={activityLogs} />
 
       {featuredProjects.length > 0 && (
         <section className="mx-auto max-w-5xl px-6 pb-16">

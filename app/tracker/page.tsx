@@ -37,16 +37,17 @@ export default async function TrackerPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-16">
-      <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
-        Consistency Log
+      <h1 className="font-display text-5xl tracking-[-0.01em] text-text-primary sm:text-[56px] sm:leading-none">
+        The tracker.
       </h1>
-      <p className="mt-2 max-w-2xl text-text-secondary">
-        This page tracks daily effort, not just outcomes. Each heatmap represents
-        a year of activity across a discipline I care about. The goal is
-        consistency — showing up every day, even when progress feels invisible.
+      <p className="mt-4 max-w-[560px] leading-[1.7] text-text-secondary">
+        One square per day, one color per pursuit.{" "}
+        <span className="font-display text-[17px] italic text-text-primary">
+          365 days, five ways.
+        </span>
       </p>
 
-      <div className="mt-12">
+      <div className="mt-9">
         <HeatmapTracker data={data} />
       </div>
     </div>

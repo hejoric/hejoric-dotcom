@@ -4,14 +4,6 @@ export function cn(...inputs: ClassValue[]) {
   return clsx(inputs);
 }
 
-export function getHeatmapColor(count: number): string {
-  if (count === 0) return "bg-accent/10";
-  if (count <= 2) return "bg-accent/30";
-  if (count <= 4) return "bg-accent/60";
-  if (count <= 7) return "bg-accent/90";
-  return "bg-accent";
-}
-
 export function formatDate(date: Date | string): string {
   return new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
