@@ -24,15 +24,18 @@ export default async function BlogPage() {
   });
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
-      <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
-        Blog
+    <div className="mx-auto max-w-5xl px-6 py-16">
+      <h1 className="font-display text-5xl tracking-[-0.01em] text-text-primary sm:text-[56px] sm:leading-none">
+        Writing.
       </h1>
-      <p className="mt-2 text-text-secondary">
-        Writing about code, learning, and the journey.
+      <p className="mt-4 max-w-[560px] leading-[1.7] text-text-secondary">
+        Notes on building, learning in public, and{" "}
+        <span className="font-display text-[17px] italic text-text-primary">
+          keeping score.
+        </span>
       </p>
 
-      <div className="mt-10 space-y-6">
+      <div className="mt-9 border-t border-border">
         {posts.map((post) => (
           <BlogCard
             key={post.id}
@@ -44,7 +47,7 @@ export default async function BlogPage() {
           />
         ))}
         {posts.length === 0 && (
-          <p className="text-center text-text-secondary">
+          <p className="py-10 text-center text-text-secondary">
             No posts yet. Check back soon!
           </p>
         )}

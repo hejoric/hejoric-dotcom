@@ -107,3 +107,119 @@ body {
     transform: none;
   }
 }
+
+/* Blog post body (MDX). Hand-rolled — no typography plugin. */
+.post-prose {
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--text-secondary);
+}
+
+.post-prose > * + * {
+  margin-top: 22px;
+}
+
+.post-prose h1,
+.post-prose h2,
+.post-prose h3,
+.post-prose h4 {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.post-prose h1 {
+  font-size: 34px;
+}
+
+.post-prose h2 {
+  font-size: 28px;
+  margin-top: 40px;
+}
+
+.post-prose h3 {
+  font-size: 23px;
+  margin-top: 32px;
+}
+
+.post-prose a {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--text-muted);
+  text-underline-offset: 3px;
+  transition: opacity 150ms;
+}
+
+.post-prose a:hover {
+  opacity: 0.7;
+}
+
+.post-prose strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.post-prose em {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.06em;
+  color: var(--text-primary);
+}
+
+.post-prose ul,
+.post-prose ol {
+  padding-left: 1.4em;
+}
+
+.post-prose ul {
+  list-style: disc;
+}
+
+.post-prose ol {
+  list-style: decimal;
+}
+
+.post-prose li + li {
+  margin-top: 8px;
+}
+
+.post-prose blockquote {
+  border-left: 2px solid var(--border);
+  padding-left: 20px;
+  font-family: var(--font-display), Georgia, serif;
+  font-style: italic;
+  font-size: 19px;
+  color: var(--text-primary);
+}
+
+.post-prose code {
+  font-size: 0.88em;
+  background: var(--surface);
+  border-radius: 4px;
+  padding: 2px 5px;
+}
+
+.post-prose pre {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 18px 20px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.post-prose pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+.post-prose hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 40px 0;
+}
+
+.post-prose img {
+  border-radius: 4px;
+}
