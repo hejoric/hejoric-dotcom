@@ -3,21 +3,39 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --surface: #f5f5f7;
-  --text-primary: #111111;
-  --text-secondary: #6e6e73;
-  --accent: #3b82f6;
-  --border: #e5e5ea;
+  --background: #faf8f4;
+  --surface: #efece4; /* also the empty heatmap cell */
+  --text-primary: #1a1917;
+  --text-secondary: #5c574d;
+  --text-muted: #8a8478;
+  --accent: #2f6fb0; /* alias of Code blue */
+  --border: rgba(26, 25, 23, 0.12);
+  --border-soft: rgba(26, 25, 23, 0.08);
+
+  /* Category accents — the site's only color */
+  --cat-code: #2f6fb0;
+  --cat-music: #d8593f;
+  --cat-language: #1f9e75;
+  --cat-fitness: #e0952a;
+  --cat-reading: #6e5ad6;
 }
 
 .dark {
-  --background: #000000;
-  --surface: #1c1c1e;
-  --text-primary: #f5f5f7;
-  --text-secondary: #a1a1a6;
-  --accent: #3b82f6;
-  --border: #2c2c2e;
+  --background: #1a1917;
+  --surface: #262420;
+  --text-primary: #faf8f4;
+  --text-secondary: rgba(250, 248, 244, 0.6);
+  --text-muted: rgba(250, 248, 244, 0.4);
+  --accent: #638fc3;
+  --border: rgba(250, 248, 244, 0.12);
+  --border-soft: rgba(250, 248, 244, 0.07);
+
+  /* Accents lifted 25% toward white for dark-mode legibility */
+  --cat-code: #638fc3;
+  --cat-music: #e0826e;
+  --cat-language: #57b697;
+  --cat-fitness: #e8af5f;
+  --cat-reading: #9284de;
 }
 
 body {

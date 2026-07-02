@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Instrument_Serif } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Navbar from "@/components/Navbar";
 import AuthButton from "@/components/AuthButton";
@@ -7,6 +7,13 @@ import Footer from "@/components/Footer";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-display",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://hejoric.com"),
@@ -56,7 +63,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} min-h-screen bg-background font-sans text-text-primary antialiased`}
+        className={`${inter.variable} ${instrumentSerif.variable} min-h-screen bg-background font-sans text-text-primary antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex min-h-screen flex-col">
