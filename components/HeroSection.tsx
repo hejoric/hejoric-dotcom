@@ -1,47 +1,31 @@
-import Image from "next/image";
-import Link from "next/link";
+const greetings = ["Hola —", "Hello —", "こんにちは —", "안녕하세요 —", "Hola —"];
 
 export default function HeroSection() {
   return (
-    <section className="mx-auto max-w-5xl px-6 py-24 sm:py-32">
-      <div className="flex flex-col-reverse items-center gap-12 sm:flex-row sm:items-start sm:justify-between">
-        <div className="flex-1">
-          <h1 className="text-4xl font-bold tracking-tight text-text-primary sm:text-5xl lg:text-6xl">
-            Jose R. Herrera
-          </h1>
-          <p className="mt-2 text-lg text-text-secondary sm:text-xl">
-            @hejoric
-          </p>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary">
-            CS student at UVA and full-stack developer. I build things that solve
-            real problems — from a self-hosted ERP for a family retail business to
-            Django and JavaFX apps. AWS Cloud Practitioner certified.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Link
-              href="/projects"
-              className="rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white transition-opacity duration-150 hover:opacity-70"
-            >
-              View Projects
-            </Link>
-            <Link
-              href="/blog"
-              className="rounded-md border border-border px-5 py-2.5 text-sm font-medium text-text-primary transition-opacity duration-150 hover:opacity-70"
-            >
-              Read Blog
-            </Link>
-          </div>
-        </div>
-        <div className="relative h-48 w-48 shrink-0 overflow-hidden rounded-full border-2 border-border sm:h-56 sm:w-56 lg:h-64 lg:w-64">
-          <Image
-            src="/headshot.png"
-            alt="Jose R. Herrera"
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
-      </div>
+    <section className="mx-auto max-w-5xl px-6 pb-6 pt-16 sm:pt-20">
+      <h1 className="font-display text-4xl leading-[1.08] tracking-[-0.01em] text-text-primary sm:text-5xl lg:text-[64px]">
+        <span className="inline-flex h-[1.08em] items-start overflow-hidden align-bottom italic text-language">
+          <span className="animate-greeting flex flex-col items-start">
+            {greetings.map((g, i) => (
+              <span key={i} className="block h-[1.08em]">
+                {g}
+              </span>
+            ))}
+          </span>
+        </span>
+        <br />
+        I&apos;m Jose. I build things,
+        <br />
+        and I keep track of them.
+      </h1>
+      <p className="mt-7 max-w-[600px] text-[16.5px] leading-[1.75] text-text-secondary">
+        Code, workouts, the Korean I&apos;m slowly wrestling into my brain,
+        whatever&apos;s on repeat, the stuff I make. Basically a contribution
+        graph for a whole life.{" "}
+        <span className="font-display text-lg italic text-text-primary">
+          Poke around.
+        </span>
+      </p>
     </section>
   );
 }
