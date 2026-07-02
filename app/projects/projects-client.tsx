@@ -30,13 +30,13 @@ export default function ProjectsClient({
 
   return (
     <>
-      <div className="mt-6 flex flex-wrap gap-2">
+      <div className="mt-8 flex flex-wrap gap-x-5 gap-y-2.5">
         <button
           onClick={() => setActiveTag(null)}
-          className={`rounded-full border px-3 py-1 text-xs transition-opacity duration-150 ${
+          className={`text-[11px] font-semibold uppercase tracking-[0.12em] transition-opacity duration-150 ${
             activeTag === null
-              ? "border-accent bg-accent/10 text-accent"
-              : "border-border text-text-secondary hover:text-text-primary"
+              ? "border-b-[1.5px] border-text-primary pb-0.5 text-text-primary"
+              : "text-text-muted hover:text-text-primary"
           }`}
         >
           All
@@ -45,10 +45,10 @@ export default function ProjectsClient({
           <button
             key={tag}
             onClick={() => setActiveTag(tag === activeTag ? null : tag)}
-            className={`rounded-full border px-3 py-1 text-xs transition-opacity duration-150 ${
+            className={`text-[11px] font-semibold uppercase tracking-[0.12em] transition-opacity duration-150 ${
               activeTag === tag
-                ? "border-accent bg-accent/10 text-accent"
-                : "border-border text-text-secondary hover:text-text-primary"
+                ? "border-b-[1.5px] border-text-primary pb-0.5 text-text-primary"
+                : "text-text-muted hover:text-text-primary"
             }`}
           >
             {tag}
@@ -57,7 +57,7 @@ export default function ProjectsClient({
       </div>
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2">
-        {filtered.map((project) => (
+        {filtered.map((project, i) => (
           <ProjectCard
             key={project.id}
             title={project.title}
@@ -66,6 +66,7 @@ export default function ProjectsClient({
             githubUrl={project.githubUrl}
             liveUrl={project.liveUrl}
             featured={project.featured}
+            index={i}
           />
         ))}
         {filtered.length === 0 && (

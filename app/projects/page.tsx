@@ -28,11 +28,14 @@ export default async function ProjectsPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-16">
-      <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
-        Projects
+      <h1 className="font-display text-5xl tracking-[-0.01em] text-text-primary sm:text-[56px] sm:leading-none">
+        Projects.
       </h1>
-      <p className="mt-2 text-text-secondary">
-        Things I&apos;ve built, from side projects to production apps.
+      <p className="mt-4 max-w-[560px] leading-[1.7] text-text-secondary">
+        Things I&apos;ve shipped — mostly where software meets{" "}
+        <span className="font-display text-[17px] italic text-text-primary">
+          the messy real world.
+        </span>
       </p>
       <ProjectsClient projects={projects} allTags={allTags} />
     </div>
