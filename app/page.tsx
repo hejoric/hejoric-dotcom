@@ -1,5 +1,6 @@
 import Link from "next/link";
 import HeroSection from "@/components/HeroSection";
+import LatelySection from "@/components/LatelySection";
 import LedgerSection from "@/components/LedgerSection";
 import ProjectCard from "@/components/ProjectCard";
 import { prisma } from "@/lib/prisma";
@@ -8,7 +9,7 @@ export default async function HomePage() {
   const ledgerStart = new Date();
   ledgerStart.setDate(ledgerStart.getDate() - 364);
 
-  const [featuredProjects, activityLogs] = await Promise.all([
+  const [featuredProjects, activityLogs, latelyItems] = await Promise.all([
     prisma.project.findMany({
       where: { featured: true },
       orderBy: { order: "asc" },
@@ -18,6 +19,7 @@ export default async function HomePage() {
       where: { date: { gte: ledgerStart } },
       select: { date: true, category: true, count: true },
     }),
+    prisma.latelyItem.findMany(),
   ]);
 
   return (
@@ -67,6 +69,8 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      <LatelySection items={latelyItems} />
 
       <section className="mt-16 border-t border-border px-6 py-14 text-center">
         <p className="mx-auto max-w-[700px] font-display text-2xl leading-[1.4] text-text-primary sm:text-[30px]">

@@ -41,6 +41,19 @@ model BlogPost {
   createdAt   DateTime  @default(now())
 }
 
+// Cached "Lately" items for the homepage strip (latest YouTube upload,
+// current song, current book). Written by ingestion crons later; for now
+// seeded/edited by hand.
+model LatelyItem {
+  id        String   @id @default(cuid())
+  kind      String   @unique // "video" | "song" | "book"
+  title     String
+  subtitle  String?
+  url       String?
+  imageUrl  String?
+  updatedAt DateTime @updatedAt
+}
+
 model ActivityLog {
   id        String   @id @default(cuid())
   date      DateTime

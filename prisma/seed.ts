@@ -69,6 +69,38 @@ async function main() {
     },
   });
 
+  const latelyItems = [
+    {
+      kind: "video",
+      title: "Self-hosting an ERP for the family store",
+      subtitle: "YouTube · 12 min",
+      url: "https://youtube.com/@hejoric",
+      imageUrl: null,
+    },
+    {
+      kind: "song",
+      title: "Nocturne Op. 9 No. 2",
+      subtitle: "Chopin — learning it on piano",
+      url: null,
+      imageUrl: null,
+    },
+    {
+      kind: "book",
+      title: "Deep Work",
+      subtitle: "Cal Newport · ch. 6",
+      url: null,
+      imageUrl: null,
+    },
+  ];
+
+  for (const item of latelyItems) {
+    await prisma.latelyItem.upsert({
+      where: { kind: item.kind },
+      update: item,
+      create: item,
+    });
+  }
+
   const today = new Date();
   const entries: { date: Date; category: string; count: number }[] = [];
 
