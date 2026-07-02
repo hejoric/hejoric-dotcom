@@ -1,6 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import {
+  adminInput,
+  adminLabel,
+  adminButton,
+  adminHeading,
+  adminMessage,
+} from "@/lib/admin-styles";
 
 export default function AdminProjectForm() {
   const [loading, setLoading] = useState(false);
@@ -41,70 +48,49 @@ export default function AdminProjectForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-lg font-semibold text-text-primary">Add Project</h2>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <h2 className={adminHeading}>Add project</h2>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="sm:col-span-2">
-          <label className="mb-1 block text-sm text-text-secondary">Title</label>
-          <input
-            type="text"
-            name="title"
-            required
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-text-primary"
-          />
+          <label className={adminLabel}>Title</label>
+          <input type="text" name="title" required className={adminInput} />
         </div>
         <div className="sm:col-span-2">
-          <label className="mb-1 block text-sm text-text-secondary">Description</label>
-          <textarea
-            name="description"
-            required
-            rows={3}
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-text-primary"
-          />
+          <label className={adminLabel}>Description</label>
+          <textarea name="description" required rows={3} className={adminInput} />
         </div>
         <div className="sm:col-span-2">
-          <label className="mb-1 block text-sm text-text-secondary">
-            Tech Stack (comma-separated)
-          </label>
+          <label className={adminLabel}>Tech stack (comma-separated)</label>
           <input
             type="text"
             name="techStack"
             placeholder="React, TypeScript, Node.js"
             required
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-text-primary"
+            className={adminInput}
           />
         </div>
         <div>
-          <label className="mb-1 block text-sm text-text-secondary">GitHub URL</label>
-          <input
-            type="url"
-            name="githubUrl"
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-text-primary"
-          />
+          <label className={adminLabel}>GitHub URL</label>
+          <input type="url" name="githubUrl" className={adminInput} />
         </div>
         <div>
-          <label className="mb-1 block text-sm text-text-secondary">Live URL</label>
-          <input
-            type="url"
-            name="liveUrl"
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-text-primary"
-          />
+          <label className={adminLabel}>Live URL</label>
+          <input type="url" name="liveUrl" className={adminInput} />
         </div>
         <div className="flex items-center gap-2">
           <input type="checkbox" name="featured" id="featured" />
-          <label htmlFor="featured" className="text-sm text-text-secondary">
+          <label
+            htmlFor="featured"
+            className="text-[11px] font-semibold uppercase tracking-[0.14em] text-text-secondary"
+          >
             Featured project
           </label>
         </div>
       </div>
-      <button
-        type="submit"
-        disabled={loading}
-        className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white transition-opacity duration-150 hover:opacity-70 disabled:opacity-50"
-      >
-        {loading ? "Saving..." : "Add Project"}
+      <button type="submit" disabled={loading} className={adminButton}>
+        {loading ? "Saving..." : "Add project"}
       </button>
-      {message && <p className="text-sm text-text-secondary">{message}</p>}
+      {message && <p className={adminMessage}>{message}</p>}
     </form>
   );
 }

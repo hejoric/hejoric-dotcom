@@ -13,23 +13,23 @@ export default async function AdminPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-16">
-      <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
-        Admin
+      <h1 className="font-display text-5xl tracking-[-0.01em] text-text-primary sm:text-[56px] sm:leading-none">
+        Admin.
       </h1>
-      <p className="mt-2 text-text-secondary">
-        Logged in as {session?.user?.email}
+      <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-text-muted">
+        Signed in as {session?.user?.email}
       </p>
 
-      <div className="mt-10 space-y-12">
-        <div className="rounded-lg border border-border p-6">
+      <div className="mt-10 space-y-6">
+        <div className="rounded-md border border-border p-8">
           <AdminActivityForm />
         </div>
 
-        <div className="rounded-lg border border-border p-6">
+        <div className="rounded-md border border-border p-8">
           <AdminProjectForm />
         </div>
 
-        <div className="rounded-lg border border-border p-6">
+        <div className="rounded-md border border-border p-8">
           <AdminBlogForm />
         </div>
       </div>

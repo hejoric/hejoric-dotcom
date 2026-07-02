@@ -1,6 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import {
+  adminInput,
+  adminLabel,
+  adminButton,
+  adminHeading,
+  adminMessage,
+} from "@/lib/admin-styles";
 
 export default function AdminBlogForm() {
   const [loading, setLoading] = useState(false);
@@ -41,76 +48,59 @@ export default function AdminBlogForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-lg font-semibold text-text-primary">New Blog Post</h2>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <h2 className={adminHeading}>New blog post</h2>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="mb-1 block text-sm text-text-secondary">Title</label>
-          <input
-            type="text"
-            name="title"
-            required
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-text-primary"
-          />
+          <label className={adminLabel}>Title</label>
+          <input type="text" name="title" required className={adminInput} />
         </div>
         <div>
-          <label className="mb-1 block text-sm text-text-secondary">
-            Slug (optional — defaults from title)
-          </label>
+          <label className={adminLabel}>Slug (optional — defaults from title)</label>
           <input
             type="text"
             name="slug"
             placeholder="my-first-post"
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-text-primary"
+            className={adminInput}
           />
         </div>
         <div className="sm:col-span-2">
-          <label className="mb-1 block text-sm text-text-secondary">Excerpt</label>
-          <textarea
-            name="excerpt"
-            required
-            rows={2}
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-text-primary"
-          />
+          <label className={adminLabel}>Excerpt</label>
+          <textarea name="excerpt" required rows={2} className={adminInput} />
         </div>
         <div className="sm:col-span-2">
-          <label className="mb-1 block text-sm text-text-secondary">
-            Content (Markdown / MDX)
-          </label>
+          <label className={adminLabel}>Content (Markdown / MDX)</label>
           <textarea
             name="content"
             required
             rows={10}
             placeholder="# Heading&#10;&#10;Write your post in Markdown..."
-            className="w-full rounded-md border border-border bg-background px-3 py-2 font-mono text-sm text-text-primary"
+            className={`${adminInput} font-mono`}
           />
         </div>
         <div className="sm:col-span-2">
-          <label className="mb-1 block text-sm text-text-secondary">
-            Tags (comma-separated)
-          </label>
+          <label className={adminLabel}>Tags (comma-separated)</label>
           <input
             type="text"
             name="tags"
             placeholder="personal, code"
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-text-primary"
+            className={adminInput}
           />
         </div>
         <div className="flex items-center gap-2">
           <input type="checkbox" name="published" id="published" defaultChecked />
-          <label htmlFor="published" className="text-sm text-text-secondary">
+          <label
+            htmlFor="published"
+            className="text-[11px] font-semibold uppercase tracking-[0.14em] text-text-secondary"
+          >
             Published
           </label>
         </div>
       </div>
-      <button
-        type="submit"
-        disabled={loading}
-        className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white transition-opacity duration-150 hover:opacity-70 disabled:opacity-50"
-      >
-        {loading ? "Saving..." : "Save Post"}
+      <button type="submit" disabled={loading} className={adminButton}>
+        {loading ? "Saving..." : "Save post"}
       </button>
-      {message && <p className="text-sm text-text-secondary">{message}</p>}
+      {message && <p className={adminMessage}>{message}</p>}
     </form>
   );
 }

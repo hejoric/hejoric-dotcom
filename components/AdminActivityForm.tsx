@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-
-const categories = [
-  { value: "code", label: "Code" },
-  { value: "music", label: "Music" },
-  { value: "language", label: "Languages" },
-  { value: "fitness", label: "Fitness" },
-  { value: "content", label: "Content" },
-];
+import { CATEGORIES } from "@/lib/categories";
+import {
+  adminInput,
+  adminLabel,
+  adminButton,
+  adminHeading,
+  adminMessage,
+} from "@/lib/admin-styles";
 
 export default function AdminActivityForm() {
   const [loading, setLoading] = useState(false);
@@ -44,61 +44,49 @@ export default function AdminActivityForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-lg font-semibold text-text-primary">Log Activity</h2>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <h2 className={adminHeading}>Log activity</h2>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="mb-1 block text-sm text-text-secondary">Date</label>
+          <label className={adminLabel}>Date</label>
           <input
             type="date"
             name="date"
             required
             defaultValue={new Date().toISOString().split("T")[0]}
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-text-primary"
+            className={adminInput}
           />
         </div>
         <div>
-          <label className="mb-1 block text-sm text-text-secondary">Category</label>
-          <select
-            name="category"
-            required
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-text-primary"
-          >
-            {categories.map((cat) => (
-              <option key={cat.value} value={cat.value}>
+          <label className={adminLabel}>Category</label>
+          <select name="category" required className={adminInput}>
+            {CATEGORIES.map((cat) => (
+              <option key={cat.key} value={cat.key}>
                 {cat.label}
               </option>
             ))}
           </select>
         </div>
         <div>
-          <label className="mb-1 block text-sm text-text-secondary">Count</label>
+          <label className={adminLabel}>Count</label>
           <input
             type="number"
             name="count"
             min="1"
             defaultValue="1"
             required
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-text-primary"
+            className={adminInput}
           />
         </div>
         <div>
-          <label className="mb-1 block text-sm text-text-secondary">Note (optional)</label>
-          <input
-            type="text"
-            name="note"
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-text-primary"
-          />
+          <label className={adminLabel}>Note (optional)</label>
+          <input type="text" name="note" className={adminInput} />
         </div>
       </div>
-      <button
-        type="submit"
-        disabled={loading}
-        className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white transition-opacity duration-150 hover:opacity-70 disabled:opacity-50"
-      >
-        {loading ? "Saving..." : "Log Activity"}
+      <button type="submit" disabled={loading} className={adminButton}>
+        {loading ? "Saving..." : "Log activity"}
       </button>
-      {message && <p className="text-sm text-text-secondary">{message}</p>}
+      {message && <p className={adminMessage}>{message}</p>}
     </form>
   );
 }
