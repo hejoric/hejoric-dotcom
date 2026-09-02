@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "postinstall": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
@@ -19,35 +19,34 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/hejoric/hejoric-dotcom/issues"
   },
   "homepage": "https://github.com/hejoric/hejoric-dotcom#readme",
   "dependencies": {
     "@prisma/client": "^5.22.0",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "autoprefixer": "^10.4.27",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "autoprefixer": "^10.5.4",
     "clsx": "^2.1.1",
-    "next": "^14.2.35",
-    "next-auth": "^5.0.0-beta.25",
+    "next": "^16.3.4",
+    "next-auth": "^5.0.0-beta.32",
     "next-mdx-remote": "^6.0.0",
     "next-themes": "^0.4.6",
-    "postcss": "^8.5.8",
+    "postcss": "^8.5.26",
     "prisma": "^5.22.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "rehype-pretty-code": "^0.14.3",
-    "shiki": "^4.0.2",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "rehype-pretty-code": "^0.14.5",
+    "shiki": "^4.4.3",
     "tailwindcss": "^3.4.19",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@types/node": "^25.5.0",
-    "eslint": "^8.57.1",
-    "eslint-config-next": "^14.2.35",
+    "@types/node": "^25.9.5",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.4",
     "ts-node": "^10.9.2",
-    "tsx": "^4.21.0"
+    "tsx": "^4.23.13"
   }
 }

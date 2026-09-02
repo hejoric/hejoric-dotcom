@@ -8,12 +8,14 @@ import { join } from "path";
 import rehypePrettyCode from "rehype-pretty-code";
 
 interface Props {
-  params: { slug: string };
+  // Async as of Next 16: synchronous `params` access was removed.
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
   const post = await prisma.blogPost.findUnique({
-    where: { slug: params.slug },
+    where: { slug },
   });
 
   if (!post) return { title: "Post Not Found" };
@@ -46,8 +48,9 @@ function formatPostDate(date: Date | string): string {
 export const revalidate = 300;
 
 export default async function BlogPostPage({ params }: Props) {
+  const { slug } = await params;
   const post = await prisma.blogPost.findUnique({
-    where: { slug: params.slug },
+    where: { slug },
   });
 
   if (!post || !post.published) notFound();
@@ -59,7 +62,7 @@ export default async function BlogPostPage({ params }: Props) {
     source = post.content;
   } else {
     try {
-      const filePath = join(process.cwd(), "content", "blog", `${params.slug}.mdx`);
+      const filePath = join(process.cwd(), "content", "blog", `${slug}.mdx`);
       source = await readFile(filePath, "utf-8");
     } catch {
       source = `# ${post.title}\n\n*Content coming soon.*`;
