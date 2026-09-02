@@ -2,7 +2,7 @@ const footerLinks = [
   { label: "GitHub", href: "https://github.com/hejoric" },
   { label: "YouTube", href: "https://youtube.com/@hejoric" },
   { label: "LinkedIn", href: "https://linkedin.com/in/hejoric" },
-  { label: "Email", href: "mailto:jose@hejoric.com" },
+  { label: "Email", href: "mailto:hejoric@outlook.com" },
   { label: "Resume", href: "/resume.pdf" },
 ];
 

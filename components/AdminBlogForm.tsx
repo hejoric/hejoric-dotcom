@@ -56,7 +56,7 @@ export default function AdminBlogForm() {
           <input type="text" name="title" required className={adminInput} />
         </div>
         <div>
-          <label className={adminLabel}>Slug (optional — defaults from title)</label>
+          <label className={adminLabel}>Slug (optional, defaults from title)</label>
           <input
             type="text"
             name="slug"

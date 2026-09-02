@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CATEGORIES } from "@/lib/categories";
+import { MANUAL_CATEGORIES } from "@/lib/categories";
 import {
   adminInput,
   adminLabel,
@@ -46,6 +46,11 @@ export default function AdminActivityForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <h2 className={adminHeading}>Log activity</h2>
+      <p className="text-[13px] leading-[1.6] text-text-secondary">
+        Code is pulled live from the GitHub contribution API, so it cannot be
+        logged here. Everything else is hand-entered and shows up on the
+        tracker within five minutes.
+      </p>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label className={adminLabel}>Date</label>
@@ -60,7 +65,7 @@ export default function AdminActivityForm() {
         <div>
           <label className={adminLabel}>Category</label>
           <select name="category" required className={adminInput}>
-            {CATEGORIES.map((cat) => (
+            {MANUAL_CATEGORIES.map((cat) => (
               <option key={cat.key} value={cat.key}>
                 {cat.label}
               </option>

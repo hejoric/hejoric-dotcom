@@ -5,17 +5,20 @@ import BlogCard from "@/components/BlogCard";
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Thoughts on software engineering, learning, and building — by Jose R. Herrera (hejoric).",
+    "Notes on software engineering, infrastructure, and learning in public, by Jose R. Herrera (hejoric).",
   openGraph: {
     title: "Blog | hejoric",
     description:
-      "Thoughts on software engineering, learning, and building — by Jose R. Herrera (hejoric).",
+      "Notes on software engineering, infrastructure, and learning in public, by Jose R. Herrera (hejoric).",
     url: "https://hejoric.com/blog",
     type: "website",
-    images: [{ url: "/og-default.png" }],
   },
   alternates: { canonical: "https://hejoric.com/blog" },
 };
+
+// Content comes from Postgres, so re-render on a short interval instead of
+// freezing at build time (edits made in /admin appear within five minutes).
+export const revalidate = 300;
 
 export default async function BlogPage() {
   const posts = await prisma.blogPost.findMany({

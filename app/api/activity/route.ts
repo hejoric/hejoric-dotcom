@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth, isAdmin } from "@/lib/auth";
+import { MANUAL_CATEGORY_KEYS } from "@/lib/categories";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -12,8 +13,8 @@ export async function GET(req: NextRequest) {
 
   const where: Record<string, unknown> = {
     date: { gte: startDate },
+    category: category ?? { in: MANUAL_CATEGORY_KEYS },
   };
-  if (category) where.category = category;
 
   const activities = await prisma.activityLog.findMany({ where });
 
@@ -43,10 +44,12 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const validCategories = ["code", "music", "language", "fitness", "content"];
-  if (!validCategories.includes(category)) {
+  // Code is sourced from GitHub, so writing it here would double-count.
+  if (!MANUAL_CATEGORY_KEYS.includes(category)) {
     return NextResponse.json(
-      { error: "Invalid category" },
+      {
+        error: `Invalid category. Hand-logged categories: ${MANUAL_CATEGORY_KEYS.join(", ")}`,
+      },
       { status: 400 }
     );
   }

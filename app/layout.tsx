@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Instrument_Serif } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Navbar from "@/components/Navbar";
-import AuthButton from "@/components/AuthButton";
 import Footer from "@/components/Footer";
 import "./globals.css";
 
@@ -22,15 +21,14 @@ export const metadata: Metadata = {
     template: "%s | hejoric",
   },
   description:
-    "Personal site and portfolio of Jose R. Herrera (hejoric) — CS student, full-stack developer, and builder.",
+    "Personal site and portfolio of Jose R. Herrera (hejoric): CS student at UVA, full-stack and infrastructure developer.",
   openGraph: {
     title: "Jose R. Herrera · hejoric",
     description:
-      "Personal site and portfolio of Jose R. Herrera (hejoric) — CS student, full-stack developer, and builder.",
+      "Personal site and portfolio of Jose R. Herrera (hejoric): CS student at UVA, full-stack and infrastructure developer.",
     url: "https://hejoric.com",
     siteName: "hejoric",
     type: "website",
-    images: [{ url: "/og-default.png", width: 1200, height: 630 }],
   },
   alternates: {
     canonical: "https://hejoric.com",
@@ -67,7 +65,7 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex min-h-screen flex-col">
-            <Navbar authSlot={<AuthButton />} />
+            <Navbar />
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
