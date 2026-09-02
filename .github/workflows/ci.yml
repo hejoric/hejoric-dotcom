@@ -1,8 +1,10 @@
 name: CI
 
+# Every pull request, not just those targeting main: a PR stacked on another
+# branch needs the same gate, and Dependabot PRs land on whatever branch the
+# manifest lives on.
 on:
   pull_request:
-    branches: [main]
 
 # Cancel superseded runs on the same branch/PR to save CI minutes.
 concurrency:
