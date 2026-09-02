@@ -22,7 +22,7 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   const number = String(index + 1).padStart(2, "0");
   const label =
-    variant === "plain" ? `${number} · Code` : featured ? `${number} · Featured` : number;
+    variant === "card" && featured ? `${number} · Featured` : number;
 
   const body = (
     <>

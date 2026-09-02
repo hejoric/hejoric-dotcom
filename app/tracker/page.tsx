@@ -1,54 +1,43 @@
 import type { Metadata } from "next";
-import { prisma } from "@/lib/prisma";
 import HeatmapTracker from "@/components/HeatmapTracker";
+import { getActivityWindow } from "@/lib/activity";
 
 export const metadata: Metadata = {
-  title: "Consistency Log",
+  title: "Tracker",
   description:
-    "Tracking daily effort across code, music, languages, fitness, and content — by hejoric.",
+    "A year of real activity: GitHub contributions plus hand-logged practice across music, language, fitness, and reading.",
   openGraph: {
-    title: "Consistency Log | hejoric",
+    title: "Tracker | hejoric",
     description:
-      "Tracking daily effort across code, music, languages, fitness, and content — by hejoric.",
+      "A year of real activity: GitHub contributions plus hand-logged practice across music, language, fitness, and reading.",
     url: "https://hejoric.com/tracker",
     type: "website",
-    images: [{ url: "/og-default.png" }],
   },
   alternates: { canonical: "https://hejoric.com/tracker" },
 };
 
+// Content comes from Postgres, so re-render on a short interval instead of
+// freezing at build time (edits made in /admin appear within five minutes).
+export const revalidate = 300;
+
 export default async function TrackerPage() {
-  const today = new Date();
-  const startDate = new Date(today);
-  startDate.setDate(startDate.getDate() - 364);
-
-  const activities = await prisma.activityLog.findMany({
-    where: {
-      date: { gte: startDate },
-    },
-  });
-
-  const data: Record<string, Record<string, number>> = {};
-  for (const entry of activities) {
-    if (!data[entry.category]) data[entry.category] = {};
-    const key = entry.date.toISOString().split("T")[0];
-    data[entry.category][key] = (data[entry.category][key] || 0) + entry.count;
-  }
+  const activity = await getActivityWindow();
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-16">
       <h1 className="font-display text-5xl tracking-[-0.01em] text-text-primary sm:text-[56px] sm:leading-none">
         The tracker.
       </h1>
-      <p className="mt-4 max-w-[560px] leading-[1.7] text-text-secondary">
-        One square per day, one color per pursuit.{" "}
+      <p className="mt-4 max-w-[580px] leading-[1.7] text-text-secondary">
+        One square per day. Code is pulled live from my GitHub contribution
+        graph, private repositories included. Everything else I log by hand.{" "}
         <span className="font-display text-[17px] italic text-text-primary">
-          365 days, five ways.
+          Nothing here is generated.
         </span>
       </p>
 
       <div className="mt-9">
-        <HeatmapTracker data={data} />
+        <HeatmapTracker activity={activity} />
       </div>
     </div>
   );

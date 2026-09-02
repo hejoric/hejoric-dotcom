@@ -12,7 +12,7 @@
   --border: rgba(26, 25, 23, 0.12);
   --border-soft: rgba(26, 25, 23, 0.08);
 
-  /* Category accents — the site's only color */
+  /* Category accents: the site's only color */
   --cat-code: #2f6fb0;
   --cat-music: #d8593f;
   --cat-language: #1f9e75;
@@ -108,7 +108,7 @@ body {
   }
 }
 
-/* Blog post body (MDX). Hand-rolled — no typography plugin. */
+/* Blog post body (MDX). Hand-rolled, no typography plugin. */
 .post-prose {
   font-size: 17px;
   line-height: 1.85;

@@ -1,35 +1,16 @@
-import Link from "next/link";
-import { auth, signIn, signOut, isAdmin } from "@/lib/auth";
+import { signIn, signOut } from "@/lib/auth";
 
-const buttonClass =
+// Auth controls live on /admin only. The public nav has no sign-in button:
+// this is a single-admin allowlist, so a visitor clicking it would only ever
+// get a rejected login.
+
+const quietButton =
   "text-[11px] font-semibold uppercase tracking-[0.12em] text-text-muted transition-opacity duration-150 hover:text-text-primary hover:opacity-70";
 
-export default async function AuthButton() {
-  const session = await auth();
+const solidButton =
+  "rounded-md bg-text-primary px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-background transition-opacity duration-150 hover:opacity-80";
 
-  if (isAdmin(session?.user?.email)) {
-    return (
-      <div className="flex items-center gap-3">
-        <Link
-          href="/admin"
-          className="text-sm text-text-secondary transition-opacity duration-150 hover:text-text-primary hover:opacity-70"
-        >
-          Admin
-        </Link>
-        <form
-          action={async () => {
-            "use server";
-            await signOut({ redirectTo: "/" });
-          }}
-        >
-          <button type="submit" className={buttonClass}>
-            Sign out
-          </button>
-        </form>
-      </div>
-    );
-  }
-
+export function SignInButton() {
   return (
     <form
       action={async () => {
@@ -37,8 +18,23 @@ export default async function AuthButton() {
         await signIn("google", { redirectTo: "/admin" });
       }}
     >
-      <button type="submit" className={buttonClass}>
-        Sign in
+      <button type="submit" className={solidButton}>
+        Sign in with Google
+      </button>
+    </form>
+  );
+}
+
+export function SignOutButton() {
+  return (
+    <form
+      action={async () => {
+        "use server";
+        await signOut({ redirectTo: "/" });
+      }}
+    >
+      <button type="submit" className={quietButton}>
+        Sign out
       </button>
     </form>
   );

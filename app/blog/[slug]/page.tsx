@@ -26,7 +26,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: post.excerpt,
       url: `https://hejoric.com/blog/${post.slug}`,
       type: "article",
-      images: [{ url: "/og-default.png" }],
     },
     alternates: { canonical: `https://hejoric.com/blog/${post.slug}` },
   };
@@ -41,6 +40,10 @@ function formatPostDate(date: Date | string): string {
     })
     .toUpperCase();
 }
+
+// Content comes from Postgres, so re-render on a short interval instead of
+// freezing at build time (edits made in /admin appear within five minutes).
+export const revalidate = 300;
 
 export default async function BlogPostPage({ params }: Props) {
   const post = await prisma.blogPost.findUnique({

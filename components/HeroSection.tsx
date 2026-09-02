@@ -18,10 +18,12 @@ export default function HeroSection() {
         <br />
         and I keep track of them.
       </h1>
-      <p className="mt-7 max-w-[600px] text-[16.5px] leading-[1.75] text-text-secondary">
-        Code, workouts, the Korean I&apos;m slowly wrestling into my brain,
-        whatever&apos;s on repeat, the stuff I make. Basically a contribution
-        graph for a whole life.{" "}
+      <p className="mt-7 max-w-[620px] text-[16.5px] leading-[1.75] text-text-secondary">
+        CS at the University of Virginia. I ship software for people who
+        aren&apos;t developers: an ERP replacing a retail store&apos;s
+        30-year-old system, a nonprofit&apos;s site rebuilt to run on $12 a
+        year. The graph below is my real GitHub activity, private repos
+        included.{" "}
         <span className="font-display text-lg italic text-text-primary">
           Poke around.
         </span>

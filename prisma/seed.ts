@@ -1,50 +1,62 @@
+// Upserts the real project list. Nothing here fabricates activity data:
+// the Code heatmap comes from the live GitHub contribution API, and the other
+// tracker categories only ever contain entries logged by hand in /admin.
+//
+// Safe to re-run. It only touches the rows it owns (the `seed-*` ids), so
+// projects added later through /admin are left alone.
+
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const categories = ["code", "music", "language", "fitness", "content"];
-
-function randomInt(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+const projects = [
+  {
+    id: "seed-loudoun-ncp",
+    title: "Loudoun Nature Conservation Project",
+    description:
+      "Rebuilt a 501(c)(3) nonprofit's managed WordPress site as a statically generated Astro site on Cloudflare Pages, cutting recurring hosting cost from $178/year to roughly $12/year. Migrated hosting, DNS, and domain registration off Bluehost with zero downtime, then integrated Keystatic, a Git-based CMS that stores content as YAML, so non-technical staff edit pages in the browser while every change stays version-controlled.",
+    techStack: ["Astro", "TypeScript", "Tailwind", "Cloudflare", "Keystatic"],
+    githubUrl: "https://github.com/hejoric/loudoun-ncp-site",
+    liveUrl: "https://loudounnatureconservation.org",
+    featured: true,
+    order: 0,
+  },
+  {
+    id: "seed-retail-erp",
+    title: "Retail ERP Deployment",
+    description:
+      "Self-hosted Odoo 18 Community on a Linux VPS to replace a retail business's legacy Monica 9 system, running the stack in Docker behind a Cloudflare Tunnel for secure remote access. Wrote custom Odoo modules in Python by reading upstream source and mapping the ORM's PostgreSQL schema to extend inventory and pricing beyond stock functionality, migrated 500+ products through a structured import mapping, and configured point of sale, multi-location inventory, and role-based permissions. Scheduled for production cutover in Fall 2026.",
+    techStack: ["Odoo", "Python", "Docker", "PostgreSQL", "Linux"],
+    githubUrl: null,
+    liveUrl: null,
+    featured: true,
+    order: 1,
+  },
+  {
+    id: "seed-hejoric-dotcom",
+    title: "hejoric.com",
+    description:
+      "This site. A Next.js 14 App Router application in TypeScript on Vercel, backed by Prisma over serverless Postgres (Neon) using pooled connections at runtime and a direct connection for migrations. Google OAuth through NextAuth v5 gates an admin dashboard for publishing projects, posts, and activity entries, and the Code heatmap is pulled live from the GitHub contribution API instead of being stored, so the graph cannot drift from reality.",
+    techStack: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "NextAuth"],
+    githubUrl: "https://github.com/hejoric/hejoric-dotcom",
+    liveUrl: "https://hejoric.com",
+    featured: false,
+    order: 2,
+  },
+  {
+    id: "seed-tsa-helper",
+    title: "TSA Helper",
+    description:
+      "Owned deployment and DevOps on a 5-person Agile team shipping a Django student-organization platform (tasks, finance, documents, messaging) to Heroku with Gunicorn, WhiteNoise, PostgreSQL, and AWS S3 media storage via django-storages. Built the multi-channel messaging feature end to end: emoji reactions, reply threading, pinned messages, and live autoscroll on custom Django models, templates, and JavaScript.",
+    techStack: ["Django", "PostgreSQL", "AWS S3", "Heroku", "JavaScript"],
+    githubUrl: null,
+    liveUrl: null,
+    featured: false,
+    order: 3,
+  },
+];
 
 async function main() {
-  const projects = [
-    {
-      id: "seed-retail-erp",
-      title: "Retail ERP Deployment",
-      description:
-        "Deployed and self-hosted Odoo 18 Community ERP on a Linux VPS to replace a family retail business's legacy Monica 9 system, running the stack in Docker behind a Cloudflare Tunnel. Migrated 500+ active products into PostgreSQL and configured point-of-sale, multi-location inventory, cash control, and tiered pricelists with role-based permissions for a pilot handling 500+ daily transactions.",
-      techStack: ["Odoo", "Docker", "PostgreSQL", "Linux", "Cloudflare"],
-      githubUrl: null,
-      liveUrl: null,
-      featured: true,
-      order: 0,
-    },
-    {
-      id: "seed-tsa-helper",
-      title: "TSA Helper",
-      description:
-        "Owned deployment and DevOps on a 5-person Agile team shipping a Django student-organization platform (tasks, finance, documents, messaging) to Heroku with Gunicorn, WhiteNoise, and PostgreSQL. Configured AWS S3 storage via django-storages and built a Discord-style multi-channel messaging feature with emoji reactions, reply threading, pinned messages, and live autoscroll.",
-      techStack: ["Django", "PostgreSQL", "AWS S3", "Heroku", "JavaScript"],
-      githubUrl: null,
-      liveUrl: null,
-      featured: true,
-      order: 1,
-    },
-    {
-      id: "seed-course-review",
-      title: "Course Review CRUD App",
-      description:
-        "Full-stack JavaFX application that lets students create, read, update, and delete course reviews with user authentication and persistent SQLite storage. Designed a relational schema using JDBC with proper foreign key constraints, and implemented secure password hashing and input validation to prevent SQL injection. Built in a team of 3 using Git.",
-      techStack: ["Java", "JavaFX", "SQLite", "JDBC"],
-      githubUrl: null,
-      liveUrl: null,
-      featured: false,
-      order: 2,
-    },
-  ];
-
   for (const project of projects) {
     await prisma.project.upsert({
       where: { id: project.id },
@@ -53,87 +65,8 @@ async function main() {
     });
   }
 
-  await prisma.blogPost.upsert({
-    where: { slug: "hello-world" },
-    update: {},
-    create: {
-      slug: "hello-world",
-      title: "Hello, World!",
-      excerpt:
-        "Welcome to my blog. This is where I'll share thoughts on code, learning, and building things that matter.",
-      tags: ["personal", "intro"],
-      content:
-        "# Hello, World!\n\nWelcome to my corner of the internet. This is where I'll write about the things I'm building, the things I'm learning, and the occasional detour into piano, languages, or the gym.\n\nMore soon.",
-      published: true,
-      publishedAt: new Date(),
-    },
-  });
-
-  const latelyItems = [
-    {
-      kind: "video",
-      title: "Self-hosting an ERP for the family store",
-      subtitle: "YouTube · 12 min",
-      url: "https://youtube.com/@hejoric",
-      imageUrl: null,
-    },
-    {
-      kind: "song",
-      title: "Nocturne Op. 9 No. 2",
-      subtitle: "Chopin — learning it on piano",
-      url: null,
-      imageUrl: null,
-    },
-    {
-      kind: "book",
-      title: "Deep Work",
-      subtitle: "Cal Newport · ch. 6",
-      url: null,
-      imageUrl: null,
-    },
-  ];
-
-  for (const item of latelyItems) {
-    await prisma.latelyItem.upsert({
-      where: { kind: item.kind },
-      update: item,
-      create: item,
-    });
-  }
-
-  const today = new Date();
-  const entries: { date: Date; category: string; count: number }[] = [];
-
-  for (let i = 0; i < 90; i++) {
-    const date = new Date(today);
-    date.setDate(date.getDate() - i);
-    date.setHours(0, 0, 0, 0);
-
-    for (const category of categories) {
-      if (Math.random() > 0.4) {
-        entries.push({
-          date,
-          category,
-          count: randomInt(1, 10),
-        });
-      }
-    }
-  }
-
-  for (const entry of entries) {
-    await prisma.activityLog.upsert({
-      where: {
-        date_category: {
-          date: entry.date,
-          category: entry.category,
-        },
-      },
-      update: { count: entry.count },
-      create: entry,
-    });
-  }
-
-  console.log("Seed complete: 1 project, 1 blog post, ~270 activity entries");
+  console.log(`Seed complete: ${projects.length} projects upserted.`);
+  console.log("Activity data is not seeded by design (GitHub + /admin only).");
 }
 
 main()

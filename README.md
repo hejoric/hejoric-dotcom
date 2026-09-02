@@ -1,75 +1,87 @@
 # hejoric.com
 
-Personal site, portfolio, and living progress journal of Jose R. Herrera.
+Personal site, portfolio, and consistency tracker for Jose R. Herrera
+([@hejoric](https://github.com/hejoric)). Live at **[hejoric.com](https://hejoric.com)**.
 
-The idea is simple: a GitHub contribution graph, but for everything — code, music, languages, fitness, content creation. Not just finished projects, but consistency over time.
+The idea: a GitHub contribution graph, but for more than code. Projects and
+writing sit next to a year of day-by-day activity, so consistency is visible
+instead of claimed.
+
+## Data honesty
+
+The tracker only ever renders data that exists:
+
+- **Code** is fetched live from the GitHub GraphQL `contributionsCollection`
+  (`lib/github.ts`), the same source behind a GitHub profile graph, including
+  private-repository contributions. It is cached for an hour and never stored,
+  so the graph cannot drift from the truth. If the fetch fails, the row is
+  replaced by a note saying so rather than an empty grid.
+- **Music, Language, Fitness, and Reading** are hand-logged through `/admin`
+  and stored in `ActivityLog`. A category with no entries renders no row.
+
+Nothing in this repo generates, estimates, or seeds activity data.
 
 ## Stack
 
-- **Next.js 14** (App Router) + TypeScript
-- **Tailwind CSS v3** — no component libraries, everything hand-built
-- **Prisma** + **Neon** (serverless Postgres)
-- **NextAuth v5** — GitHub OAuth, single-admin auth gate
-- **next-mdx-remote** + rehype-pretty-code for blog posts
-- **next-themes** for dark/light mode
-- Deployed on **Vercel**
+- **Next.js 14** (App Router) + **TypeScript**
+- **Tailwind CSS v3**, hand-built, no component libraries
+- **Prisma 5** + **Neon** serverless Postgres
+- **NextAuth v5** (Google OAuth, single-admin allowlist)
+- **next-mdx-remote** + `rehype-pretty-code` for post bodies
+- **next-themes** for class-based dark mode
 
-## What's in here
+## Routes
 
-**`/`** — Hero with headshot, featured projects from DB, short about blurb
+| Route | What it does |
+| --- | --- |
+| `/` | Hero, the Ledger (52-week strip), Selected Work, About teaser |
+| `/projects` | Every project from Postgres, filterable by tech tag client-side |
+| `/tracker` | Full-year heatmaps: GitHub-backed Code plus any hand-logged category |
+| `/about` | Bio, experience, education, skills, resume link |
+| `/blog`, `/blog/[slug]` | Post list from Postgres; body is MDX stored in the DB |
+| `/admin` | Google-gated forms to log activity and publish projects and posts |
+| `/api/activity`, `/api/projects` | `GET` public, `POST` admin only |
+| `/api/posts` | `POST` admin only (upsert by slug) |
 
-**`/projects`** — Filterable grid of project cards, pulled from Postgres. Filter by tech tag client-side.
+`/blog` is deliberately absent from the nav until there is a post worth
+reading; the route still works.
 
-**`/blog`** — Blog post list from DB. Individual posts at `/blog/[slug]` render MDX files from `content/blog/` with syntax highlighting.
+## Local development
 
-**`/tracker`** — "Consistency Log" — five GitHub-style heatmaps (code, music, languages, fitness, content), each showing 52 weeks of activity data from the `ActivityLog` table.
-
-**`/admin`** — Auth-gated admin panel (GitHub OAuth, single email check). Forms to log activity entries and add projects. Blog posts are created by dropping an MDX file in `content/blog/` and inserting metadata into the DB.
-
-**`/api/activity`** — GET (heatmap data) + POST (log entry, auth required)
-
-**`/api/projects`** — GET (all projects) + POST (add project, auth required)
-
-## Local dev
-
-```
+```bash
 npm install
-npx prisma generate
-npx prisma db push
-npx tsx prisma/seed.ts
+npm run db:push     # sync the Prisma schema
+npm run db:seed     # upsert the real project list (no activity data)
 npm run dev
 ```
 
-Needs a `.env.local` with `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, `GITHUB_ID`, `GITHUB_SECRET`. See `.env.example`.
+Copy `.env.example` to `.env` and fill in:
 
-Neon requires two DB URLs — pooled for the Prisma client at runtime, direct/unpooled for migrations.
+| Variable | Purpose |
+| --- | --- |
+| `DATABASE_URL` | Pooled Neon connection, used at runtime |
+| `DATABASE_URL_UNPOOLED` | Direct connection, used for migrations |
+| `NEXTAUTH_SECRET`, `NEXTAUTH_URL` | NextAuth session config |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Google OAuth credentials |
+| `ADMIN_EMAIL` | The one address allowed to sign in or write |
+| `GITHUB_TOKEN` | Classic PAT with `read:user`, powers the Code heatmap |
 
-## Managing content
+Neon needs both database URLs: pooled for the Prisma client, direct for
+migrations.
 
-**Blog:** Add `content/blog/your-slug.mdx`, then insert a row into `BlogPost` (via `npx prisma studio` or the Neon dashboard) with `published: true`.
+## Commands
 
-**Tracker:** Use the admin page at `/admin`, or POST to `/api/activity`, or edit directly in Prisma Studio.
-
-**Projects:** Admin page or POST to `/api/projects`.
-
-## Project structure
-
+```bash
+npm run dev          # dev server
+npm run build        # production build
+npm run lint         # next lint
+npm run db:push      # prisma db push
+npm run db:seed      # tsx prisma/seed.ts
+npx prisma studio    # browse the database
 ```
-app/
-  layout.tsx            Root layout, ThemeProvider, JSON-LD
-  page.tsx              Homepage
-  projects/page.tsx
-  blog/page.tsx
-  blog/[slug]/page.tsx  MDX renderer
-  tracker/page.tsx      Heatmap grids
-  admin/page.tsx        Auth-gated admin
-  api/                  REST endpoints
-  sitemap.ts
-  robots.ts
-components/             Navbar, Footer, ThemeToggle, HeroSection,
-                        ProjectCard, BlogCard, HeatmapGrid,
-                        HeatmapTracker, admin forms
-lib/                    Prisma client, NextAuth config, utils
-content/blog/           MDX blog posts
-prisma/                 Schema + seed script
-```
+
+## Deployment
+
+Vercel, deployed from `main`. Pages are statically rendered with a 300-second
+revalidate window, so entries added through `/admin` appear within five minutes
+without a redeploy.

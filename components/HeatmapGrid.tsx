@@ -1,21 +1,42 @@
 "use client";
 
 import { useState } from "react";
-import { dateToKey } from "@/lib/utils";
+import type { MonthSegment } from "@/lib/calendar";
 import { getHeatmapLevel, heatmapCellColor } from "@/lib/categories";
+
+// Day cell size and the gap between columns. Month labels are sized off the
+// same pitch, so these have to stay in sync.
+const CELL = 14;
+const GAP = 4;
+const PITCH = CELL + GAP;
+const LEVELS = [0, 1, 2, 3, 4];
 
 interface HeatmapGridProps {
   label: string;
   colorVar: string;
+  /** `YYYY-MM-DD` -> count. Days absent from the map are zero. */
   data: Record<string, number>;
+  /** Week columns from buildCalendar(), Sunday-first. */
+  weeks: (string | null)[][];
+  months: MonthSegment[];
+  /** Right-aligned stat line in the header. */
+  stat: string;
+  /** Where this row's numbers come from, shown under the grid. */
+  note: string;
+  /** Word used in the tooltip: "contribution", "entry", ... */
+  unit: string;
 }
 
-const MONTH_NAMES = [
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-];
-
-export default function HeatmapGrid({ label, colorVar, data }: HeatmapGridProps) {
+export default function HeatmapGrid({
+  label,
+  colorVar,
+  data,
+  weeks,
+  months,
+  stat,
+  note,
+  unit,
+}: HeatmapGridProps) {
   const [tooltip, setTooltip] = useState<{
     date: string;
     count: number;
@@ -23,70 +44,9 @@ export default function HeatmapGrid({ label, colorVar, data }: HeatmapGridProps)
     y: number;
   } | null>(null);
 
-  const today = new Date();
-  const startDate = new Date(today);
-  startDate.setDate(startDate.getDate() - 364);
-
-  const days: Date[] = [];
-  const current = new Date(startDate);
-  while (current <= today) {
-    days.push(new Date(current));
-    current.setDate(current.getDate() + 1);
-  }
-
-  const weeks: (Date | null)[][] = [];
-  let currentWeek: (Date | null)[] = [];
-
-  const firstDayOfWeek = days[0].getDay();
-  for (let i = 0; i < firstDayOfWeek; i++) {
-    currentWeek.push(null);
-  }
-
-  for (const day of days) {
-    if (currentWeek.length === 7) {
-      weeks.push(currentWeek);
-      currentWeek = [];
-    }
-    currentWeek.push(day);
-  }
-  if (currentWeek.length > 0) {
-    while (currentWeek.length < 7) {
-      currentWeek.push(null);
-    }
-    weeks.push(currentWeek);
-  }
-
-  // Stats for the header: active days + longest streak in the window.
-  let activeDays = 0;
-  let longestStreak = 0;
-  let streak = 0;
-  for (const day of days) {
-    if ((data[dateToKey(day)] || 0) > 0) {
-      activeDays++;
-      streak++;
-      if (streak > longestStreak) longestStreak = streak;
-    } else {
-      streak = 0;
-    }
-  }
-
-  // Month labels: segments sized by how many weeks each month spans.
-  const monthSegments: { name: string; weeks: number }[] = [];
-  for (const week of weeks) {
-    const firstDay = week.find((d): d is Date => d !== null);
-    if (!firstDay) continue;
-    const name = MONTH_NAMES[firstDay.getMonth()];
-    const last = monthSegments[monthSegments.length - 1];
-    if (last && last.name === name) {
-      last.weeks++;
-    } else {
-      monthSegments.push({ name, weeks: 1 });
-    }
-  }
-
   return (
     <div className="relative border-b border-border-soft py-7">
-      <div className="mb-4 flex items-baseline justify-between">
+      <div className="mb-4 flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
         <span className="flex items-center gap-2.5">
           <span
             className="h-2.5 w-2.5 rounded-[3px]"
@@ -99,39 +59,47 @@ export default function HeatmapGrid({ label, colorVar, data }: HeatmapGridProps)
             {label}
           </span>
         </span>
-        <span className="font-display text-[15px] italic text-text-muted">
-          {activeDays} days &middot; longest streak {longestStreak}
+        <span className="font-display text-[15px] italic text-text-muted sm:text-right">
+          {stat}
         </span>
       </div>
       <div className="overflow-x-auto pb-1">
         <div className="w-max">
           <div className="mb-1.5 flex">
-            {monthSegments.map((seg, i) => (
+            {months.map((segment, i) => (
               <span
                 key={i}
                 className="overflow-hidden whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.08em] text-text-muted"
-                style={{ width: `${seg.weeks * 13}px` }}
+                style={{ width: `${segment.weeks * PITCH}px` }}
               >
-                {seg.weeks >= 2 ? seg.name : ""}
+                {segment.weeks >= 2 ? segment.name : ""}
               </span>
             ))}
           </div>
-          <div className="inline-flex gap-[3px]">
+          <div className="inline-flex" style={{ gap: GAP }}>
             {weeks.map((week, wi) => (
-              <div key={wi} className="flex flex-col gap-[3px]">
-                {week.map((day, di) => {
-                  if (!day) {
-                    return <div key={`empty-${di}`} className="h-[10px] w-[10px]" />;
+              <div key={wi} className="flex flex-col" style={{ gap: GAP }}>
+                {week.map((key, di) => {
+                  if (!key) {
+                    return (
+                      <div
+                        key={`empty-${di}`}
+                        style={{ width: CELL, height: CELL }}
+                      />
+                    );
                   }
-                  const key = dateToKey(day);
                   const count = data[key] || 0;
-                  const level = getHeatmapLevel(count);
                   return (
                     <div
                       key={key}
-                      className="heatmap-cell h-[10px] w-[10px] rounded-[2.5px]"
+                      className="heatmap-cell rounded-[3px]"
                       style={{
-                        backgroundColor: heatmapCellColor(colorVar, level),
+                        width: CELL,
+                        height: CELL,
+                        backgroundColor: heatmapCellColor(
+                          colorVar,
+                          getHeatmapLevel(count)
+                        ),
                         animationDelay: `${wi * 14 + di * 3}ms`,
                       }}
                       onMouseEnter={(e) => {
@@ -152,12 +120,32 @@ export default function HeatmapGrid({ label, colorVar, data }: HeatmapGridProps)
           </div>
         </div>
       </div>
+      <div className="mt-3.5 flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
+        <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-text-muted">
+          {note}
+        </p>
+        <div className="hidden items-center gap-1.5 sm:flex" aria-hidden>
+          <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-text-muted">
+            Less
+          </span>
+          {LEVELS.map((level) => (
+            <span
+              key={level}
+              className="h-[10px] w-[10px] rounded-[2.5px]"
+              style={{ backgroundColor: heatmapCellColor(colorVar, level) }}
+            />
+          ))}
+          <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-text-muted">
+            More
+          </span>
+        </div>
+      </div>
       {tooltip && (
         <div
           className="pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-full rounded-md bg-text-primary px-2 py-1 text-xs text-background shadow-lg"
           style={{ left: tooltip.x, top: tooltip.y - 8 }}
         >
-          {tooltip.date}: {tooltip.count} {tooltip.count === 1 ? "entry" : "entries"}
+          {tooltip.date}: {tooltip.count} {tooltip.count === 1 ? unit : `${unit}s`}
         </div>
       )}
     </div>

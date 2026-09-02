@@ -41,19 +41,9 @@ model BlogPost {
   createdAt   DateTime  @default(now())
 }
 
-// Cached "Lately" items for the homepage strip (latest YouTube upload,
-// current song, current book). Written by ingestion crons later; for now
-// seeded/edited by hand.
-model LatelyItem {
-  id        String   @id @default(cuid())
-  kind      String   @unique // "video" | "song" | "book"
-  title     String
-  subtitle  String?
-  url       String?
-  imageUrl  String?
-  updatedAt DateTime @updatedAt
-}
-
+// Hand-logged activity for the non-code tracker categories (music, language,
+// fitness, reading). Code is never stored here: it is fetched live from the
+// GitHub contribution API in lib/github.ts, so there is one source of truth.
 model ActivityLog {
   id        String   @id @default(cuid())
   date      DateTime

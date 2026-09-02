@@ -4,19 +4,36 @@ Guidance for working in this repo. Read this before making changes.
 
 ## What this is
 
-`hejoric.com` — personal site, portfolio, and resume for Jose R. Herrera (`@hejoric`).
+`hejoric.com` - personal site, portfolio, and resume for Jose R. Herrera (`@hejoric`).
 The concept is "a GitHub contribution graph, but for everything": code, music, languages,
-fitness, and content, tracked over time alongside projects and a blog. Deployed on Vercel
+fitness, and reading, tracked over time alongside projects and a blog. Deployed on Vercel
 at https://hejoric.com.
+
+## The data-honesty rule
+
+This is the constraint that shapes the tracker, and it must not be broken:
+
+- **Nothing fabricates activity data.** No random seeding, no estimates, no
+  placeholder rows. If a category has no data, it renders nothing.
+- **Code** comes from the GitHub GraphQL `contributionsCollection` in
+  `lib/github.ts`, cached for an hour, never written to the database. It
+  includes private-repo contributions. If the fetch fails (or `GITHUB_TOKEN` is
+  missing) the UI says the graph could not be loaded instead of drawing an
+  empty grid.
+- **Music, Language, Fitness, Reading** are hand-logged in `/admin`. The
+  activity API rejects writes to `code` so the two sources cannot double-count.
+- `lib/categories.ts` is the single source of truth: each category carries a
+  `source` of `"github"` or `"manual"`, and `MANUAL_CATEGORY_KEYS` is what the
+  API and admin form use.
 
 ## Stack
 
 - **Next.js 14** (App Router) + **TypeScript**, `commonjs` package type
-- **Tailwind CSS v3** — hand-built, no component libraries
+- **Tailwind CSS v3** - hand-built, no component libraries
 - **Prisma 5** + **Neon** serverless Postgres
-- **NextAuth v5 (beta)** — Google OAuth, single-admin allowlist (`lib/auth.ts`)
+- **NextAuth v5 (beta)** - Google OAuth, single-admin allowlist (`lib/auth.ts`)
 - **next-mdx-remote** + `rehype-pretty-code`/`shiki` for blog posts
-- **next-themes** — class-based dark/light, `defaultTheme="system"`
+- **next-themes** - class-based dark/light, `defaultTheme="system"`
 
 ## Commands
 
@@ -25,52 +42,56 @@ npm run dev          # local dev server
 npm run build        # production build
 npm run lint         # next lint
 npm run db:push      # prisma db push (sync schema)
-npm run db:seed      # tsx prisma/seed.ts (seed/upsert demo data)
+npm run db:seed      # tsx prisma/seed.ts (upsert the real project list)
 npx prisma studio    # browse/edit the DB directly
 ```
 
-`.env.local` needs: `DATABASE_URL` (pooled, runtime), `DATABASE_URL_UNPOOLED`
+`.env` needs: `DATABASE_URL` (pooled, runtime), `DATABASE_URL_UNPOOLED`
 (direct, migrations), `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, `GOOGLE_CLIENT_ID`,
-`GOOGLE_CLIENT_SECRET`, `ADMIN_EMAIL`. See `.env.example`. Neon requires both DB
-URLs — pooled for the Prisma client, direct for migrations.
+`GOOGLE_CLIENT_SECRET`, `ADMIN_EMAIL`, `GITHUB_TOKEN`. See `.env.example`.
+Neon requires both DB URLs. `GITHUB_TOKEN` is a classic PAT with `read:user`;
+without it the Code heatmap is omitted with a notice.
 
 ## Architecture
 
 Routes (`app/`):
-- `/` — `page.tsx`: Hero (rotating greeting) + "The Ledger" 52-week strip (from `ActivityLog`) + Selected Work (from DB) + "Lately" strip (from `LatelyItem`) + serif About teaser
-- `/projects` — filterable grid, tech-tag filter is client-side (`projects-client.tsx`)
-- `/blog` + `/blog/[slug]` — list from DB; post body is MDX from `content/blog/<slug>.mdx`
-- `/tracker` — five GitHub-style heatmaps (code, music, language, fitness, content), 52 weeks from `ActivityLog`
-- `/about` — bio, education, skills, resume link (static)
-- `/admin` — auth-gated forms to log activity, add projects, and publish blog posts
-- `/api/activity`, `/api/projects`, `/api/posts` — GET public (no `/api/posts` GET), POST admin-only
-- `sitemap.ts`, `robots.ts`
+- `/` - `page.tsx`: Hero (rotating greeting) + "The Ledger" 52-week strip + Selected Work (2 featured projects) + serif About teaser
+- `/projects` - filterable grid, tech-tag filter is client-side (`projects-client.tsx`)
+- `/blog` + `/blog/[slug]` - list from DB; body is MDX stored in `BlogPost.content`. **Not in the nav** until a real post exists (`components/Navbar.tsx`)
+- `/tracker` - full-year heatmaps for every category that has data
+- `/about` - bio, experience, education, skills, resume link (static, sourced from `Jose_Herrera_Resume.pdf`)
+- `/admin` - Google-gated forms; renders a sign-in button when there is no session
+- `/api/activity`, `/api/projects` - GET public, POST admin-only; `/api/posts` - POST only
+- `sitemap.ts` (omits `/blog` while empty), `robots.ts` (disallows `/admin`, `/api/`)
+- `opengraph-image.tsx` - generated 1200x630 share card via `next/og`
+- `favicon.ico`, `icon.png`, `apple-icon.png` - the 2x2 logo mark
 
-`components/` — Navbar, Footer, ThemeToggle, HeroSection, LedgerSection,
-LatelySection, ProjectCard, BlogCard, HeatmapGrid, HeatmapTracker,
-AdminActivityForm, AdminProjectForm.
-`lib/` — `prisma.ts` (client singleton), `auth.ts` (NextAuth), `utils.ts`,
-`categories.ts` (the five categories: keys, labels, accent vars, heatmap
-level/color helpers).
+`components/` - Navbar, Footer, ThemeToggle, HeroSection, LedgerSection,
+ProjectCard, BlogCard, HeatmapGrid, HeatmapTracker, AuthButton
+(`SignInButton`/`SignOutButton`, used only by `/admin`), AdminActivityForm,
+AdminProjectForm, AdminBlogForm.
+
+`lib/`:
+- `github.ts` - contribution calendar fetch (1-hour `revalidate`)
+- `activity.ts` - merges GitHub + hand-logged rows into one 365-day window
+- `calendar.ts` - builds the week grid, month segments, and streak stats in UTC on the server, so markup never depends on the visitor's clock
+- `categories.ts` - the five categories, their sources, accents, and heatmap ramp
+- `prisma.ts`, `auth.ts`, `utils.ts`, `admin-styles.ts`
+
+Rendering: pages are static with `export const revalidate = 300`, so `/admin`
+edits appear within five minutes. Keep session reads out of the shared layout
+or every page becomes dynamic.
 
 ## Data model (`prisma/schema.prisma`)
 
-- `Project` — title, description, `techStack[]`, githubUrl, liveUrl, `featured`, `order`. Homepage shows `featured: true` ordered by `order`, take 2.
-- `BlogPost` — slug, title, excerpt, `content` (MDX string, nullable), `tags[]`, `published`, `publishedAt`. The renderer (`app/blog/[slug]/page.tsx`) prefers DB `content`; if empty it falls back to `content/blog/<slug>.mdx` (legacy file-based posts).
-- `ActivityLog` — date, category, count, note; unique on `[date, category]`.
-  Categories: `code`, `music`, `language`, `fitness`, `content` (displayed as
-  "Reading" in the UI — see `lib/categories.ts`).
-- `LatelyItem` — cached homepage "Lately" strip; `kind` unique (`video` /
-  `song` / `book`), title, subtitle, url, imageUrl. Meant to be written by
-  ingestion crons (YouTube / music / reading); currently seeded by hand.
-- `User` — email, role.
+- `Project` - title, description, `techStack[]`, githubUrl, liveUrl, `featured`, `order`. Homepage shows `featured: true` ordered by `order`, take 2. Keep `techStack` to 5 tags so the card's tech line stays on one row.
+- `BlogPost` - slug, title, excerpt, `content` (MDX string), `tags[]`, `published`, `publishedAt`. The renderer prefers DB `content` and falls back to `content/blog/<slug>.mdx` if such a file ever exists again.
+- `ActivityLog` - date, category, count, note; unique on `[date, category]`. Hand-logged categories only: `music`, `language`, `fitness`, `content` (shown as "Reading").
+- `User` - email, role.
 
-**Content is DB-driven, not hardcoded.** Project and blog data lives in Postgres
-(seeded/upserted via `prisma/seed.ts` or entered through `/admin`). Blog posts are now
-created end-to-end from `/admin` (the "New Blog Post" form POSTs to `/api/posts`, which
-upserts by slug) — body included, stored in `BlogPost.content`. Vercel's filesystem is
-read-only at runtime, so file-based posts can't be created from the browser; that's why
-the body lives in the DB. Legacy `content/blog/*.mdx` files still render via the fallback.
+**Content is DB-driven.** Projects live in Postgres (`prisma/seed.ts` upserts
+the real four by fixed `seed-*` ids and touches nothing else). Blog posts are
+created end-to-end from `/admin`.
 
 ## Conventions
 
@@ -78,67 +99,58 @@ the body lives in the DB. Legacy `content/blog/*.mdx` files still render via the
  `background`, `surface`, `text-primary`, `text-secondary`, `text-muted`, `accent`,
  `border`, `border-soft`, plus the five category accents `code`, `music`, `language`,
  `fitness`, `reading`. Use these, not raw hex/`gray-*`. Defined in `app/globals.css`
- (warm off-white `#FAF8F4` light / near-black `#1A1917` dark; category accents have
- brighter dark-mode variants — light accent lifted 25% toward white).
+ (warm off-white `#FAF8F4` light / near-black `#1A1917` dark).
 - Category color is the site's only color. `accent` is an alias of Code blue.
 - Fonts: Inter via `--font-inter` (`font-sans`, body) + Instrument Serif via
  `--font-display` (`font-display`, headings; italics for editorial "voice" moments).
 - Voice/labels: section headers are uppercase 11px letter-spaced micro-labels
  (`text-[11px] font-semibold uppercase tracking-[0.2em] text-text-muted`); stats and
- asides are italic serif.
+ asides are italic serif. **No em dashes anywhere in copy.**
 - Layout containers use `mx-auto max-w-5xl px-6`. Interactive elements use
  `transition-opacity duration-150 hover:opacity-70`. Match these.
-- Heatmap cell colors come from `lib/categories.ts` (`color-mix` of the category
- accent toward `--background` at 25/48/72/95%); cells ink in on load via the
- `.heatmap-cell` animation in `globals.css` (respects `prefers-reduced-motion`).
+- Heatmap geometry lives in `components/HeatmapGrid.tsx` (`CELL`/`GAP`); month
+ label widths derive from the same pitch, so change them together. Cell colors
+ come from `lib/categories.ts` (`color-mix` toward `--background` at
+ 25/48/72/95%) and ink in via the `.heatmap-cell` animation (respects
+ `prefers-reduced-motion`). 53 columns at 18px fits `max-w-5xl` exactly.
 - Server Components by default; `"use client"` only where state/interactivity is needed
-  (Navbar, projects filter, theme toggle, admin forms).
-- The resume PDF is served from `public/resume.pdf` and linked in the Navbar.
+  (Navbar, projects filter, theme toggle, heatmap tooltip, admin forms).
+- The resume PDF is served from `public/resume.pdf`, linked from the Footer and About.
 - **Auth:** single-admin allowlist. `isAdmin(email)` in `lib/auth.ts` is the one source of
-  truth — used by the `signIn` callback (non-admins can't even complete login), the `/admin`
-  page, and every write API. Admin email comes from `ADMIN_EMAIL` (defaults to
-  `hejoric@gmail.com`). The Navbar shows a Google Sign in / Sign out button (`AuthButton`,
-  a server component passed into the client Navbar as `authSlot`).
+  truth, used by the `signIn` callback (non-admins cannot complete login), the `/admin`
+  page, and every write API. Admin email comes from `ADMIN_EMAIL`. There is no sign-in
+  control in the public nav on purpose.
 
 ## Current state
 
 Source of truth for personal/professional details: **`Jose_Herrera_Resume.pdf`** at the
-repo root (updated 2026-06-30).
+repo root (updated 2026-08-15, mirrored to `public/resume.pdf`).
 
-Done (2026-06-30): real Hero + Homepage About copy, new `/about` page, updated
-`public/resume.pdf`, three real projects in `prisma/seed.ts` (Retail ERP, TSA Helper,
-Course Review), Google auth + admin allowlist, hardened write APIs, in-browser blog
-publishing, and a Sign in / Sign out button in the Navbar.
+Done (2026-09-02), the "real data" pass:
+- Deleted 368 randomly seeded `ActivityLog` rows, the 3 placeholder `LatelyItem`
+ rows (model and table dropped), the placeholder "testing testing" blog post,
+ and two stale projects (Smart Inventory System, which had a 404 GitHub link,
+ and Course Review, dropped from the resume).
+- Code heatmap now reads the live GitHub contribution calendar; the other four
+ categories are hand-logged and hidden until they have entries.
+- Projects rebuilt from the current resume: Loudoun NCP (featured), Retail ERP
+ (featured), hejoric.com, TSA Helper, with real GitHub and live links where
+ they exist.
+- About page rewritten with an Experience section, current coursework, and the
+ new skills list.
+- Replaced the headshot-JPEG-renamed-`.ico` favicon and the two 98KB
+ `icon.png`/`apple-icon.png` copies of it with a generated logo mark; added a
+ generated OG image (the old metadata pointed at a `/og-default.png` that was
+ never committed).
+- Auth UI moved off the public nav onto `/admin`; `robots.ts` now disallows
+ `/admin` and `/api/`; `/about` added to the sitemap.
 
-Done (2026-07-02): full visual redesign to the "Field Notes" direction from Claude
-Design (editorial serif + warm neutrals + five category accents as the only color):
-- New token set + Instrument Serif display font (see Conventions).
-- Navbar (2×2 logo mark, uppercase name, active-link underline), Footer (uppercase
- text links incl. demoted Resume link), quiet ThemeToggle. Resume button removed
- from the Navbar — reachable from Footer + About.
-- Hero with rotating Hola/Hello/こんにちは/안녕하세요 greeting (CSS keyframes, still a
- Server Component); homepage now has The Ledger, Selected Work, Lately, and a serif
- About teaser.
-- Tracker ("The tracker.") — per-category full-year heatmaps with month labels,
- active-days/longest-streak stats, ink-in animation, springy cell hover.
-- Editorial ProjectCard (numbered, serif titles, `card`/`plain` variants), restyled
- tag filter; blog list rows (date + first tag in Reading purple), serif post header
- with computed read time, five-dot divider, prev/all-posts footer, hand-rolled
- `.post-prose` MDX styles (the old `prose` classes were no-ops — the typography
- plugin was never installed).
-- `LatelyItem` model + seed + homepage strip (scaffold; ingestion crons still TODO).
-- `/admin` forms still use the old look — functional, just not restyled.
-
-**Remaining deploy steps (need DB + Vercel access — not doable from a sandbox):**
-1. `npm run db:push` against Neon to add the new `BlogPost.content` column **and the
- new `LatelyItem` table**, then `npm run db:seed` (or `/admin` / prisma studio) so
- prod has the data.
-2. Get the real project/blog data into the **production** DB — the live site reads Postgres,
- so code changes to `seed.ts` don't show up until the data is there. Either run the seed
- against prod, edit in `prisma studio`, or add them through `/admin`.
-3. In Google Cloud Console, create OAuth credentials and set the authorized redirect URI to
- `https://hejoric.com/api/auth/callback/google` (+ localhost for dev).
-4. Set `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and `ADMIN_EMAIL` in Vercel env (and
- remove the old `GITHUB_ID` / `GITHUB_SECRET`).
-5. Wire the Lately ingestion crons (YouTube last upload, current song, current book)
- to upsert `LatelyItem` rows.
+Open items:
+1. `GITHUB_TOKEN` must be set in Vercel or the Code heatmap will not render in
+ production.
+2. The public `hejoric/club-finance-helper` mirror of TSA Helper has live admin
+ credentials in its README, so the project is listed without a GitHub link
+ until that repo is cleaned and those credentials are rotated.
+3. Music / Language / Fitness / Reading stay empty until logged in `/admin`, or
+ until a real integration (Last.fm, Strava) is wired up.
+4. The resume says the site uses GitHub OAuth; it uses Google OAuth.

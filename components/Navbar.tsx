@@ -5,10 +5,11 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import ThemeToggle from "./ThemeToggle";
 
+// Blog is intentionally absent until there is a real post to read; the
+// route still works and gets linked back once /blog has content.
 const navLinks = [
-  { href: "/tracker", label: "Tracker" },
   { href: "/projects", label: "Projects" },
-  { href: "/blog", label: "Blog" },
+  { href: "/tracker", label: "Tracker" },
   { href: "/about", label: "About" },
 ];
 
@@ -23,7 +24,7 @@ function LogoMark() {
   );
 }
 
-export default function Navbar({ authSlot }: { authSlot?: React.ReactNode }) {
+export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
@@ -57,7 +58,6 @@ export default function Navbar({ authSlot }: { authSlot?: React.ReactNode }) {
               {link.label}
             </Link>
           ))}
-          {authSlot}
           <ThemeToggle />
         </div>
 
@@ -109,7 +109,6 @@ export default function Navbar({ authSlot }: { authSlot?: React.ReactNode }) {
                 {link.label}
               </Link>
             ))}
-            {authSlot}
           </div>
         </div>
       )}

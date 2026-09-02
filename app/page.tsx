@@ -1,37 +1,31 @@
 import Link from "next/link";
 import HeroSection from "@/components/HeroSection";
-import LatelySection from "@/components/LatelySection";
 import LedgerSection from "@/components/LedgerSection";
 import ProjectCard from "@/components/ProjectCard";
+import { getActivityWindow } from "@/lib/activity";
 import { prisma } from "@/lib/prisma";
 
-export default async function HomePage() {
-  const ledgerStart = new Date();
-  ledgerStart.setDate(ledgerStart.getDate() - 364);
+// Content comes from Postgres, so re-render on a short interval instead of
+// freezing at build time (edits made in /admin appear within five minutes).
+export const revalidate = 300;
 
-  const [featuredProjects, activityLogs, latelyItems] = await Promise.all([
+export default async function HomePage() {
+  const [featuredProjects, activity] = await Promise.all([
     prisma.project.findMany({
       where: { featured: true },
       orderBy: { order: "asc" },
       take: 2,
     }),
-    prisma.activityLog.findMany({
-      where: { date: { gte: ledgerStart } },
-      select: { date: true, category: true, count: true },
-    }),
-    prisma.latelyItem.findMany(),
+    getActivityWindow(),
   ]);
 
   return (
     <>
       <HeroSection />
 
-      <LedgerSection logs={activityLogs} />
+      <LedgerSection activity={activity} />
 
-      <div
-        className="flex justify-center gap-1.5 pb-1 pt-9"
-        aria-hidden
-      >
+      <div className="flex justify-center gap-1.5 pb-1 pt-9" aria-hidden>
         <span className="h-1.5 w-1.5 rounded-[2px] bg-code" />
         <span className="h-1.5 w-1.5 rounded-[2px] bg-music" />
         <span className="h-1.5 w-1.5 rounded-[2px] bg-language" />
@@ -70,12 +64,11 @@ export default async function HomePage() {
         </section>
       )}
 
-      <LatelySection items={latelyItems} />
-
       <section className="mt-16 border-t border-border px-6 py-14 text-center">
         <p className="mx-auto max-w-[700px] font-display text-2xl leading-[1.4] text-text-primary sm:text-[30px]">
-          CS at UVA, headed for big tech. Also: piano, three languages, and a
-          gym habit. <span className="italic">The graph keeps me honest.</span>
+          CS at UVA. I like the unglamorous parts: deployments, migrations,
+          DNS. Also piano, three languages, and a gym habit.{" "}
+          <span className="italic">The graph keeps me honest.</span>
         </p>
         <Link
           href="/about"
