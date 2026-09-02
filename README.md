@@ -23,7 +23,7 @@ Nothing in this repo generates, estimates, or seeds activity data.
 
 ## Stack
 
-- **Next.js 14** (App Router) + **TypeScript**
+- **Next.js 16** (App Router, Turbopack) + **React 19** + **TypeScript**
 - **Tailwind CSS v3**, hand-built, no component libraries
 - **Prisma 5** + **Neon** serverless Postgres
 - **NextAuth v5** (Google OAuth, single-admin allowlist)
@@ -72,16 +72,37 @@ migrations.
 ## Commands
 
 ```bash
-npm run dev          # dev server
+npm run dev          # dev server (Turbopack)
 npm run build        # production build
-npm run lint         # next lint
+npm run lint         # eslint . (`next lint` was removed in Next 16)
 npm run db:push      # prisma db push
 npm run db:seed      # tsx prisma/seed.ts
 npx prisma studio    # browse the database
 ```
+
+## Dependency maintenance
+
+`npm audit` reports zero vulnerabilities. Dependabot alerts and automated
+security fixes are enabled, and `.github/dependabot.yml` groups minor and patch
+bumps into one weekly PR while raising majors individually. CI (lint plus type
+check) gates every one.
+
+Two versions are held back deliberately:
+
+- **Tailwind 3.4.19** (tagged `v3-lts`). v4 moves theme configuration into CSS
+  and changes some defaults, which is a design-system migration rather than a
+  version bump.
+- **Prisma 5.22** and **TypeScript 5.9**, both advisory-free. Prisma 7 replaces
+  the client generator and changes import paths across every file that touches
+  the database.
+
+`package.json` deliberately has no `"type"` field: Turbopack errors when the
+package is declared CommonJS while the TypeScript sources use ESM.
 
 ## Deployment
 
 Vercel, deployed from `main`. Pages are statically rendered with a 300-second
 revalidate window, so entries added through `/admin` appear within five minutes
 without a redeploy.
+
+Requires Node 20.9+ (a Next 16 floor).

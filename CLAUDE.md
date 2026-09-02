@@ -28,19 +28,21 @@ This is the constraint that shapes the tracker, and it must not be broken:
 
 ## Stack
 
-- **Next.js 14** (App Router) + **TypeScript**, `commonjs` package type
+- **Next.js 16** (App Router, Turbopack by default) + **React 19.2** + **TypeScript 5.9**
 - **Tailwind CSS v3** - hand-built, no component libraries
 - **Prisma 5** + **Neon** serverless Postgres
 - **NextAuth v5 (beta)** - Google OAuth, single-admin allowlist (`lib/auth.ts`)
 - **next-mdx-remote** + `rehype-pretty-code`/`shiki` for blog posts
 - **next-themes** - class-based dark/light, `defaultTheme="system"`
+- **ESLint 9** flat config (`eslint.config.mjs`). `next lint` was removed in
+  Next 16, so `npm run lint` calls the ESLint CLI directly.
 
 ## Commands
 
 ```bash
 npm run dev          # local dev server
 npm run build        # production build
-npm run lint         # next lint
+npm run lint         # eslint . (not `next lint`, removed in Next 16)
 npm run db:push      # prisma db push (sync schema)
 npm run db:seed      # tsx prisma/seed.ts (upsert the real project list)
 npx prisma studio    # browse/edit the DB directly
@@ -115,6 +117,11 @@ created end-to-end from `/admin`.
  `prefers-reduced-motion`). 53 columns at 18px fits `max-w-5xl` exactly.
 - Server Components by default; `"use client"` only where state/interactivity is needed
   (Navbar, projects filter, theme toggle, heatmap tooltip, admin forms).
+- `ThemeToggle` renders both icons and swaps them with Tailwind's `dark:`
+  variant. Do not reintroduce a `mounted` state gate: it caused a layout hole
+  on first paint and trips the `react-hooks/set-state-in-effect` rule.
+- `package.json` has no `"type"` field on purpose. Declaring `"commonjs"`
+  makes Turbopack fail on every ESM `.ts` file in `lib/`.
 - The resume PDF is served from `public/resume.pdf`, linked from the Footer and About.
 - **Auth:** single-admin allowlist. `isAdmin(email)` in `lib/auth.ts` is the one source of
   truth, used by the `signIn` callback (non-admins cannot complete login), the `/admin`
@@ -144,6 +151,23 @@ Done (2026-09-02), the "real data" pass:
  never committed).
 - Auth UI moved off the public nav onto `/admin`; `robots.ts` now disallows
  `/admin` and `/api/`; `/about` added to the sitemap.
+
+Done (2026-09-02), the dependency pass:
+- Next 14.2.35 to **16.3.4**, React 18 to **19.2.8** (the `@types/react` 19 that
+ was already installed had been mismatched against React 18), next-auth to
+ beta.32, ESLint 8 to 9 with flat config, plus every safe minor.
+- Cleared **15 npm advisories (2 critical, 10 high) down to 0**. The criticals
+ were in `@auth/core` (email misdelivery, `getToken()` crash on malformed
+ Bearer headers); Next 14.x had no unaffected release, so the major was
+ mandatory. The last four were fixed in-range by `npm audit fix`, with no
+ dependency overrides.
+- Migrations required: flat ESLint config, `eslint .` instead of `next lint`,
+ awaited `params` in `app/blog/[slug]`, removing `"type": "commonjs"`, and
+ rewriting `ThemeToggle` to satisfy the new react-hooks rules.
+- Enabled Dependabot alerts and automated security fixes, and added
+ `.github/dependabot.yml` (grouped weekly minors, individual majors).
+- Held back on purpose: Tailwind 4 (v3 is on the `v3-lts` tag; v4 is a
+ design-token migration), Prisma 7, TypeScript 7. None carry advisories.
 
 Open items:
 1. `GITHUB_TOKEN` must be set in Vercel or the Code heatmap will not render in

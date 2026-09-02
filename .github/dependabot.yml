@@ -1,0 +1,38 @@
+# Dependabot was entirely off for this repo until now: no vulnerability alerts
+# and no update PRs. Alerts and automated security fixes are enabled in the
+# repository settings; this file adds the routine version updates.
+#
+# Minor and patch bumps arrive as one grouped PR per week so review stays cheap.
+# Major bumps are raised individually, because they are the ones that need a
+# migration (Next 16 removed `next lint`, for example). CI runs lint plus a type
+# check on every one of these PRs.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: America/New_York
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+    groups:
+      npm-minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: monthly
+    labels:
+      - dependencies
+    groups:
+      github-actions:
+        patterns:
+          - "*"
