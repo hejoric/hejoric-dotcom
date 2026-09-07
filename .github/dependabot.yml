@@ -19,6 +19,16 @@ updates:
     labels:
       - dependencies
     groups:
+      # `prisma` and `@prisma/client` must move together: the CLI generates the
+      # client, and a mismatched pair fails in `postinstall` before anything
+      # else runs. Ungrouped, a major bump raises them as two separate PRs, and
+      # the client-only one cannot install at all (`prisma generate` dies with
+      # "Cannot find module '@prisma/client/generator-build/index.js'"). This
+      # group covers every update type so majors stay paired too.
+      prisma:
+        patterns:
+          - "prisma"
+          - "@prisma/client"
       npm-minor-and-patch:
         patterns:
           - "*"
