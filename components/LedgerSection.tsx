@@ -8,6 +8,7 @@ import {
   listLabels,
   type Category,
 } from "@/lib/categories";
+import { plural } from "@/lib/utils";
 
 export default function LedgerSection({
   activity,
@@ -79,8 +80,8 @@ export default function LedgerSection({
               </div>
               <span className="hidden text-right font-display text-[15px] italic text-text-muted sm:block">
                 {category.source === "github" && github
-                  ? `${github.total} contributions`
-                  : `${stats.activeDays} days`}
+                  ? plural(github.total, "contribution")
+                  : plural(stats.activeDays, "day")}
               </span>
             </div>
           );

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { MonthSegment } from "@/lib/calendar";
 import { getHeatmapLevel, heatmapCellColor } from "@/lib/categories";
+import { plural } from "@/lib/utils";
 
 // Day cell size and the gap between columns. Month labels are sized off the
 // same pitch, so these have to stay in sync.
@@ -25,6 +26,8 @@ interface HeatmapGridProps {
   note: string;
   /** Word used in the tooltip: "contribution", "entry", ... */
   unit: string;
+  /** Plural of `unit`, when adding an "s" is wrong ("entry" -> "entries"). */
+  unitPlural?: string;
 }
 
 export default function HeatmapGrid({
@@ -36,6 +39,7 @@ export default function HeatmapGrid({
   stat,
   note,
   unit,
+  unitPlural,
 }: HeatmapGridProps) {
   const [tooltip, setTooltip] = useState<{
     date: string;
@@ -145,7 +149,7 @@ export default function HeatmapGrid({
           className="pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-full rounded-md bg-text-primary px-2 py-1 text-xs text-background shadow-lg"
           style={{ left: tooltip.x, top: tooltip.y - 8 }}
         >
-          {tooltip.date}: {tooltip.count} {tooltip.count === 1 ? unit : `${unit}s`}
+          {tooltip.date}: {plural(tooltip.count, unit, unitPlural)}
         </div>
       )}
     </div>
