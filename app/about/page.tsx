@@ -134,7 +134,7 @@ export default function AboutPage() {
             alt="Jose R. Herrera"
             width={300}
             height={360}
-            className="h-[360px] w-[300px] rounded object-cover grayscale contrast-[1.04]"
+            className="h-[360px] w-[300px] rounded object-cover contrast-[1.04]"
             priority
           />
           <div className="mt-3.5 font-display text-[14.5px] italic text-text-muted">

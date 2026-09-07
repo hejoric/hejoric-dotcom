@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import ProjectCard from "@/components/ProjectCard";
 
@@ -30,33 +31,63 @@ export default function ProjectsClient({
 
   return (
     <>
-      <div className="mt-8 flex flex-wrap gap-x-5 gap-y-2.5">
-        <button
-          onClick={() => setActiveTag(null)}
-          className={`text-[11px] font-semibold uppercase tracking-[0.12em] transition-opacity duration-150 ${
-            activeTag === null
-              ? "border-b-[1.5px] border-text-primary pb-0.5 text-text-primary"
-              : "text-text-muted hover:text-text-primary"
-          }`}
-        >
-          All
-        </button>
-        {allTags.map((tag) => (
+      {/* At lg the heading and the tag filter stack in the left column so the
+          photo beside them has something to stand next to, instead of leaving
+          a hole above the grid. Below lg everything is one column, ordered
+          heading, photo, filter. */}
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start lg:gap-x-12">
+        <div className="lg:col-start-1 lg:row-start-1">
+          <h1 className="font-display text-5xl tracking-[-0.01em] text-text-primary sm:text-[56px] sm:leading-none">
+            Projects.
+          </h1>
+          <p className="mt-4 max-w-[560px] leading-[1.7] text-text-secondary">
+            Things I&apos;ve shipped, mostly where software meets{" "}
+            <span className="font-display text-[17px] italic text-text-primary">
+              the messy real world.
+            </span>
+          </p>
+        </div>
+        <figure className="w-full max-w-[400px] lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:w-[300px]">
+          <Image
+            src="/jose-coding.jpg"
+            alt="Jose working on a laptop at a cafe"
+            width={1200}
+            height={900}
+            className="aspect-[4/3] w-full rounded object-cover contrast-[1.04]"
+            priority
+          />
+          <figcaption className="mt-3.5 font-display text-[14.5px] italic text-text-muted">
+            Most of this got built exactly like that.
+          </figcaption>
+        </figure>
+        <div className="flex flex-wrap gap-x-5 gap-y-2.5 lg:col-start-1 lg:row-start-2">
           <button
-            key={tag}
-            onClick={() => setActiveTag(tag === activeTag ? null : tag)}
+            onClick={() => setActiveTag(null)}
             className={`text-[11px] font-semibold uppercase tracking-[0.12em] transition-opacity duration-150 ${
-              activeTag === tag
+              activeTag === null
                 ? "border-b-[1.5px] border-text-primary pb-0.5 text-text-primary"
                 : "text-text-muted hover:text-text-primary"
             }`}
           >
-            {tag}
+            All
           </button>
-        ))}
+          {allTags.map((tag) => (
+            <button
+              key={tag}
+              onClick={() => setActiveTag(tag === activeTag ? null : tag)}
+              className={`text-[11px] font-semibold uppercase tracking-[0.12em] transition-opacity duration-150 ${
+                activeTag === tag
+                  ? "border-b-[1.5px] border-text-primary pb-0.5 text-text-primary"
+                  : "text-text-muted hover:text-text-primary"
+              }`}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="mt-8 grid gap-6 sm:grid-cols-2">
+      <div className="mt-10 grid gap-6 sm:grid-cols-2">
         {filtered.map((project, i) => (
           <ProjectCard
             key={project.id}
