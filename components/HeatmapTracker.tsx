@@ -2,10 +2,14 @@ import HeatmapGrid from "./HeatmapGrid";
 import type { ActivityWindow } from "@/lib/activity";
 import { buildCalendar, computeStats } from "@/lib/calendar";
 import { CATEGORIES, listLabels, type Category } from "@/lib/categories";
+import { plural } from "@/lib/utils";
 
 function githubNote(github: NonNullable<ActivityWindow["github"]>): string {
-  const parts = [`${github.commits} commits`, `${github.pullRequests} pull requests`];
-  if (github.reviews > 0) parts.push(`${github.reviews} reviews`);
+  const parts = [
+    plural(github.commits, "commit"),
+    plural(github.pullRequests, "pull request"),
+  ];
+  if (github.reviews > 0) parts.push(plural(github.reviews, "review"));
   return `Live from github.com/hejoric · ${parts.join(" · ")}`;
 }
 
@@ -40,10 +44,11 @@ export default function HeatmapTracker({
             weeks={calendar.weeks}
             months={calendar.months}
             unit={isGitHub ? "contribution" : "entry"}
+            unitPlural={isGitHub ? undefined : "entries"}
             stat={
               isGitHub && github
-                ? `${github.total} contributions · ${stats.activeDays} active days · longest streak ${stats.longestStreak}`
-                : `${stats.activeDays} days · longest streak ${stats.longestStreak}`
+                ? `${plural(github.total, "contribution")} · ${plural(stats.activeDays, "active day")} · longest streak ${stats.longestStreak}`
+                : `${plural(stats.activeDays, "day")} · longest streak ${stats.longestStreak}`
             }
             note={
               isGitHub && github
