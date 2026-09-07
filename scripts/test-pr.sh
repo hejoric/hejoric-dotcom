@@ -63,7 +63,11 @@ npx prisma generate >/dev/null 2>&1 || die "prisma generate"
 echo "  ok  ($(grep -oE 'found [0-9]+ vulnerabilities|found 0 vulnerabilities' /tmp/pr-test-$PR-install.log | tail -1))"
 
 step "Lint"
-npm run lint 2>&1 | tail -5 || die "npm run lint"
+# Logged to a file rather than piped through `tail`, because the interesting
+# line of an ESLint config failure is the first one, not the last: piping to
+# `tail -5` leaves you with five stack frames and no error message.
+npm run lint >/tmp/pr-test-$PR-lint.log 2>&1 || { head -30 /tmp/pr-test-$PR-lint.log; die "npm run lint"; }
+echo "  ok"
 
 step "Typecheck"
 npx tsc --noEmit || die "npx tsc --noEmit"
@@ -96,7 +100,7 @@ echo "The ladder only proves nothing BROKE. Now check what the PR"
 echo "actually claims to fix, by hand, against:"
 echo "    http://localhost:$PORT"
 echo
-echo "Logs:  /tmp/pr-test-$PR-{install,build,server}.log"
+echo "Logs:  /tmp/pr-test-$PR-{install,lint,build,server}.log"
 echo "Clean: git worktree remove $WT --force"
 echo "============================================================"
 echo
