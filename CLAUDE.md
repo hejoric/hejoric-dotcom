@@ -48,6 +48,20 @@ npm run db:seed      # tsx prisma/seed.ts (upsert the real project list)
 npx prisma studio    # browse/edit the DB directly
 ```
 
+Checks in `scripts/` (see `scripts/README.md`):
+
+```bash
+./scripts/check-drift.sh          # live DB vs the schema the code expects
+./scripts/smoke.sh [base-url]     # every route actually RENDERED, not just 200'd
+./scripts/test-pr.sh <pr-number>  # full ladder for a PR, in a throwaway worktree
+```
+
+`check-drift.sh` is the guard against the September 2026 outage: `LatelyItem`
+had been dropped from the shared Neon DB while main still queried it, so `/`
+returned 500 in production while every local check stayed green. Run it before
+and after any `db:push`. CI cannot cover this, because the PR gate is only lint
+plus type check and never touches the database.
+
 `.env` needs: `DATABASE_URL` (pooled, runtime), `DATABASE_URL_UNPOOLED`
 (direct, migrations), `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, `GOOGLE_CLIENT_ID`,
 `GOOGLE_CLIENT_SECRET`, `ADMIN_EMAIL`, `GITHUB_TOKEN`. See `.env.example`.
