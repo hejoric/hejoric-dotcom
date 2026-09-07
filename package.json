@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/hejoric/hejoric-dotcom#readme",
   "dependencies": {
-    "@prisma/client": "^5.22.0",
+    "@prisma/client": "^7.10.0",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
     "autoprefixer": "^10.5.4",
