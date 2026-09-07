@@ -43,7 +43,7 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@types/node": "^25.9.5",
+    "@types/node": "^26.4.1",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.3.4",
     "ts-node": "^10.9.2",
