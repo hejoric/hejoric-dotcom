@@ -8,3 +8,8 @@ export function cn(...inputs: ClassValue[]) {
 export function dateToKey(date: Date): string {
   return date.toISOString().split("T")[0];
 }
+
+/** `1 review` / `2 reviews`. Pass `pluralForm` when adding an "s" is wrong. */
+export function plural(count: number, unit: string, pluralForm?: string): string {
+  return `${count} ${count === 1 ? unit : pluralForm ?? `${unit}s`}`;
+}
