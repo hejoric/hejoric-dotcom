@@ -66,9 +66,12 @@ export default async function HomePage() {
 
       <section className="mt-16 border-t border-border px-6 py-14 text-center">
         <p className="mx-auto max-w-[700px] font-display text-2xl leading-[1.4] text-text-primary sm:text-[30px]">
-          CS at UVA. I like the unglamorous parts: deployments, migrations,
-          DNS. Also piano, three languages, and a gym habit.{" "}
-          <span className="italic">The graph keeps me honest.</span>
+          I like the parts of software nobody demos: deployments, migrations,
+          DNS. Away from that it&apos;s guitar and piano, Korean and Japanese,
+          the gym, and gaming.{" "}
+          <span className="italic">
+            I&apos;m trying to get better at all of it in public.
+          </span>
         </p>
         <Link
           href="/about"

@@ -40,7 +40,7 @@ export default function Navbar() {
         >
           <LogoMark />
           <span className="text-xs font-semibold uppercase tracking-[0.16em] text-text-primary">
-            Jose R. Herrera
+            Hejoric
           </span>
         </Link>
 

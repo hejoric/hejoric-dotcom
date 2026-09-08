@@ -96,8 +96,8 @@ export default function LedgerSection({
         </Link>
         {untracked.length > 0 && (
           <span className="font-display text-[15px] italic text-text-muted">
-            {listLabels(untracked)} get logged by hand, and I keep the graph
-            honest: no entries, no row.
+            {listLabels(untracked)} I log by hand, so a row only shows up
+            once there&apos;s something real in it.
           </span>
         )}
       </div>

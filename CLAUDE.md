@@ -122,6 +122,16 @@ created end-to-end from `/admin`.
 - Voice/labels: section headers are uppercase 11px letter-spaced micro-labels
  (`text-[11px] font-semibold uppercase tracking-[0.2em] text-text-muted`); stats and
  asides are italic serif. **No em dashes anywhere in copy.**
+- **Prose voice** (set by the 2026-09-08 voice pass, do not regress it): first
+ person, casual opener, contractions. **Never self-deprecating** - confident and
+ appreciative instead, especially about other people's work. Name the specific
+ thing ("Snow by RHCP", not "guitar"). Real life belongs inside technical copy.
+ Admitting mid-progress is encouraged and is not the same as putting himself
+ down. Always invite questions. **Do not end paragraphs on a tidy italic
+ aphorism** ("Poke around", "The graph keeps me honest", "Empty beats
+ invented"): that tic is what made the copy read as generated, and all of it
+ was removed. He is "Hejoric" in the nav and hero, "Jose Ricardo Herrera" in
+ full on /about and in metadata.
 - Layout containers use `mx-auto max-w-5xl px-6`. Interactive elements use
  `transition-opacity duration-150 hover:opacity-70`. Match these.
 - Heatmap geometry lives in `components/HeatmapGrid.tsx` (`CELL`/`GAP`); month
@@ -191,6 +201,21 @@ Done (2026-09-02), the dependency pass:
 - Held back on purpose: Tailwind 4 (v3 is on the `v3-lts` tag; v4 is a
  design-token migration), Prisma 7, TypeScript 7. None carry advisories.
 
+Done (2026-09-08), the voice pass:
+- Rewrote all 25 prose blocks on the site from AI-generated marketing register
+ into the owner's own voice, interviewed rather than invented. See the
+ conventions note above for the rules that came out of it.
+- Fixed along the way: four em dashes in the hero greeting rotation (breaking
+ the repo's own no-em-dash rule), the `Next.js 14` claim in the hejoric.com
+ project description (repo is on 16), `30-year-old system` softened to
+ `15+ year old` at the owner's request, and third-person route metadata.
+- Nav wordmark is now `Hejoric`, not `Jose R. Herrera`. Footer carries six
+ socials (all `@hejoric`, no Facebook) in one group plus Email/Resume in a
+ second; the socials are also in the JSON-LD `sameAs`.
+- `scripts/smoke.sh` markers for `/` and `/projects` were asserting the old
+ headings and had to be updated with the copy. If you change either heading,
+ update the markers in the same commit.
+
 Open items:
 1. `GITHUB_TOKEN` must be set in Vercel or the Code heatmap will not render in
  production.
@@ -198,5 +223,11 @@ Open items:
  credentials in its README, so the project is listed without a GitHub link
  until that repo is cleaned and those credentials are rotated.
 3. Music / Language / Fitness / Reading stay empty until logged in `/admin`, or
- until a real integration (Last.fm, Strava) is wired up.
+ until a real integration (Last.fm, Strava) is wired up. Token-authenticated
+ logging from an Android phone is the next planned step.
 4. The resume says the site uses GitHub OAuth; it uses Google OAuth.
+5. The rewritten project descriptions in `prisma/seed.ts` are NOT live: projects
+ render from Postgres, so they need `npm run db:seed` (which writes to the
+ shared production DB).
+6. The `Now` block on `/about` is still hard-coded JSX. It was meant to become
+ editable from `/admin` and is not.

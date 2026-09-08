@@ -38,12 +38,14 @@ export default function ProjectsClient({
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start lg:gap-x-12">
         <div className="lg:col-start-1 lg:row-start-1">
           <h1 className="font-display text-5xl tracking-[-0.01em] text-text-primary sm:text-[56px] sm:leading-none">
-            Projects.
+            Stuff I&apos;ve built.
           </h1>
           <p className="mt-4 max-w-[560px] leading-[1.7] text-text-secondary">
-            Things I&apos;ve shipped, mostly where software meets{" "}
+            Mostly niche tools for real people with specific problems: a
+            store that needed off a 15 year old system, a nonprofit paying way
+            more for hosting than it had to.{" "}
             <span className="font-display text-[17px] italic text-text-primary">
-              the messy real world.
+              Ask me anything about any of these!
             </span>
           </p>
         </div>
@@ -57,7 +59,7 @@ export default function ProjectsClient({
             priority
           />
           <figcaption className="mt-3.5 font-display text-[14.5px] italic text-text-muted">
-            Most of this got built exactly like that.
+            Natural habitat.
           </figcaption>
         </figure>
         <div className="flex flex-wrap gap-x-5 gap-y-2.5 lg:col-start-1 lg:row-start-2">

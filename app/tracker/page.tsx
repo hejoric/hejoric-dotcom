@@ -5,11 +5,11 @@ import { getActivityWindow } from "@/lib/activity";
 export const metadata: Metadata = {
   title: "Tracker",
   description:
-    "A year of real activity: GitHub contributions plus hand-logged practice across music, language, fitness, and reading.",
+    "A year of what I actually did: GitHub contributions pulled live, plus music, language, fitness, and reading logged by hand.",
   openGraph: {
     title: "Tracker | hejoric",
     description:
-      "A year of real activity: GitHub contributions plus hand-logged practice across music, language, fitness, and reading.",
+      "A year of what I actually did: GitHub contributions pulled live, plus music, language, fitness, and reading logged by hand.",
     url: "https://hejoric.com/tracker",
     type: "website",
   },
@@ -29,10 +29,11 @@ export default async function TrackerPage() {
         The tracker.
       </h1>
       <p className="mt-4 max-w-[580px] leading-[1.7] text-text-secondary">
-        One square per day. Code is pulled live from my GitHub contribution
-        graph, private repositories included. Everything else I log by hand.{" "}
+        One square per day. The Code row pulls live from my GitHub
+        contribution graph, private repos included. Everything else I log by
+        hand, so a thin row means I didn&apos;t do the thing.{" "}
         <span className="font-display text-[17px] italic text-text-primary">
-          Nothing here is generated.
+          That&apos;s kind of the point of putting it up here.
         </span>
       </p>
 

@@ -5,11 +5,11 @@ import ProjectsClient from "./projects-client";
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "Projects built by Jose R. Herrera (hejoric): full-stack apps, self-hosted infrastructure, and tools with real users.",
+    "Niche tools I've built for real people: a self-hosted retail ERP, a nonprofit's site rebuilt to run on $12 a year, and this site.",
   openGraph: {
     title: "Projects | hejoric",
     description:
-      "Projects built by Jose R. Herrera (hejoric): full-stack apps, self-hosted infrastructure, and tools with real users.",
+      "Niche tools I've built for real people: a self-hosted retail ERP, a nonprofit's site rebuilt to run on $12 a year, and this site.",
     url: "https://hejoric.com/projects",
     type: "website",
   },
