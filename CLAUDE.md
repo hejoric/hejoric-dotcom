@@ -137,6 +137,14 @@ created end-to-end from `/admin`.
 - `package.json` has no `"type"` field on purpose. Declaring `"commonjs"`
   makes Turbopack fail on every ESM `.ts` file in `lib/`.
 - The resume PDF is served from `public/resume.pdf`, linked from the Footer and About.
+- Photos (`jose-gym.jpg` on `/`, `jose-coding.jpg` on `/projects`, `headshot.png`
+  on `/about`) all use the same treatment: `rounded object-cover contrast-[1.04]`
+  with an italic serif `figcaption` under it. They run in full color on purpose;
+  the "category color is the site's only color" rule governs UI chrome, not
+  photography. Each sits in the right column of a grid that collapses to one
+  column below `lg`, because the display headings need the full measure at
+  smaller widths. Crop and compress before committing: the originals are
+  2252x4000 phone shots.
 - **Auth:** single-admin allowlist. `isAdmin(email)` in `lib/auth.ts` is the one source of
   truth, used by the `signIn` callback (non-admins cannot complete login), the `/admin`
   page, and every write API. Admin email comes from `ADMIN_EMAIL`. There is no sign-in
