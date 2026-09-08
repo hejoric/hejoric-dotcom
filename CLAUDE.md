@@ -80,7 +80,12 @@ Routes (`app/`):
 - `/api/activity`, `/api/projects` - GET public, POST admin-only; `/api/posts` - POST only
 - `sitemap.ts` (omits `/blog` while empty), `robots.ts` (disallows `/admin`, `/api/`)
 - `opengraph-image.tsx` - generated 1200x630 share card via `next/og`
-- `favicon.ico`, `icon.png`, `apple-icon.png` - the 2x2 logo mark
+- `favicon.ico`, `icon.png`, `apple-icon.png` - the red-shirt headshot, restored
+  2026-09-08. Regenerated properly this time: a real multi-resolution `.ico`
+  (16/32/48) plus 256-colour PNGs at 192 and 180, all from one square crop that
+  keeps the shirt in frame, because the face alone is unreadable at 16px. Do not
+  reintroduce a JPEG renamed `.ico`, which is what the 2026-09-02 pass removed.
+  The 2x2 logo mark still lives in `components/Navbar.tsx` as the nav mark.
 
 `components/` - Navbar, Footer, ThemeToggle, HeroSection, LedgerSection,
 ProjectCard, BlogCard, HeatmapGrid, HeatmapTracker, AuthButton
@@ -178,7 +183,8 @@ Done (2026-09-02), the "real data" pass:
 - About page rewritten with an Experience section, current coursework, and the
  new skills list.
 - Replaced the headshot-JPEG-renamed-`.ico` favicon and the two 98KB
- `icon.png`/`apple-icon.png` copies of it with a generated logo mark; added a
+ `icon.png`/`apple-icon.png` copies of it with a generated logo mark (the
+ headshot came back as a properly generated icon on 2026-09-08); added a
  generated OG image (the old metadata pointed at a `/og-default.png` that was
  never committed).
 - Auth UI moved off the public nav onto `/admin`; `robots.ts` now disallows

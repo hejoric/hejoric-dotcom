@@ -20,7 +20,7 @@ export default function HeroSection() {
               </span>
             </span>
             <br />
-            I&apos;m Hejoric, aka The
+            I&apos;m Hejoric, aka
             <br />
             Jose Ricardo Herrera.
           </h1>

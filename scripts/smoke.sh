@@ -21,7 +21,7 @@ unreachable=0
 
 # path|string that must appear in the HTML (taken from each page's <h1>)
 ROUTES=(
-  "/|Hejoric, aka The"
+  "/|Hejoric, aka"
   "/projects|Stuff I"
   "/blog|Writing."
   "/tracker|The tracker."

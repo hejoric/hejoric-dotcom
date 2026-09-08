@@ -59,7 +59,7 @@ export default async function Image() {
 
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           <div style={{ fontSize: 68, lineHeight: 1.1, letterSpacing: -1 }}>
-            I&apos;m Hejoric, aka The Jose Ricardo Herrera.
+            I&apos;m Hejoric, aka Jose Ricardo Herrera.
           </div>
           <div style={{ fontSize: 30, color: "#5c574d", lineHeight: 1.4 }}>
             CS at UVA. I build usable niche tools, play guitar and piano,
