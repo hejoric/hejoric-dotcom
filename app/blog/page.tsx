@@ -5,11 +5,11 @@ import BlogCard from "@/components/BlogCard";
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Notes on software engineering, infrastructure, and learning in public, by Jose R. Herrera (hejoric).",
+    "Notes on what I'm building and what I'm learning, by Jose Ricardo Herrera (Hejoric).",
   openGraph: {
     title: "Blog | hejoric",
     description:
-      "Notes on software engineering, infrastructure, and learning in public, by Jose R. Herrera (hejoric).",
+      "Notes on what I'm building and what I'm learning, by Jose Ricardo Herrera (Hejoric).",
     url: "https://hejoric.com/blog",
     type: "website",
   },

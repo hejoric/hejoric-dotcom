@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const greetings = ["Hola —", "Hello —", "こんにちは —", "안녕하세요 —", "Hola —"];
+const greetings = ["Hola,", "What's up,", "こんにちは,", "안녕하세요,", "Hola,"];
 
 export default function HeroSection() {
   return (
@@ -20,18 +20,18 @@ export default function HeroSection() {
               </span>
             </span>
             <br />
-            I&apos;m Jose. I build things,
+            I&apos;m Hejoric, aka
             <br />
-            and I keep track of them.
+            Jose Ricardo Herrera.
           </h1>
           <p className="mt-7 max-w-[620px] text-[16.5px] leading-[1.75] text-text-secondary">
-            CS at the University of Virginia. I ship software for people who
-            aren&apos;t developers: an ERP replacing a retail store&apos;s
-            30-year-old system, a nonprofit&apos;s site rebuilt to run on $12 a
-            year. The graph below is my real GitHub activity, private repos
-            included.{" "}
+            CS at UVA. I build usable niche tools for people with weirdly
+            specific problems, and this site is where you can check in on all
+            of it: the software, the pieces I&apos;m learning, the languages
+            I&apos;m studying, the gym. Everything on the graph below actually
+            happened.{" "}
             <span className="font-display text-lg italic text-text-primary">
-              Poke around.
+              Say hi if you want to talk about any of it!
             </span>
           </p>
         </div>
@@ -45,7 +45,8 @@ export default function HeroSection() {
             priority
           />
           <figcaption className="mt-3.5 font-display text-[14.5px] italic text-text-muted">
-            The Fitness column, in person.
+            The one I love. On and off this fall, so I&apos;ve been filling
+            the gaps with salsa and bachata.
           </figcaption>
         </figure>
       </div>

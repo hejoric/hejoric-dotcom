@@ -17,15 +17,15 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   metadataBase: new URL("https://hejoric.com"),
   title: {
-    default: "Jose R. Herrera · hejoric",
+    default: "Jose Ricardo Herrera · hejoric",
     template: "%s | hejoric",
   },
   description:
-    "Personal site and portfolio of Jose R. Herrera (hejoric): CS student at UVA, full-stack and infrastructure developer.",
+    "Jose Ricardo Herrera (Hejoric): CS student at UVA. I build niche tools, play guitar and piano, study Korean and Japanese, and track all of it in public.",
   openGraph: {
-    title: "Jose R. Herrera · hejoric",
+    title: "Jose Ricardo Herrera · hejoric",
     description:
-      "Personal site and portfolio of Jose R. Herrera (hejoric): CS student at UVA, full-stack and infrastructure developer.",
+      "Jose Ricardo Herrera (Hejoric): CS student at UVA. I build niche tools, play guitar and piano, study Korean and Japanese, and track all of it in public.",
     url: "https://hejoric.com",
     siteName: "hejoric",
     type: "website",
@@ -38,11 +38,15 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: "Jose R. Herrera",
-  alternateName: "hejoric",
+  name: "Jose Ricardo Herrera",
+  alternateName: "Hejoric",
   url: "https://hejoric.com",
   sameAs: [
     "https://github.com/hejoric",
+    "https://youtube.com/@hejoric",
+    "https://instagram.com/hejoric",
+    "https://tiktok.com/@hejoric",
+    "https://x.com/hejoric",
     "https://linkedin.com/in/hejoric",
   ],
 };

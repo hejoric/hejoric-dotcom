@@ -4,11 +4,11 @@ import Image from "next/image";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "About Jose R. Herrera (hejoric): CS student at the University of Virginia, full-stack and infrastructure developer.",
+    "Jose Ricardo Herrera (Hejoric), CS at UVA. What I build, what I'm learning, and why I track all of it in public.",
   openGraph: {
     title: "About | hejoric",
     description:
-      "About Jose R. Herrera (hejoric): CS student at the University of Virginia, full-stack and infrastructure developer.",
+      "Jose Ricardo Herrera (Hejoric), CS at UVA. What I build, what I'm learning, and why I track all of it in public.",
     url: "https://hejoric.com/about",
     type: "website",
   },
@@ -25,7 +25,8 @@ const experience = [
     points: [
       "Rebuilt a managed WordPress site as a statically generated Astro and Tailwind site on Cloudflare Pages, cutting recurring hosting cost from $178/year to roughly $12/year for a 501(c)(3) nonprofit.",
       "Migrated hosting, DNS, and domain registration from Bluehost to Cloudflare with zero downtime, consolidating registrar, DNS, and CDN under one provider.",
-      "Integrated Keystatic, a Git-based CMS storing content as YAML, so non-technical staff edit pages in the browser while every change stays version-controlled. Own search and analytics, and wrote the stack documentation for volunteer handoff.",
+      "Integrated Keystatic, a Git-based CMS storing content as YAML, so staff edit pages in the browser without going near a repo while every change stays version-controlled. Wrote the stack documentation for volunteer handoff.",
+      "Run the organization's Google Workspace, Google Ads, SEO, search, and analytics alongside the site and DNS.",
     ],
   },
   {
@@ -75,7 +76,7 @@ const skills: { label: string; items: string; colorClass: string }[] = [
   },
   {
     label: "Spoken",
-    items: "English and Spanish (fluent) · studying Japanese and Korean",
+    items: "English and Spanish (fluent) · Korean and Japanese (learning)",
     colorClass: "text-language",
   },
 ];
@@ -90,25 +91,40 @@ export default function AboutPage() {
           </h1>
           <div className="mt-6 max-w-[560px] space-y-[18px] leading-[1.8] text-text-secondary">
             <p>
-              I&apos;m Jose R. Herrera, a Computer Science student at the
-              University of Virginia. My favorite work sits where software
-              meets the messy real world: self-hosting an ERP to replace a
-              retail store&apos;s 30-year-old system, migrating 500+ products
-              into PostgreSQL, and taking a nonprofit off managed WordPress so
-              it costs $12 a year instead of $178.
+              What&apos;s up, I&apos;m Jose Ricardo Herrera, and online I go by
+              Hejoric. I&apos;m a fourth-year Computer Science student at the
+              University of Virginia, class of 2027.
             </p>
             <p>
-              That means I spend as much time on deployment, data migration,
-              and DNS as I do on features, and I like it that way. I care
-              about systems that keep working after the person who built them
-              moves on, which is why I document and hand off what I build.{" "}
+              What I like building is usable niche tools: software for someone
+              with a specific problem who isn&apos;t going to write the code
+              themselves. A retail store still running a 15 year old system. A
+              nonprofit paying $178 a year for hosting it didn&apos;t need. Work
+              like that means I spend as much time on deploys, data migrations,
+              and DNS as I do on features, and I&apos;d take that over the other
+              way around. I started out doing freelance work for my
+              family&apos;s businesses, and I wanted to point the same skills at
+              something bigger than profit, which is how I ended up running the
+              web and infrastructure for a nonprofit.
+            </p>
+            <p>
+              Outside of code: guitar and piano (working on Snow by RHCP, with
+              the third movement of the Moonlight Sonata as the long game),
+              Korean 101 at UVA with a JLPT N3 retake somewhere down the road,
+              the gym,
+              salsa and bachata, and gaming. I also run a YouTube channel
+              that&apos;s basically a video journal of my life: playing,
+              gameplay, travel. The goal is weekly, and showing people what
+              being a UVA student is actually like.
+            </p>
+            <p>
+              I put all of it on this site on purpose. I&apos;d rather be public
+              about what I&apos;m working on and how far along I actually am,
+              and if that gets one person to start tracking their own thing and
+              go after it, that&apos;s a win.{" "}
               <span className="font-display text-[17px] italic text-text-primary">
-                This site is the same idea, applied to myself.
+                Reach out any time, I like the questions.
               </span>
-            </p>
-            <p>
-              Away from the keyboard: piano, languages (Japanese and Korean
-              right now), and the gym.
             </p>
           </div>
           <div className="mt-8 flex gap-7">
@@ -131,7 +147,7 @@ export default function AboutPage() {
         <div className="hidden sm:block">
           <Image
             src="/headshot.png"
-            alt="Jose R. Herrera"
+            alt="Jose Ricardo Herrera"
             width={300}
             height={360}
             className="h-[360px] w-[300px] rounded object-cover contrast-[1.04]"
@@ -247,9 +263,9 @@ export default function AboutPage() {
           Now
         </span>
         <p className="mt-3.5 max-w-[640px] font-display text-[22px] italic leading-[1.5] text-text-primary">
-          Shipping the nonprofit&apos;s site, preparing the retail ERP for its
-          production cutover this fall, studying Korean daily, and logging all
-          of it here.
+          Getting the retail ERP ready for its production cutover this fall,
+          Korean 101 and chapter 1 of Integrated Korean, learning Snow by RHCP,
+          and working on getting the gym back to consistent.
         </p>
       </section>
     </div>

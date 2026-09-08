@@ -65,9 +65,9 @@ export default function HeatmapTracker({
             Code
           </span>
           <p className="mt-3 max-w-[520px] text-sm leading-[1.7] text-text-secondary">
-            This graph is pulled live from the GitHub contribution API and
-            could not be loaded right now. Rather than draw a grid I cannot
-            verify, it is left out.{" "}
+            This row pulls live from the GitHub API and it isn&apos;t loading
+            right now. I&apos;d rather leave it out than show you a grid I
+            can&apos;t verify.{" "}
             <a
               href="https://github.com/hejoric"
               target="_blank"
@@ -84,8 +84,10 @@ export default function HeatmapTracker({
       {untracked.length > 0 && (
         <p className="mt-7 max-w-[560px] font-display text-[17px] italic leading-[1.6] text-text-muted">
           {listLabels(untracked)}{" "}
-          {untracked.length === 1 ? "is" : "are"} logged by hand, and there is
-          nothing recorded yet. Empty beats invented.
+          {untracked.length === 1 ? "is" : "are"} logged by hand and
+          {untracked.length === 1 ? " has" : " have"} nothing in
+          {untracked.length === 1 ? " it" : " them"} yet. Once I start
+          logging, that changes.
         </p>
       )}
     </div>

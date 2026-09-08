@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 // Generated share card, so every page has a real preview image. The previous
 // metadata pointed at /og-default.png, which was never committed.
-export const alt = "Jose R. Herrera: CS at UVA, full-stack developer";
+export const alt = "Hejoric (Jose Ricardo Herrera): CS at UVA, building niche tools and tracking all of it";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -53,17 +53,17 @@ export default async function Image() {
               fontWeight: 600,
             }}
           >
-            Jose R. Herrera
+            Hejoric
           </div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           <div style={{ fontSize: 68, lineHeight: 1.1, letterSpacing: -1 }}>
-            I build things, and I keep track of them.
+            I&apos;m Hejoric, aka Jose Ricardo Herrera.
           </div>
           <div style={{ fontSize: 30, color: "#5c574d", lineHeight: 1.4 }}>
-            CS at the University of Virginia. Full-stack, infrastructure, and a
-            year of real activity on one page.
+            CS at UVA. I build usable niche tools, play guitar and piano,
+            study Korean, and track all of it in one place.
           </div>
         </div>
 

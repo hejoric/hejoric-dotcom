@@ -43,7 +43,7 @@ body {
   color: var(--text-primary);
 }
 
-/* Hero greeting rotator: Hola / Hello / こんにちは / 안녕하세요 */
+/* Hero greeting rotator: Hola / What's up / こんにちは / 안녕하세요 */
 @keyframes greeting-rotate {
   0%,
   16% {
