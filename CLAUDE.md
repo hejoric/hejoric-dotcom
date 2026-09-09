@@ -64,7 +64,8 @@ plus type check and never touches the database.
 
 `.env` needs: `DATABASE_URL` (pooled, runtime), `DATABASE_URL_UNPOOLED`
 (direct, migrations), `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, `GOOGLE_CLIENT_ID`,
-`GOOGLE_CLIENT_SECRET`, `ADMIN_EMAIL`, `GITHUB_TOKEN`. See `.env.example`.
+`GOOGLE_CLIENT_SECRET`, `ADMIN_EMAIL`, `GITHUB_TOKEN`, and optionally
+`ACTIVITY_TOKEN` (phone logging; unset just disables it). See `.env.example`.
 Neon requires both DB URLs. `GITHUB_TOKEN` is a classic PAT with `read:user`;
 without it the Code heatmap is omitted with a notice.
 
@@ -164,6 +165,16 @@ created end-to-end from `/admin`.
   truth, used by the `signIn` callback (non-admins cannot complete login), the `/admin`
   page, and every write API. Admin email comes from `ADMIN_EMAIL`. There is no sign-in
   control in the public nav on purpose.
+- **Phone logging:** `POST /api/activity` also accepts `Authorization: Bearer
+  $ACTIVITY_TOKEN` (`lib/api-auth.ts`), because an Android home-screen shortcut
+  cannot carry a Google session. The token is scoped to that one route, is
+  ignored below 24 characters, and still cannot write `code`. Body takes
+  `category` (required), `date`, `count` (1-1000), `note`, and `increment`:
+  `increment: true` adds to the day (a phone recording another session), while
+  omitting it replaces the day (what `/admin` does when editing). Callers should
+  always send `date` from the phone's local clock; the server normalizes to UTC
+  midnight, so an evening tap in Eastern would otherwise land on tomorrow.
+  Setup guide: `docs/phone-logging.md`. Remember Reading is stored as `content`.
 
 ## Current state
 
@@ -228,9 +239,10 @@ Open items:
 2. The public `hejoric/club-finance-helper` mirror of TSA Helper has live admin
  credentials in its README, so the project is listed without a GitHub link
  until that repo is cleaned and those credentials are rotated.
-3. Music / Language / Fitness / Reading stay empty until logged in `/admin`, or
- until a real integration (Last.fm, Strava) is wired up. Token-authenticated
- logging from an Android phone is the next planned step.
+3. Music / Language / Fitness / Reading are still empty, but one-tap logging
+ from an Android home screen now exists (`docs/phone-logging.md`). It needs
+ `ACTIVITY_TOKEN` set in Vercel and the shortcuts built on the phone before
+ any data appears. A real integration (Last.fm, Strava) is still unbuilt.
 4. The resume says the site uses GitHub OAuth; it uses Google OAuth.
 5. The rewritten project descriptions in `prisma/seed.ts` are NOT live: projects
  render from Postgres, so they need `npm run db:seed` (which writes to the
