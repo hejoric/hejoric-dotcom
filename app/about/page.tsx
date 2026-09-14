@@ -146,15 +146,16 @@ export default function AboutPage() {
         </div>
         <div className="hidden sm:block">
           <Image
-            src="/headshot.png"
-            alt="Jose Ricardo Herrera"
-            width={300}
-            height={360}
+            src="/jose-gym.jpg"
+            alt="Jose at the gym"
+            width={800}
+            height={1000}
             className="h-[360px] w-[300px] rounded object-cover contrast-[1.04]"
             priority
           />
           <div className="mt-3.5 font-display text-[14.5px] italic text-text-muted">
-            Charlottesville, VA
+            The one I love. On and off this fall, so I&apos;ve been filling the
+            gaps with salsa and bachata.
           </div>
         </div>
       </div>
