@@ -37,16 +37,15 @@ export default function HeroSection() {
         </div>
         <figure className="w-[200px] sm:w-[240px] lg:mt-1.5">
           <Image
-            src="/jose-gym.jpg"
-            alt="Jose at the gym"
+            src="/jose-lawn.jpg"
+            alt="Jose on the Lawn at UVA"
             width={800}
             height={1000}
             className="h-[250px] w-full rounded object-cover contrast-[1.04] sm:h-[300px]"
             priority
           />
           <figcaption className="mt-3.5 font-display text-[14.5px] italic text-text-muted">
-            The one I love. On and off this fall, so I&apos;ve been filling
-            the gaps with salsa and bachata.
+            On the Lawn at UVA. Fourth year, class of 2027.
           </figcaption>
         </figure>
       </div>
