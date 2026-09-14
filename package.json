@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/hejoric/hejoric-dotcom#readme",
   "dependencies": {
-    "@prisma/client": "^5.22.0",
+    "@prisma/client": "^7.10.0",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "autoprefixer": "^10.5.5",
@@ -34,7 +34,7 @@
     "next-mdx-remote": "^6.0.0",
     "next-themes": "^0.4.6",
     "postcss": "^8.5.28",
-    "prisma": "^5.22.0",
+    "prisma": "^7.10.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "rehype-pretty-code": "^0.14.5",
