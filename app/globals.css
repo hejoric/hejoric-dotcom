@@ -7,7 +7,7 @@
   --surface: #efece4; /* also the empty heatmap cell */
   --text-primary: #1a1917;
   --text-secondary: #5c574d;
-  --text-muted: #8a8478;
+  --text-muted: #6f6a5f; /* 5.07:1 on --background, WCAG AA for small text */
   --accent: #2f6fb0; /* alias of Code blue */
   --border: rgba(26, 25, 23, 0.12);
   --border-soft: rgba(26, 25, 23, 0.08);
@@ -18,6 +18,15 @@
   --cat-language: #1f9e75;
   --cat-fitness: #e0952a;
   --cat-reading: #6e5ad6;
+
+  /* Category colors for small text (labels). The accents above are tuned for
+     heatmap cells; several fall under 4.5:1 as 11px type, so labels use these
+     darker inks instead. Code and Reading already pass. */
+  --cat-code-ink: #2f6fb0;
+  --cat-music-ink: #b8452d;
+  --cat-language-ink: #177a5a;
+  --cat-fitness-ink: #98600f;
+  --cat-reading-ink: #6e5ad6;
 }
 
 .dark {
@@ -25,7 +34,7 @@
   --surface: #262420;
   --text-primary: #faf8f4;
   --text-secondary: rgba(250, 248, 244, 0.6);
-  --text-muted: rgba(250, 248, 244, 0.4);
+  --text-muted: rgba(250, 248, 244, 0.5);
   --accent: #638fc3;
   --border: rgba(250, 248, 244, 0.12);
   --border-soft: rgba(250, 248, 244, 0.07);
@@ -36,6 +45,13 @@
   --cat-language: #57b697;
   --cat-fitness: #e8af5f;
   --cat-reading: #9284de;
+
+  /* The lifted dark-mode accents are already legible as small text. */
+  --cat-code-ink: var(--cat-code);
+  --cat-music-ink: var(--cat-music);
+  --cat-language-ink: var(--cat-language);
+  --cat-fitness-ink: var(--cat-fitness);
+  --cat-reading-ink: var(--cat-reading);
 }
 
 body {

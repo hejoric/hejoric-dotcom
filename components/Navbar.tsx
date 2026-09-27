@@ -8,10 +8,13 @@ import ThemeToggle from "./ThemeToggle";
 // Blog is intentionally absent until there is a real post to read; the
 // route still works and gets linked back once /blog has content.
 const navLinks = [
-  { href: "/projects", label: "Projects" },
   { href: "/tracker", label: "Tracker" },
+  { href: "/projects", label: "Projects" },
   { href: "/about", label: "About" },
 ];
+
+// The recruiting page sits apart from the personal links: present, but quiet.
+const workLink = { href: "/work", label: "Work with me" };
 
 function LogoMark() {
   return (
@@ -58,6 +61,17 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          <span className="h-4 w-px bg-border" aria-hidden />
+          <Link
+            href={workLink.href}
+            className={
+              isActive(workLink.href)
+                ? "border-b-[1.5px] border-text-primary pb-0.5 text-[13px] font-medium text-text-primary"
+                : "text-[13px] text-text-muted transition-opacity duration-150 hover:text-text-primary hover:opacity-70"
+            }
+          >
+            {workLink.label}
+          </Link>
           <ThemeToggle />
         </div>
 
@@ -67,6 +81,8 @@ export default function Navbar() {
             onClick={() => setMobileOpen(!mobileOpen)}
             className="flex h-9 w-9 items-center justify-center text-text-secondary transition-opacity duration-150 hover:text-text-primary hover:opacity-70"
             aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -93,8 +109,8 @@ export default function Navbar() {
       </div>
 
       {mobileOpen && (
-        <div className="border-t border-border px-6 py-4 md:hidden">
-          <div className="flex flex-col gap-3">
+        <div id="mobile-menu" className="border-t border-border px-6 py-2 md:hidden">
+          <div className="flex flex-col">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -102,13 +118,26 @@ export default function Navbar() {
                 onClick={() => setMobileOpen(false)}
                 className={
                   isActive(link.href)
-                    ? "text-sm font-medium text-text-primary"
-                    : "text-sm text-text-secondary transition-opacity duration-150 hover:text-text-primary"
+                    ? "flex min-h-11 items-center text-sm font-medium text-text-primary"
+                    : "flex min-h-11 items-center text-sm text-text-secondary transition-opacity duration-150 hover:text-text-primary"
                 }
               >
                 {link.label}
               </Link>
             ))}
+          </div>
+          <div className="mt-2 border-t border-border pt-2">
+            <Link
+              href={workLink.href}
+              onClick={() => setMobileOpen(false)}
+              className={
+                isActive(workLink.href)
+                  ? "flex min-h-11 items-center text-[13px] font-medium text-text-primary"
+                  : "flex min-h-11 items-center text-[13px] text-text-muted transition-opacity duration-150 hover:text-text-primary"
+              }
+            >
+              {workLink.label}
+            </Link>
           </div>
         </div>
       )}

@@ -68,9 +68,17 @@ export default function RootLayout({
         className={`${inter.variable} ${instrumentSerif.variable} min-h-screen bg-background font-sans text-text-primary antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <a
+            href="#main"
+            className="sr-only z-[60] rounded bg-text-primary px-3 py-2 text-sm font-medium text-background focus:not-sr-only focus:fixed focus:left-3 focus:top-3"
+          >
+            Skip to content
+          </a>
           <div className="flex min-h-screen flex-col">
             <Navbar />
-            <main className="flex-1">{children}</main>
+            <main id="main" className="flex-1">
+              {children}
+            </main>
             <Footer />
           </div>
         </ThemeProvider>
