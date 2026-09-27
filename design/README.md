@@ -19,9 +19,11 @@ Captured 2026-07-02, right after the redesign shipped. They are a record of
 that release, not a picture of the current site. Since then the site has
 diverged in at least four visible ways:
 
-- The homepage "Lately" strip is gone. The `LatelyItem` model was dropped in
-  the 2026-09-02 real-data pass, because its rows were hand-seeded placeholders
-  (the grey `thumbnail` / `art` / `cover` boxes visible in `home-*.png`).
+- The homepage "Lately" strip is no longer DB-backed. The `LatelyItem` model
+  was dropped in the 2026-09-02 real-data pass, because its rows were
+  hand-seeded placeholders (the grey `thumbnail` / `art` / `cover` boxes
+  visible in `home-*.png`). It came back on 2026-09-27 as a static strip of
+  real photos (`components/PhotoStrip.tsx`).
 - `Blog` is no longer in the nav. It is hidden until a real post exists.
 - The Ledger drew all five categories. Categories with no logged data now
   render nothing, and Code reads the live GitHub contribution calendar rather
