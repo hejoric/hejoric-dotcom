@@ -30,3 +30,11 @@ diverged in at least four visible ways:
   Nature Conservation Project and Retail ERP Deployment.
 
 Re-capture before using any of these to represent the site as it stands.
+
+## `home-on-the-web.html` and `work-with-me.html`
+
+The 2026-09-27 mockups behind the current homepage ("Direction C, home on the
+web") and the `/work` page. They are standalone HTML that load the photos from
+`../public/`, so open them straight from this folder. The shipped pages in
+`app/page.tsx` and `app/work/page.tsx` are the source of truth; these only
+record the approved direction.

@@ -19,13 +19,15 @@ BASE="${BASE%/}"
 fail=0
 unreachable=0
 
-# path|string that must appear in the HTML (taken from each page's <h1>)
+# path|string that must appear in the HTML (taken from each page's <h1>; React
+# escapes the apostrophe in "I'm", so those markers start after it)
 ROUTES=(
-  "/|Hejoric, aka"
+  "/|m Hejoric."
   "/projects|Stuff I"
   "/blog|Writing."
   "/tracker|The tracker."
   "/about|About me."
+  "/work|m Jose Ricardo Herrera."
 )
 
 echo "Smoke testing $BASE"

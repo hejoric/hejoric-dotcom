@@ -258,17 +258,6 @@ export default function AboutPage() {
           ))}
         </div>
       </section>
-
-      <section className="mt-11">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-text-muted">
-          Now
-        </span>
-        <p className="mt-3.5 max-w-[640px] font-display text-[22px] italic leading-[1.5] text-text-primary">
-          Getting the retail ERP ready for its production cutover this fall,
-          Korean 101 and chapter 1 of Integrated Korean, learning Snow by RHCP,
-          and working on getting the gym back to consistent.
-        </p>
-      </section>
     </div>
   );
 }
