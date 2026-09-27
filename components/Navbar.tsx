@@ -111,20 +111,33 @@ export default function Navbar() {
       {mobileOpen && (
         <div id="mobile-menu" className="border-t border-border px-6 py-2 md:hidden">
           <div className="flex flex-col">
-            {[...navLinks, workLink].map((link) => (
+            {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 className={
                   isActive(link.href)
-                    ? "py-2.5 text-sm font-medium text-text-primary"
-                    : "py-2.5 text-sm text-text-secondary transition-opacity duration-150 hover:text-text-primary"
+                    ? "flex min-h-11 items-center text-sm font-medium text-text-primary"
+                    : "flex min-h-11 items-center text-sm text-text-secondary transition-opacity duration-150 hover:text-text-primary"
                 }
               >
                 {link.label}
               </Link>
             ))}
+          </div>
+          <div className="mt-2 border-t border-border pt-2">
+            <Link
+              href={workLink.href}
+              onClick={() => setMobileOpen(false)}
+              className={
+                isActive(workLink.href)
+                  ? "flex min-h-11 items-center text-[13px] font-medium text-text-primary"
+                  : "flex min-h-11 items-center text-[13px] text-text-muted transition-opacity duration-150 hover:text-text-primary"
+              }
+            >
+              {workLink.label}
+            </Link>
           </div>
         </div>
       )}
