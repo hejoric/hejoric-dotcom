@@ -146,8 +146,12 @@ created end-to-end from `/admin`.
  graded ramp (`color-mix` toward `--background` at 25/48/72/95%), while the
  hand-logged categories paint any logged day at the full category color,
  because they happen about once a day and a ramp would render one log as a dim
- first step. Cells ink in via the `.heatmap-cell` animation (respects
- `prefers-reduced-motion`). 53 columns at 18px fits `max-w-5xl` exactly.
+ first step. The homepage Ledger draws one cell per week through
+ `categoryWeekColor`: Code ramps on the weekly total, and a hand-logged week is
+ shaded by how many days were logged, from a strong 70% mix at one day to the
+ full color at seven, never a faint step. Cells ink in via the `.heatmap-cell`
+ animation (respects `prefers-reduced-motion`). 53 columns at 18px fits
+ `max-w-5xl` exactly.
 - Server Components by default; `"use client"` only where state/interactivity is needed
   (Navbar, projects filter, theme toggle, heatmap tooltip, admin forms).
 - `ThemeToggle` renders both icons and swaps them with Tailwind's `dark:`

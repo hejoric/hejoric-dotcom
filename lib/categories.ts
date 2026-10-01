@@ -39,6 +39,10 @@ export function listLabels(categories: readonly Category[]): string {
 // Intensity ramp from the design: accent mixed toward the page background.
 const LEVEL_PERCENTS = [0, 25, 48, 72, 95];
 
+// A hand-logged Ledger week with one logged day starts here and climbs evenly
+// to the full color at seven.
+const WEEK_FLOOR_PERCENT = 70;
+
 export function getHeatmapLevel(count: number): number {
   if (count === 0) return 0;
   if (count <= 2) return 1;
@@ -63,4 +67,22 @@ export function categoryCellColor(category: Category, count: number): string {
     return heatmapCellColor(category.colorVar, getHeatmapLevel(count));
   }
   return count > 0 ? `var(${category.colorVar})` : "var(--surface)";
+}
+
+/**
+ * One Ledger column covers a week, given as that week's day counts. Code ramps
+ * on the week's total like a day cell. A hand-logged week is shaded by how many
+ * of its days were logged: one day already reads strong, seven is the full
+ * category color, and a week with nothing keeps the empty-cell fill.
+ */
+export function categoryWeekColor(category: Category, counts: number[]): string {
+  if (category.source === "github") {
+    const total = counts.reduce((sum, count) => sum + count, 0);
+    return heatmapCellColor(category.colorVar, getHeatmapLevel(total));
+  }
+  const days = counts.filter((count) => count > 0).length;
+  if (days === 0) return "var(--surface)";
+  const percent =
+    WEEK_FLOOR_PERCENT + ((100 - WEEK_FLOOR_PERCENT) * (days - 1)) / 6;
+  return `color-mix(in srgb, var(${category.colorVar}) ${percent}%, var(--background))`;
 }

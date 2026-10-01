@@ -196,7 +196,7 @@ export default function HeatmapGrid({
                     >
                       <span
                         aria-hidden
-                        className="h-1 w-1 rounded-full bg-text-primary opacity-80 dark:bg-background dark:opacity-90"
+                        className="h-1 w-1 rounded-full bg-text-primary dark:bg-background dark:opacity-90"
                       />
                     </button>
                   );

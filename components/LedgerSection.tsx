@@ -3,7 +3,7 @@ import type { ActivityWindow } from "@/lib/activity";
 import { buildCalendar, computeStats } from "@/lib/calendar";
 import {
   CATEGORIES,
-  categoryCellColor,
+  categoryWeekColor,
   listLabels,
   type Category,
 } from "@/lib/categories";
@@ -54,12 +54,9 @@ export default function LedgerSection({
           const data = days[category.key];
           const stats = computeStats(calendar.keys, data);
 
-          // One cell per week column: the week's total, colored like a day cell.
+          // One cell per week column, colored from that week's day counts.
           const weekly = calendar.weeks.map((week) =>
-            week.reduce(
-              (sum, key) => sum + (key ? data[key] || 0 : 0),
-              0
-            )
+            week.map((key) => (key ? data[key] || 0 : 0))
           );
 
           return (
@@ -79,12 +76,12 @@ export default function LedgerSection({
                 role="img"
                 aria-label={`${category.label}, weekly activity over the last 12 months`}
               >
-                {weekly.map((count, i) => (
+                {weekly.map((counts, i) => (
                   <span
                     key={i}
                     className="heatmap-cell aspect-[1/2.2] rounded-[2px] sm:aspect-[1/1.6] sm:rounded-[2.5px]"
                     style={{
-                      backgroundColor: categoryCellColor(category, count),
+                      backgroundColor: categoryWeekColor(category, counts),
                       animationDelay: `${i * 12}ms`,
                     }}
                   />
