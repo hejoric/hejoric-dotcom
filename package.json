@@ -8,8 +8,10 @@
     "start": "next start",
     "lint": "eslint .",
     "postinstall": "prisma generate",
-    "db:push": "prisma db push && prisma generate",
-    "db:migrate": "prisma migrate dev && prisma generate",
+    "db:push": "prisma db push",
+    "postdb:push": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "postdb:migrate": "prisma generate",
     "db:seed": "tsx prisma/seed.ts",
     "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test \"lib/**/*.test.mjs\""
   },
