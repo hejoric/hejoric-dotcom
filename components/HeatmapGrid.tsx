@@ -54,20 +54,18 @@ export default function HeatmapGrid({
     date: string;
   } | null>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
-  const scrollerRef = useRef<HTMLDivElement>(null);
 
   // A tapped note stays open until the next tap elsewhere. The tooltip is
   // fixed-position, so it is re-placed over its cell on every scroll, hidden
-  // while the cell is scrolled out of the grid, and centered on the cell
-  // unless its own width would run it off the screen. The cell scales up on
-  // hover and focus, so it is anchored on the cell's middle, not its edges.
+  // while the cell is scrolled out of sight or under the nav, and centered on
+  // the cell unless its own width would run it off the screen. The cell
+  // scales up on hover and focus, so it is anchored on the cell's middle.
   useLayoutEffect(() => {
     if (!tooltip) return;
     const place = () => {
       const el = tooltipRef.current;
       if (!el) return;
       const rect = tooltip.cell.getBoundingClientRect();
-      const bounds = scrollerRef.current?.getBoundingClientRect();
       const half = el.offsetWidth / 2 + 8;
       const center = rect.left + rect.width / 2;
       const middle = rect.top + rect.height / 2;
@@ -77,10 +75,8 @@ export default function HeatmapGrid({
       );
       el.style.left = `${x}px`;
       el.style.top = `${middle - CELL / 2 - 8}px`;
-      el.style.visibility =
-        bounds && (center < bounds.left || center > bounds.right)
-          ? "hidden"
-          : "";
+      const hit = document.elementFromPoint(center, middle);
+      el.style.visibility = hit && tooltip.cell.contains(hit) ? "" : "hidden";
     };
     const close = () => setTooltip(null);
     const closeOutside = (e: PointerEvent) => {
@@ -104,6 +100,7 @@ export default function HeatmapGrid({
 
   // The grid is wider than a phone, and the recent weeks are the ones worth
   // seeing, so start the scroller at its right edge instead of last October.
+  const scrollerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const scroller = scrollerRef.current;
     if (scroller) scroller.scrollLeft = scroller.scrollWidth;
