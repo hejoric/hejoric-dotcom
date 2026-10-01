@@ -8,13 +8,15 @@
 // Nothing is generated or estimated. A category with no data renders nothing.
 //
 // `colorVar` fills heatmap cells; `inkVar` is the same hue darkened enough to
-// pass WCAG AA as small label text (see app/globals.css).
+// pass WCAG AA as small label text; `floorVar` (hand-logged only) is the same
+// hue and saturation nearer the page, for a one-day Ledger week (see
+// app/globals.css).
 export const CATEGORIES = [
   { key: "code", label: "Code", colorVar: "--cat-code", inkVar: "--cat-code-ink", source: "github" },
-  { key: "music", label: "Music", colorVar: "--cat-music", inkVar: "--cat-music-ink", source: "manual" },
-  { key: "language", label: "Language", colorVar: "--cat-language", inkVar: "--cat-language-ink", source: "manual" },
-  { key: "fitness", label: "Fitness", colorVar: "--cat-fitness", inkVar: "--cat-fitness-ink", source: "manual" },
-  { key: "content", label: "Reading", colorVar: "--cat-reading", inkVar: "--cat-reading-ink", source: "manual" },
+  { key: "music", label: "Music", colorVar: "--cat-music", inkVar: "--cat-music-ink", floorVar: "--cat-music-floor", source: "manual" },
+  { key: "language", label: "Language", colorVar: "--cat-language", inkVar: "--cat-language-ink", floorVar: "--cat-language-floor", source: "manual" },
+  { key: "fitness", label: "Fitness", colorVar: "--cat-fitness", inkVar: "--cat-fitness-ink", floorVar: "--cat-fitness-floor", source: "manual" },
+  { key: "content", label: "Reading", colorVar: "--cat-reading", inkVar: "--cat-reading-ink", floorVar: "--cat-reading-floor", source: "manual" },
 ] as const;
 
 export type Category = (typeof CATEGORIES)[number];
@@ -50,4 +52,35 @@ export function getHeatmapLevel(count: number): number {
 export function heatmapCellColor(colorVar: string, level: number): string {
   if (level === 0) return "var(--surface)";
   return `color-mix(in srgb, var(${colorVar}) ${LEVEL_PERCENTS[level]}%, var(--background))`;
+}
+
+/**
+ * Code keeps the graded ramp above. Hand-logged categories happen about once a
+ * day, so that ramp would paint a single log as a dim first step. Any logged
+ * day gets the full category color instead; days with nothing keep the
+ * empty-cell fill.
+ */
+export function categoryCellColor(category: Category, count: number): string {
+  if (category.source === "github") {
+    return heatmapCellColor(category.colorVar, getHeatmapLevel(count));
+  }
+  return count > 0 ? `var(${category.colorVar})` : "var(--surface)";
+}
+
+/**
+ * One Ledger column covers a week, given as that week's day counts. Code ramps
+ * on the week's total like a day cell. A hand-logged week is shaded by how many
+ * of its days were logged: one day is the category's floor color (full
+ * saturation, a little nearer the page), seven is the full category color, and
+ * a week with nothing keeps the empty-cell fill.
+ */
+export function categoryWeekColor(category: Category, counts: number[]): string {
+  if (category.source === "github") {
+    const total = counts.reduce((sum, count) => sum + count, 0);
+    return heatmapCellColor(category.colorVar, getHeatmapLevel(total));
+  }
+  const days = counts.filter((count) => count > 0).length;
+  if (days === 0) return "var(--surface)";
+  const percent = Math.round((100 * (days - 1)) / 6);
+  return `color-mix(in srgb, var(${category.colorVar}) ${percent}%, var(${category.floorVar}))`;
 }
