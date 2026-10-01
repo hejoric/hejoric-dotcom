@@ -13,13 +13,22 @@ function githubNote(github: NonNullable<ActivityWindow["github"]>): string {
   return `Live from github.com/hejoric · ${parts.join(" · ")}`;
 }
 
+/** `2026-09-28` -> `Sep 28`, read in UTC like every other day key. */
+function shortDate(key: string): string {
+  return new Date(`${key}T00:00:00Z`).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}
+
 export default function HeatmapTracker({
   activity,
 }: {
   activity: ActivityWindow;
 }) {
   const calendar = buildCalendar();
-  const { days, github } = activity;
+  const { days, notes, recentNotes, github } = activity;
 
   const tracked = CATEGORIES.filter(
     (category) => Object.keys(days[category.key] ?? {}).length > 0
@@ -42,6 +51,7 @@ export default function HeatmapTracker({
             colorVar={category.colorVar}
             inkVar={category.inkVar}
             data={data}
+            notes={notes[category.key]}
             weeks={calendar.weeks}
             months={calendar.months}
             unit={isGitHub ? "contribution" : "entry"}
@@ -80,6 +90,46 @@ export default function HeatmapTracker({
             .
           </p>
         </div>
+      )}
+
+      {recentNotes.length > 0 && (
+        <section className="border-b border-border-soft py-7">
+          <h2 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-text-muted">
+            Recent notes
+          </h2>
+          <p className="mt-2.5 max-w-[560px] text-sm leading-[1.7] text-text-secondary">
+            Some days get a line about what I actually did. These are the
+            latest ones I&apos;ve made public, and the dotted squares above
+            have them too.
+          </p>
+          <ul className="mt-5 space-y-3">
+            {recentNotes.map((entry) => {
+              const category = CATEGORIES.find((c) => c.key === entry.category);
+              return (
+                <li
+                  key={`${entry.category}-${entry.date}`}
+                  className="grid grid-cols-[56px_minmax(0,1fr)] gap-x-4 gap-y-1 sm:grid-cols-[56px_96px_minmax(0,1fr)] sm:items-baseline"
+                >
+                  <time
+                    dateTime={entry.date}
+                    className="font-display text-[15px] italic text-text-muted"
+                  >
+                    {shortDate(entry.date)}
+                  </time>
+                  <span
+                    className="text-[11px] font-semibold uppercase tracking-[0.16em]"
+                    style={{ color: `var(${category?.inkVar ?? "--text-muted"})` }}
+                  >
+                    {category?.label ?? entry.category}
+                  </span>
+                  <p className="col-span-2 break-words text-[15px] leading-[1.6] text-text-primary sm:col-span-1">
+                    {entry.note}
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
       )}
 
       {untracked.length > 0 && (

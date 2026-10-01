@@ -36,7 +36,11 @@ export async function GET(req: NextRequest) {
     category: category ?? { in: MANUAL_CATEGORY_KEYS },
   };
 
-  const activities = await prisma.activityLog.findMany({ where });
+  // Counts only: notes, public or not, are never served from this endpoint.
+  const activities = await prisma.activityLog.findMany({
+    where,
+    select: { date: true, category: true, count: true },
+  });
 
   const data: Record<string, Record<string, number>> = {};
   for (const entry of activities) {
@@ -61,7 +65,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Body must be JSON" }, { status: 400 });
   }
 
-  const { date, category, count, note, increment } = body;
+  const { date, category, count, note, increment, isPublic } = body;
 
   if (!category || typeof category !== "string") {
     return NextResponse.json({ error: "category is required" }, { status: 400 });
@@ -96,17 +100,32 @@ export async function POST(req: NextRequest) {
 
   const noteText = typeof note === "string" && note.trim() ? note.trim() : undefined;
 
+  // A note is private unless the caller explicitly sends `isPublic: true`.
+  // A "true" string or a 1 does not count, and no note means nothing to show.
+  const notePublic = noteText !== undefined && isPublic === true;
+
   // The admin form edits a day, so it replaces the count. A phone shortcut
   // records another session, so it adds to whatever is already there. Prisma's
-  // atomic increment avoids a read-then-write race between the two.
+  // atomic increment avoids a read-then-write race between the two. In
+  // increment mode the note and its visibility only change when a note is
+  // sent, so a bare repeat tap neither wipes a note nor publishes one.
   const update = increment
-    ? { count: { increment: amount }, ...(noteText ? { note: noteText } : {}) }
-    : { count: amount, note: noteText ?? null };
+    ? {
+        count: { increment: amount },
+        ...(noteText ? { note: noteText, isPublic: notePublic } : {}),
+      }
+    : { count: amount, note: noteText ?? null, isPublic: notePublic };
 
   const entry = await prisma.activityLog.upsert({
     where: { date_category: { date: day, category } },
     update,
-    create: { date: day, category, count: amount, note: noteText },
+    create: {
+      date: day,
+      category,
+      count: amount,
+      note: noteText,
+      isPublic: notePublic,
+    },
   });
 
   return NextResponse.json(entry, { status: 201 });
