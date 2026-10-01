@@ -47,10 +47,7 @@ export default function HeatmapTracker({
         return (
           <HeatmapGrid
             key={category.key}
-            label={category.label}
-            colorVar={category.colorVar}
-            graded={isGitHub}
-            inkVar={category.inkVar}
+            category={category}
             data={data}
             notes={notes[category.key]}
             weeks={calendar.weeks}

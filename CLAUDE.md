@@ -142,8 +142,11 @@ created end-to-end from `/admin`.
  `transition-opacity duration-150 hover:opacity-70`. Match these.
 - Heatmap geometry lives in `components/HeatmapGrid.tsx` (`CELL`/`GAP`); month
  label widths derive from the same pitch, so change them together. Cell colors
- come from `lib/categories.ts` (`color-mix` toward `--background` at
- 25/48/72/95%) and ink in via the `.heatmap-cell` animation (respects
+ come from `categoryCellColor` in `lib/categories.ts`: Code keeps GitHub's
+ graded ramp (`color-mix` toward `--background` at 25/48/72/95%), while the
+ hand-logged categories paint any logged day at the full category color,
+ because they happen about once a day and a ramp would render one log as a dim
+ first step. Cells ink in via the `.heatmap-cell` animation (respects
  `prefers-reduced-motion`). 53 columns at 18px fits `max-w-5xl` exactly.
 - Server Components by default; `"use client"` only where state/interactivity is needed
   (Navbar, projects filter, theme toggle, heatmap tooltip, admin forms).

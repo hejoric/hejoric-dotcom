@@ -3,9 +3,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { MonthSegment } from "@/lib/calendar";
 import {
-  getHeatmapLevel,
+  categoryCellColor,
   heatmapCellColor,
-  loggedCellColor,
+  type Category,
 } from "@/lib/categories";
 import { plural } from "@/lib/utils";
 
@@ -19,15 +19,7 @@ const LEVELS = [0, 1, 2, 3, 4];
 const TOOLTIP_MAX_WIDTH = 240;
 
 interface HeatmapGridProps {
-  label: string;
-  colorVar: string;
-  /**
-   * Graded Less/More scale (Code, many contributions a day) or the flat
-   * logged/not-logged treatment used for hand-logged categories.
-   */
-  graded: boolean;
-  /** Darker variant of `colorVar` for the label text (WCAG AA at 12px). */
-  inkVar: string;
+  category: Category;
   /** `YYYY-MM-DD` -> count. Days absent from the map are zero. */
   data: Record<string, number>;
   /** `YYYY-MM-DD` -> public note. Only public notes are ever passed in. */
@@ -46,10 +38,7 @@ interface HeatmapGridProps {
 }
 
 export default function HeatmapGrid({
-  label,
-  colorVar,
-  graded,
-  inkVar,
+  category,
   data,
   notes = {},
   weeks,
@@ -122,13 +111,13 @@ export default function HeatmapGrid({
         <span className="flex items-center gap-2.5">
           <span
             className="h-2.5 w-2.5 rounded-[3px]"
-            style={{ backgroundColor: `var(${colorVar})` }}
+            style={{ backgroundColor: `var(${category.colorVar})` }}
           />
           <span
             className="text-xs font-semibold uppercase tracking-[0.16em]"
-            style={{ color: `var(${inkVar})` }}
+            style={{ color: `var(${category.inkVar})` }}
           >
-            {label}
+            {category.label}
           </span>
         </span>
         <span className="font-display text-[15px] italic text-text-muted sm:text-right">
@@ -165,14 +154,7 @@ export default function HeatmapGrid({
                   const cellStyle = {
                     width: CELL,
                     height: CELL,
-                    backgroundColor: graded
-                      ? heatmapCellColor(colorVar, getHeatmapLevel(count))
-                      : loggedCellColor(colorVar, count),
-                    // A second log in a day gets a quiet inner ring.
-                    boxShadow:
-                      !graded && count >= 2
-                        ? "inset 0 0 0 2px color-mix(in srgb, var(--background) 45%, transparent)"
-                        : undefined,
+                    backgroundColor: categoryCellColor(category, count),
                     animationDelay: `${wi * 14 + di * 3}ms`,
                   };
 
@@ -229,7 +211,7 @@ export default function HeatmapGrid({
           {note}
         </p>
         <div className="hidden items-center gap-1.5 sm:flex" aria-hidden>
-          {graded ? (
+          {category.source === "github" ? (
             <>
               <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-text-muted">
                 Less
@@ -238,7 +220,9 @@ export default function HeatmapGrid({
                 <span
                   key={level}
                   className="h-[10px] w-[10px] rounded-[2.5px]"
-                  style={{ backgroundColor: heatmapCellColor(colorVar, level) }}
+                  style={{
+                    backgroundColor: heatmapCellColor(category.colorVar, level),
+                  }}
                 />
               ))}
               <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-text-muted">
@@ -249,11 +233,11 @@ export default function HeatmapGrid({
             <>
               <span
                 className="h-[10px] w-[10px] rounded-[2.5px]"
-                style={{ backgroundColor: loggedCellColor(colorVar, 0) }}
+                style={{ backgroundColor: categoryCellColor(category, 0) }}
               />
               <span
                 className="h-[10px] w-[10px] rounded-[2.5px]"
-                style={{ backgroundColor: loggedCellColor(colorVar, 1) }}
+                style={{ backgroundColor: categoryCellColor(category, 1) }}
               />
               <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-text-muted">
                 Logged

@@ -53,10 +53,14 @@ export function heatmapCellColor(colorVar: string, level: number): string {
 }
 
 /**
- * Hand-logged categories happen about once a day, so the graded ramp above
- * would paint a single log as a dim first step. Any logged day gets the full
- * category color instead; days with nothing keep the empty-cell fill.
+ * Code keeps the graded ramp above. Hand-logged categories happen about once a
+ * day, so that ramp would paint a single log as a dim first step. Any logged
+ * day gets the full category color instead; days with nothing keep the
+ * empty-cell fill.
  */
-export function loggedCellColor(colorVar: string, count: number): string {
-  return count > 0 ? `var(${colorVar})` : "var(--surface)";
+export function categoryCellColor(category: Category, count: number): string {
+  if (category.source === "github") {
+    return heatmapCellColor(category.colorVar, getHeatmapLevel(count));
+  }
+  return count > 0 ? `var(${category.colorVar})` : "var(--surface)";
 }
