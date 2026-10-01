@@ -127,16 +127,15 @@ created end-to-end from `/admin`.
 - Voice/labels: section headers are uppercase 11px letter-spaced micro-labels
  (`text-[11px] font-semibold uppercase tracking-[0.2em] text-text-muted`); stats and
  asides are italic serif. **No em dashes anywhere in copy.**
-- **Prose voice** (set by the 2026-09-08 voice pass, do not regress it): first
- person, casual opener, contractions. **Never self-deprecating** - confident and
- appreciative instead, especially about other people's work. Name the specific
- thing ("Snow by RHCP", not "guitar"). Real life belongs inside technical copy.
- Admitting mid-progress is encouraged and is not the same as putting himself
- down. Always invite questions. **Do not end paragraphs on a tidy italic
- aphorism** ("Poke around", "The graph keeps me honest", "Empty beats
- invented"): that tic is what made the copy read as generated, and all of it
- was removed. He is "Hejoric" in the nav and hero, "Jose Ricardo Herrera" in
- full on /about and in metadata.
+- **Copy voice.** First person, casual opener, contractions. **Not
+ self-deprecating** - confident and appreciative instead, especially about other
+ people's work. Name the specific thing ("Snow by RHCP", not "guitar"). Personal
+ detail belongs inside technical copy. Being honest about mid-progress is the
+ whole point of the trackers and is not the same as running myself down. Invite
+ questions. **Don't end paragraphs on a tidy italic aphorism** ("Poke around",
+ "The graph keeps me honest", "Empty beats invented"): that tic is what made the
+ old copy read like a template, and it is all gone. It's "Hejoric" in the nav
+ and hero, "Jose Ricardo Herrera" in full on /about and in metadata.
 - Layout containers use `mx-auto max-w-5xl px-6`. Interactive elements use
  `transition-opacity duration-150 hover:opacity-70`. Match these.
 - Heatmap geometry lives in `components/HeatmapGrid.tsx` (`CELL`/`GAP`); month
@@ -207,14 +206,16 @@ Done (2026-09-02), the dependency pass:
 - Held back on purpose: Tailwind 4 (v3 is on the `v3-lts` tag; v4 is a
  design-token migration), Prisma 7, TypeScript 7. None carry advisories.
 
-Done (2026-09-08), the voice pass:
-- Rewrote all 25 prose blocks on the site from AI-generated marketing register
- into the owner's own voice, interviewed rather than invented. See the
- conventions note above for the rules that came out of it.
+Done (2026-09-08), the copy rewrite:
+- Rewrote all 25 prose blocks. The old copy read like a landing page: every
+ paragraph closed on a neat one-liner, and the same two metrics were repeated
+ across three pages. See the copy voice note above for the conventions.
 - Fixed along the way: four em dashes in the hero greeting rotation (breaking
  the repo's own no-em-dash rule), the `Next.js 14` claim in the hejoric.com
  project description (repo is on 16), `30-year-old system` softened to
- `15+ year old` at the owner's request, and third-person route metadata.
+ `15+ year old`, and third-person route metadata.
+- Restored the red-shirt headshot icons, rebuilt properly (see the icon note
+ above).
 - Nav wordmark is now `Hejoric`, not `Jose R. Herrera`. Footer carries six
  socials (all `@hejoric`, no Facebook) in one group plus Email/Resume in a
  second; the socials are also in the JSON-LD `sameAs`.
