@@ -25,6 +25,8 @@ export default function AdminActivityForm() {
       category: form.get("category"),
       count: Number(form.get("count")),
       note: form.get("note") || null,
+      // Unchecked means private. The API also drops the flag when there is no note.
+      isPublic: form.get("isPublic") === "on",
     };
 
     const res = await fetch("/api/activity", {
@@ -86,6 +88,14 @@ export default function AdminActivityForm() {
         <div>
           <label className={adminLabel}>Note (optional)</label>
           <input type="text" name="note" className={adminInput} />
+          <label className="mt-2 flex items-center gap-2 text-[13px] text-text-secondary">
+            <input
+              type="checkbox"
+              name="isPublic"
+              className="h-3.5 w-3.5 accent-text-primary"
+            />
+            Public note, shown on the tracker
+          </label>
         </div>
       </div>
       <button type="submit" disabled={loading} className={adminButton}>

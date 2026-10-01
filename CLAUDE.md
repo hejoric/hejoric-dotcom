@@ -108,7 +108,7 @@ or every page becomes dynamic.
 
 - `Project` - title, description, `techStack[]`, githubUrl, liveUrl, `featured`, `order`. Homepage shows `featured: true` ordered by `order`, take 2. Keep `techStack` to 5 tags so the card's tech line stays on one row.
 - `BlogPost` - slug, title, excerpt, `content` (MDX string), `tags[]`, `published`, `publishedAt`. The renderer prefers DB `content` and falls back to `content/blog/<slug>.mdx` if such a file ever exists again.
-- `ActivityLog` - date, category, count, note; unique on `[date, category]`. Hand-logged categories only: `music`, `language`, `fitness`, `content` (shown as "Reading").
+- `ActivityLog` - date, category, count, note, `isPublic` (default `false`; only public notes are ever selected for pages, and `GET /api/activity` never returns notes); unique on `[date, category]`. Hand-logged categories only: `music`, `language`, `fitness`, `content` (shown as "Reading").
 - `User` - email, role.
 
 **Content is DB-driven.** Projects live in Postgres (`prisma/seed.ts` upserts
