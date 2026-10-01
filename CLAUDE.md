@@ -30,7 +30,9 @@ This is the constraint that shapes the tracker, and it must not be broken:
 
 - **Next.js 16** (App Router, Turbopack by default) + **React 19.2** + **TypeScript 5.9**
 - **Tailwind CSS v3** - hand-built, no component libraries
-- **Prisma 5** + **Neon** serverless Postgres
+- **Prisma 7** + **Neon** serverless Postgres, via `@prisma/adapter-neon`.
+  The CLI reads the direct URL from `prisma.config.ts`; the generated client
+  lives in `lib/generated/prisma` (gitignored, built by `postinstall`)
 - **NextAuth v5 (beta)** - Google OAuth, single-admin allowlist (`lib/auth.ts`)
 - **next-mdx-remote** + `rehype-pretty-code`/`shiki` for blog posts
 - **next-themes** - class-based dark/light, `defaultTheme="system"`

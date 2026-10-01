@@ -1,11 +1,11 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
 }
 
+// Connection URLs live in prisma.config.ts (CLI) and lib/prisma.ts (runtime).
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DATABASE_URL_UNPOOLED")
+  provider = "postgresql"
 }
 
 model User {

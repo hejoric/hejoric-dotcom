@@ -25,10 +25,14 @@ updates:
       # the client-only one cannot install at all (`prisma generate` dies with
       # "Cannot find module '@prisma/client/generator-build/index.js'"). This
       # group covers every update type so majors stay paired too.
+      # `@prisma/adapter-neon` moves with them: it ships in lockstep with the
+      # client and pins its Prisma internals to that exact version, and CI
+      # never runs a query that would catch a mismatched pair.
       prisma:
         patterns:
           - "prisma"
           - "@prisma/client"
+          - "@prisma/adapter-neon"
       npm-minor-and-patch:
         patterns:
           - "*"

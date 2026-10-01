@@ -25,7 +25,7 @@ Nothing in this repo generates, estimates, or seeds activity data.
 
 - **Next.js 16** (App Router, Turbopack) + **React 19** + **TypeScript**
 - **Tailwind CSS v3**, hand-built, no component libraries
-- **Prisma 5** + **Neon** serverless Postgres
+- **Prisma 7** (Neon driver adapter) + **Neon** serverless Postgres
 - **NextAuth v5** (Google OAuth, single-admin allowlist)
 - **next-mdx-remote** + `rehype-pretty-code` for post bodies
 - **next-themes** for class-based dark mode
@@ -67,8 +67,8 @@ Copy `.env.example` to `.env` and fill in:
 | `ADMIN_EMAIL` | The one address allowed to sign in or write |
 | `GITHUB_TOKEN` | Classic PAT with `read:user`, powers the Code heatmap |
 
-Neon needs both database URLs: pooled for the Prisma client, direct for
-migrations.
+Neon needs both database URLs: pooled for the Prisma client (`lib/prisma.ts`),
+direct for the Prisma CLI and migrations (`prisma.config.ts`).
 
 ## Commands
 
@@ -84,19 +84,21 @@ npx prisma studio    # browse the database
 
 ## Dependency maintenance
 
-`npm audit` reports zero vulnerabilities. Dependabot alerts and automated
-security fixes are enabled, and `.github/dependabot.yml` groups minor and patch
-bumps into one weekly PR while raising majors individually. CI
-(`.github/workflows/ci.yml`) gates every one.
+Nothing the deployed site loads at runtime has a known advisory. `npm audit`
+still reports four highs, all in `deepmerge-ts` and `mysql2`, which the Prisma
+7.10 CLI pins exactly. The CLI only runs at install, build, and migration time,
+never inside the serverless functions, and no 7.x release fixes them yet.
+
+Dependabot alerts and automated security fixes are enabled, and
+`.github/dependabot.yml` groups minor and patch bumps into one weekly PR while
+raising majors individually. CI (`.github/workflows/ci.yml`) gates every one.
 
 Two versions are held back deliberately:
 
 - **Tailwind 3.4.19** (tagged `v3-lts`). v4 moves theme configuration into CSS
   and changes some defaults, which is a design-system migration rather than a
   version bump.
-- **Prisma 5.22** and **TypeScript 5.9**, both advisory-free. Prisma 7 replaces
-  the client generator and changes import paths across every file that touches
-  the database.
+- **TypeScript 5.9**, advisory-free.
 
 `package.json` deliberately has no `"type"` field: Turbopack errors when the
 package is declared CommonJS while the TypeScript sources use ESM.
@@ -107,4 +109,6 @@ Vercel, deployed from `main`. Pages are statically rendered with a 300-second
 revalidate window, so entries added through `/admin` appear within five minutes
 without a redeploy.
 
-Requires Node 20.9+ (a Next 16 floor).
+Requires Node 22.12+ or 24+. Those are Prisma 7's supported lines above Node 20,
+and Node 20 is out because the Neon driver uses Node's built-in `WebSocket`,
+which Node 20 does not have.
