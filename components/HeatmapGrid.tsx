@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { MonthSegment } from "@/lib/calendar";
 import { getHeatmapLevel, heatmapCellColor } from "@/lib/categories";
 import { plural } from "@/lib/utils";
@@ -50,31 +50,29 @@ export default function HeatmapGrid({
   unitPlural,
 }: HeatmapGridProps) {
   const [tooltip, setTooltip] = useState<{
+    cell: HTMLElement;
     date: string;
-    count: number;
-    note?: string;
-    x: number;
-    y: number;
   } | null>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
 
-  function showTooltip(cell: HTMLElement, date: string, count: number) {
-    const rect = cell.getBoundingClientRect();
-    // The tooltip is centered on the cell, so keep its center far enough from
-    // the viewport edge that a long note never runs off a phone screen.
-    const half = TOOLTIP_MAX_WIDTH / 2 + 8;
-    const center = rect.left + rect.width / 2;
-    const x = Math.min(
-      Math.max(center, half),
-      Math.max(half, window.innerWidth - half)
-    );
-    setTooltip({ date, count, note: notes[date], x, y: rect.top });
-  }
-
-  // A tapped note stays open until the next tap elsewhere. Scrolling moves the
-  // cell out from under a fixed-position tooltip, so that closes it too.
-  const open = tooltip !== null;
-  useEffect(() => {
-    if (!open) return;
+  // A tapped note stays open until the next tap elsewhere. The tooltip is
+  // fixed-position, so it is re-placed over its cell on every scroll, and
+  // centered on the cell unless its own width would run it off the screen.
+  useLayoutEffect(() => {
+    if (!tooltip) return;
+    const place = () => {
+      const el = tooltipRef.current;
+      if (!el) return;
+      const rect = tooltip.cell.getBoundingClientRect();
+      const half = el.offsetWidth / 2 + 8;
+      const center = rect.left + rect.width / 2;
+      const x = Math.min(
+        Math.max(center, half),
+        Math.max(half, document.documentElement.clientWidth - half)
+      );
+      el.style.left = `${x}px`;
+      el.style.top = `${rect.top - 8}px`;
+    };
     const close = () => setTooltip(null);
     const closeOutside = (e: PointerEvent) => {
       if (!(e.target as Element).closest?.("[data-note-cell]")) close();
@@ -82,15 +80,18 @@ export default function HeatmapGrid({
     const closeOnEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
     };
-    window.addEventListener("scroll", close, true);
+    place();
+    window.addEventListener("scroll", place, true);
+    window.addEventListener("resize", place);
     document.addEventListener("pointerdown", closeOutside);
     document.addEventListener("keydown", closeOnEscape);
     return () => {
-      window.removeEventListener("scroll", close, true);
+      window.removeEventListener("scroll", place, true);
+      window.removeEventListener("resize", place);
       document.removeEventListener("pointerdown", closeOutside);
       document.removeEventListener("keydown", closeOnEscape);
     };
-  }, [open]);
+  }, [tooltip]);
 
   // The grid is wider than a phone, and the recent weeks are the ones worth
   // seeing, so start the scroller at its right edge instead of last October.
@@ -145,7 +146,7 @@ export default function HeatmapGrid({
                     );
                   }
                   const count = data[key] || 0;
-                  const note = notes[key];
+                  const dayNote = notes[key];
                   const cellStyle = {
                     width: CELL,
                     height: CELL,
@@ -156,14 +157,14 @@ export default function HeatmapGrid({
                     animationDelay: `${wi * 14 + di * 3}ms`,
                   };
 
-                  if (!note) {
+                  if (!dayNote) {
                     return (
                       <div
                         key={key}
                         className="heatmap-cell rounded-[3px]"
                         style={cellStyle}
                         onMouseEnter={(e) =>
-                          showTooltip(e.currentTarget, key, count)
+                          setTooltip({ cell: e.currentTarget, date: key })
                         }
                         onMouseLeave={() => setTooltip(null)}
                       />
@@ -177,16 +178,20 @@ export default function HeatmapGrid({
                       key={key}
                       type="button"
                       data-note-cell
-                      aria-label={`${key}: ${plural(count, unit, unitPlural)}. ${note}`}
+                      aria-label={`${key}: ${plural(count, unit, unitPlural)}. ${dayNote}`}
                       className="heatmap-cell flex items-center justify-center rounded-[3px] p-0"
                       style={cellStyle}
                       onMouseEnter={(e) =>
-                        showTooltip(e.currentTarget, key, count)
+                        setTooltip({ cell: e.currentTarget, date: key })
                       }
                       onMouseLeave={() => setTooltip(null)}
-                      onFocus={(e) => showTooltip(e.currentTarget, key, count)}
+                      onFocus={(e) =>
+                        setTooltip({ cell: e.currentTarget, date: key })
+                      }
                       onBlur={() => setTooltip(null)}
-                      onClick={(e) => showTooltip(e.currentTarget, key, count)}
+                      onClick={(e) =>
+                        setTooltip({ cell: e.currentTarget, date: key })
+                      }
                     >
                       <span
                         aria-hidden
@@ -222,18 +227,15 @@ export default function HeatmapGrid({
       </div>
       {tooltip && (
         <div
+          ref={tooltipRef}
           role="tooltip"
           className="pointer-events-none fixed z-50 w-max -translate-x-1/2 -translate-y-full rounded-md bg-text-primary px-2 py-1 text-xs text-background shadow-lg"
-          style={{
-            left: tooltip.x,
-            top: tooltip.y - 8,
-            maxWidth: TOOLTIP_MAX_WIDTH,
-          }}
+          style={{ maxWidth: TOOLTIP_MAX_WIDTH }}
         >
-          {tooltip.date}: {plural(tooltip.count, unit, unitPlural)}
-          {tooltip.note && (
+          {tooltip.date}: {plural(data[tooltip.date] || 0, unit, unitPlural)}
+          {notes[tooltip.date] && (
             <span className="mt-0.5 block font-display text-[14px] italic leading-[1.35]">
-              {tooltip.note}
+              {notes[tooltip.date]}
             </span>
           )}
         </div>
