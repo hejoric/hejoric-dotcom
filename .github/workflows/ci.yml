@@ -27,7 +27,8 @@ jobs:
 
       # `npm ci` runs the `prisma generate` postinstall, which reads the schema
       # only and needs no DATABASE_URL. A full `next build` would require a live
-      # Postgres DB + NextAuth secrets, so the PR gate is lint + type check.
+      # Postgres DB + NextAuth secrets, so the PR gate is lint, type check, and
+      # unit tests.
       - name: Install dependencies
         run: npm ci
 
@@ -36,3 +37,6 @@ jobs:
 
       - name: Type check
         run: npx tsc --noEmit
+
+      - name: Test
+        run: npm test

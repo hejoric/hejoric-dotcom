@@ -76,6 +76,7 @@ migrations.
 npm run dev          # dev server (Turbopack)
 npm run build        # production build
 npm run lint         # eslint . (`next lint` was removed in Next 16)
+npm test             # node:test unit tests in lib/ (Node 22.18+, for .ts imports)
 npm run db:push      # prisma db push
 npm run db:seed      # tsx prisma/seed.ts
 npx prisma studio    # browse the database
@@ -85,8 +86,8 @@ npx prisma studio    # browse the database
 
 `npm audit` reports zero vulnerabilities. Dependabot alerts and automated
 security fixes are enabled, and `.github/dependabot.yml` groups minor and patch
-bumps into one weekly PR while raising majors individually. CI (lint plus type
-check) gates every one.
+bumps into one weekly PR while raising majors individually. CI
+(`.github/workflows/ci.yml`) gates every one.
 
 Two versions are held back deliberately:
 

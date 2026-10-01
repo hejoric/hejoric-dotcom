@@ -4,8 +4,8 @@
 #
 # Minor and patch bumps arrive as one grouped PR per week so review stays cheap.
 # Major bumps are raised individually, because they are the ones that need a
-# migration (Next 16 removed `next lint`, for example). CI runs lint plus a type
-# check on every one of these PRs.
+# migration (Next 16 removed `next lint`, for example). CI
+# (.github/workflows/ci.yml) runs on every one of these PRs.
 version: 2
 updates:
   - package-ecosystem: npm

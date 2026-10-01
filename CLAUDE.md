@@ -43,6 +43,7 @@ This is the constraint that shapes the tracker, and it must not be broken:
 npm run dev          # local dev server
 npm run build        # production build
 npm run lint         # eslint . (not `next lint`, removed in Next 16)
+npm test             # node:test unit tests in lib/ (Node 22.18+, for .ts imports)
 npm run db:push      # prisma db push (sync schema)
 npm run db:seed      # tsx prisma/seed.ts (upsert the real project list)
 npx prisma studio    # browse/edit the DB directly
@@ -59,8 +60,8 @@ Checks in `scripts/` (see `scripts/README.md`):
 `check-drift.sh` is the guard against the September 2026 outage: `LatelyItem`
 had been dropped from the shared Neon DB while main still queried it, so `/`
 returned 500 in production while every local check stayed green. Run it before
-and after any `db:push`. CI cannot cover this, because the PR gate is only lint
-plus type check and never touches the database.
+and after any `db:push`. CI cannot cover this, because the PR gate is only lint,
+type check, and unit tests, and never touches the database.
 
 `.env` needs: `DATABASE_URL` (pooled, runtime), `DATABASE_URL_UNPOOLED`
 (direct, migrations), `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, `GOOGLE_CLIENT_ID`,
