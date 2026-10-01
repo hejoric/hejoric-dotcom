@@ -109,4 +109,6 @@ Vercel, deployed from `main`. Pages are statically rendered with a 300-second
 revalidate window, so entries added through `/admin` appear within five minutes
 without a redeploy.
 
-Requires Node 20.9+ (a Next 16 floor).
+Requires Node 22.12+ or 24+. Those are Prisma 7's supported lines above Node 20,
+and Node 20 is out because the Neon driver uses Node's built-in `WebSocket`,
+which Node 20 does not have.
