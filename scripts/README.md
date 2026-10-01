@@ -1,7 +1,7 @@
 # scripts
 
 Three checks that cover what CI does not. The PR gate in `.github/workflows/ci.yml`
-runs `eslint .` and `tsc --noEmit`, and nothing else: it never builds, never boots
+runs `eslint .`, `tsc --noEmit`, and `npm test`, and nothing else: it never builds, never boots
 the app, and never touches the database. Everything that has actually broken this
 site in production lived in that gap.
 
