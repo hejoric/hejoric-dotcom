@@ -84,10 +84,14 @@ npx prisma studio    # browse the database
 
 ## Dependency maintenance
 
-`npm audit` reports zero vulnerabilities. Dependabot alerts and automated
-security fixes are enabled, and `.github/dependabot.yml` groups minor and patch
-bumps into one weekly PR while raising majors individually. CI
-(`.github/workflows/ci.yml`) gates every one.
+Nothing the deployed site loads at runtime has a known advisory. `npm audit`
+still reports four highs, all in `deepmerge-ts` and `mysql2`, which the Prisma
+7.10 CLI pins exactly. The CLI only runs at install, build, and migration time,
+never inside the serverless functions, and no 7.x release fixes them yet.
+
+Dependabot alerts and automated security fixes are enabled, and
+`.github/dependabot.yml` groups minor and patch bumps into one weekly PR while
+raising majors individually. CI (`.github/workflows/ci.yml`) gates every one.
 
 Two versions are held back deliberately:
 
