@@ -167,13 +167,13 @@ created end-to-end from `/admin`.
 - **Phone logging:** `POST /api/activity` also accepts `Authorization: Bearer
   $ACTIVITY_TOKEN` (`lib/api-auth.ts`), because an Android home-screen shortcut
   cannot carry a Google session. The token is scoped to that one route, is
-  ignored below 24 characters, and still cannot write `code`. Body takes
-  `category` (required), `date`, `count` (1-1000), `note`, and `increment`:
-  `increment: true` adds to the day (a phone recording another session), while
-  omitting it replaces the day (what `/admin` does when editing). Callers should
-  always send `date` from the phone's local clock; the server normalizes to UTC
-  midnight, so an evening tap in Eastern would otherwise land on tomorrow.
-  Setup guide: `docs/phone-logging.md`. Remember Reading is stored as `content`.
+  ignored below 24 characters, and still cannot write `code`. Every body field
+  is listed in the setup guide, `docs/phone-logging.md`. The one that decides
+  how writes combine is `increment`: `increment: true` adds to the day (a phone
+  recording another session), while omitting it replaces the day (what `/admin`
+  does when editing). Callers should always send `date` from the phone's local
+  clock; the server normalizes to UTC midnight, so an evening tap in Eastern
+  would otherwise land on tomorrow. Remember Reading is stored as `content`.
 
 ## Current state
 
