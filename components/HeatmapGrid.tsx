@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { MonthSegment } from "@/lib/calendar";
 import { getHeatmapLevel, heatmapCellColor } from "@/lib/categories";
 import { plural } from "@/lib/utils";
@@ -15,6 +15,8 @@ const LEVELS = [0, 1, 2, 3, 4];
 interface HeatmapGridProps {
   label: string;
   colorVar: string;
+  /** Darker variant of `colorVar` for the label text (WCAG AA at 12px). */
+  inkVar: string;
   /** `YYYY-MM-DD` -> count. Days absent from the map are zero. */
   data: Record<string, number>;
   /** Week columns from buildCalendar(), Sunday-first. */
@@ -33,6 +35,7 @@ interface HeatmapGridProps {
 export default function HeatmapGrid({
   label,
   colorVar,
+  inkVar,
   data,
   weeks,
   months,
@@ -48,6 +51,14 @@ export default function HeatmapGrid({
     y: number;
   } | null>(null);
 
+  // The grid is wider than a phone, and the recent weeks are the ones worth
+  // seeing, so start the scroller at its right edge instead of last October.
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    if (scroller) scroller.scrollLeft = scroller.scrollWidth;
+  }, []);
+
   return (
     <div className="relative border-b border-border-soft py-7">
       <div className="mb-4 flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
@@ -58,7 +69,7 @@ export default function HeatmapGrid({
           />
           <span
             className="text-xs font-semibold uppercase tracking-[0.16em]"
-            style={{ color: `var(${colorVar})` }}
+            style={{ color: `var(${inkVar})` }}
           >
             {label}
           </span>
@@ -67,7 +78,7 @@ export default function HeatmapGrid({
           {stat}
         </span>
       </div>
-      <div className="overflow-x-auto pb-1">
+      <div ref={scrollerRef} className="overflow-x-auto pb-1">
         <div className="w-max">
           <div className="mb-1.5 flex">
             {months.map((segment, i) => (
