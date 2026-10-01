@@ -51,3 +51,12 @@ export function heatmapCellColor(colorVar: string, level: number): string {
   if (level === 0) return "var(--surface)";
   return `color-mix(in srgb, var(${colorVar}) ${LEVEL_PERCENTS[level]}%, var(--background))`;
 }
+
+/**
+ * Hand-logged categories happen about once a day, so the graded ramp above
+ * would paint a single log as a dim first step. Any logged day gets the full
+ * category color instead; days with nothing keep the empty-cell fill.
+ */
+export function loggedCellColor(colorVar: string, count: number): string {
+  return count > 0 ? `var(${colorVar})` : "var(--surface)";
+}

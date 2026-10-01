@@ -49,6 +49,7 @@ export default function HeatmapTracker({
             key={category.key}
             label={category.label}
             colorVar={category.colorVar}
+            graded={isGitHub}
             inkVar={category.inkVar}
             data={data}
             notes={notes[category.key]}

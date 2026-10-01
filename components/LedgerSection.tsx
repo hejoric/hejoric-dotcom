@@ -6,6 +6,7 @@ import {
   getHeatmapLevel,
   heatmapCellColor,
   listLabels,
+  loggedCellColor,
   type Category,
 } from "@/lib/categories";
 import { GITHUB_HREF } from "@/lib/links";
@@ -55,7 +56,8 @@ export default function LedgerSection({
           const data = days[category.key];
           const stats = computeStats(calendar.keys, data);
 
-          // One cell per week column: the week's total, ramped like a day cell.
+          // One cell per week column: the week's total. Code is ramped like a day cell,
+          // hand-logged rows are flat: any log that week is the full color.
           const weekly = calendar.weeks.map((week) =>
             week.reduce(
               (sum, key) => sum + (key ? data[key] || 0 : 0),
@@ -85,10 +87,13 @@ export default function LedgerSection({
                     key={i}
                     className="heatmap-cell aspect-[1/2.2] rounded-[2px] sm:aspect-[1/1.6] sm:rounded-[2.5px]"
                     style={{
-                      backgroundColor: heatmapCellColor(
-                        category.colorVar,
-                        getHeatmapLevel(count)
-                      ),
+                      backgroundColor:
+                        category.source === "github"
+                          ? heatmapCellColor(
+                              category.colorVar,
+                              getHeatmapLevel(count)
+                            )
+                          : loggedCellColor(category.colorVar, count),
                       animationDelay: `${i * 12}ms`,
                     }}
                   />

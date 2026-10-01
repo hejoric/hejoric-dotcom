@@ -2,7 +2,11 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { MonthSegment } from "@/lib/calendar";
-import { getHeatmapLevel, heatmapCellColor } from "@/lib/categories";
+import {
+  getHeatmapLevel,
+  heatmapCellColor,
+  loggedCellColor,
+} from "@/lib/categories";
 import { plural } from "@/lib/utils";
 
 // Day cell size and the gap between columns. Month labels are sized off the
@@ -17,6 +21,11 @@ const TOOLTIP_MAX_WIDTH = 240;
 interface HeatmapGridProps {
   label: string;
   colorVar: string;
+  /**
+   * Graded Less/More scale (Code, many contributions a day) or the flat
+   * logged/not-logged treatment used for hand-logged categories.
+   */
+  graded: boolean;
   /** Darker variant of `colorVar` for the label text (WCAG AA at 12px). */
   inkVar: string;
   /** `YYYY-MM-DD` -> count. Days absent from the map are zero. */
@@ -39,6 +48,7 @@ interface HeatmapGridProps {
 export default function HeatmapGrid({
   label,
   colorVar,
+  graded,
   inkVar,
   data,
   notes = {},
@@ -155,10 +165,14 @@ export default function HeatmapGrid({
                   const cellStyle = {
                     width: CELL,
                     height: CELL,
-                    backgroundColor: heatmapCellColor(
-                      colorVar,
-                      getHeatmapLevel(count)
-                    ),
+                    backgroundColor: graded
+                      ? heatmapCellColor(colorVar, getHeatmapLevel(count))
+                      : loggedCellColor(colorVar, count),
+                    // A second log in a day gets a quiet inner ring.
+                    boxShadow:
+                      !graded && count >= 2
+                        ? "inset 0 0 0 2px color-mix(in srgb, var(--background) 45%, transparent)"
+                        : undefined,
                     animationDelay: `${wi * 14 + di * 3}ms`,
                   };
 
@@ -200,7 +214,7 @@ export default function HeatmapGrid({
                     >
                       <span
                         aria-hidden
-                        className="h-1 w-1 rounded-full bg-text-primary opacity-80"
+                        className="h-1 w-1 rounded-full bg-text-primary opacity-80 dark:bg-background dark:opacity-90"
                       />
                     </button>
                   );
@@ -215,19 +229,37 @@ export default function HeatmapGrid({
           {note}
         </p>
         <div className="hidden items-center gap-1.5 sm:flex" aria-hidden>
-          <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-text-muted">
-            Less
-          </span>
-          {LEVELS.map((level) => (
-            <span
-              key={level}
-              className="h-[10px] w-[10px] rounded-[2.5px]"
-              style={{ backgroundColor: heatmapCellColor(colorVar, level) }}
-            />
-          ))}
-          <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-text-muted">
-            More
-          </span>
+          {graded ? (
+            <>
+              <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-text-muted">
+                Less
+              </span>
+              {LEVELS.map((level) => (
+                <span
+                  key={level}
+                  className="h-[10px] w-[10px] rounded-[2.5px]"
+                  style={{ backgroundColor: heatmapCellColor(colorVar, level) }}
+                />
+              ))}
+              <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-text-muted">
+                More
+              </span>
+            </>
+          ) : (
+            <>
+              <span
+                className="h-[10px] w-[10px] rounded-[2.5px]"
+                style={{ backgroundColor: loggedCellColor(colorVar, 0) }}
+              />
+              <span
+                className="h-[10px] w-[10px] rounded-[2.5px]"
+                style={{ backgroundColor: loggedCellColor(colorVar, 1) }}
+              />
+              <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-text-muted">
+                Logged
+              </span>
+            </>
+          )}
         </div>
       </div>
       {tooltip && (
