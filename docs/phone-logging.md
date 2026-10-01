@@ -94,9 +94,17 @@ Long-press each shortcut to place it on the home screen.
 | `"increment": true` | Adds to whatever today already has. Two gym sessions in a day gives that square a count of 2. This is what you want on a phone. |
 | omitted | Replaces the count for that day. This is what `/admin` does, because editing a day should overwrite it, not stack on it. |
 
-Other optional fields: `count` (a whole number from 1 to 1000, defaults to 1)
-and `note` (free text, shown in the heatmap tooltip). In increment mode a note
-is only written when you send one, so repeat taps do not wipe it.
+Other optional fields: `count` (a whole number from 1 to 1000, defaults to 1),
+`note` (free text), and `isPublic`. A note is private unless the body carries
+`"isPublic": true` (the JSON boolean, not the string `"true"`). Public notes
+show in the heatmap tooltip on `/tracker` and in its recent notes list; private
+notes are stored but never rendered anywhere public. In increment mode the note
+and its `isPublic` flag are only written when you send a note, so repeat taps
+neither wipe a note nor change who can see it.
+
+```json
+{ "category": "music", "date": "{{today}}", "increment": true, "note": "Snow by RHCP, 30 min", "isPublic": true }
+```
 
 ## Checking it worked
 

@@ -44,12 +44,16 @@ model BlogPost {
 // Hand-logged activity for the non-code tracker categories (music, language,
 // fitness, reading). Code is never stored here: it is fetched live from the
 // GitHub contribution API in lib/github.ts, so there is one source of truth.
+//
+// `note` is private unless `isPublic` is true: only public notes are ever
+// selected by the page loaders in lib/activity.ts.
 model ActivityLog {
   id        String   @id @default(cuid())
   date      DateTime
   category  String
   count     Int      @default(1)
   note      String?
+  isPublic  Boolean  @default(false)
   createdAt DateTime @default(now())
 
   @@unique([date, category])

@@ -108,7 +108,7 @@ or every page becomes dynamic.
 
 - `Project` - title, description, `techStack[]`, githubUrl, liveUrl, `featured`, `order`. Homepage shows `featured: true` ordered by `order`, take 2. Keep `techStack` to 5 tags so the card's tech line stays on one row.
 - `BlogPost` - slug, title, excerpt, `content` (MDX string), `tags[]`, `published`, `publishedAt`. The renderer prefers DB `content` and falls back to `content/blog/<slug>.mdx` if such a file ever exists again.
-- `ActivityLog` - date, category, count, note; unique on `[date, category]`. Hand-logged categories only: `music`, `language`, `fitness`, `content` (shown as "Reading").
+- `ActivityLog` - date, category, count, note, `isPublic` (default `false`; only public notes are ever selected for pages, and `GET /api/activity` never returns notes); unique on `[date, category]`. Hand-logged categories only: `music`, `language`, `fitness`, `content` (shown as "Reading").
 - `User` - email, role.
 
 **Content is DB-driven.** Projects live in Postgres (`prisma/seed.ts` upserts
@@ -167,13 +167,13 @@ created end-to-end from `/admin`.
 - **Phone logging:** `POST /api/activity` also accepts `Authorization: Bearer
   $ACTIVITY_TOKEN` (`lib/api-auth.ts`), because an Android home-screen shortcut
   cannot carry a Google session. The token is scoped to that one route, is
-  ignored below 24 characters, and still cannot write `code`. Body takes
-  `category` (required), `date`, `count` (1-1000), `note`, and `increment`:
-  `increment: true` adds to the day (a phone recording another session), while
-  omitting it replaces the day (what `/admin` does when editing). Callers should
-  always send `date` from the phone's local clock; the server normalizes to UTC
-  midnight, so an evening tap in Eastern would otherwise land on tomorrow.
-  Setup guide: `docs/phone-logging.md`. Remember Reading is stored as `content`.
+  ignored below 24 characters, and still cannot write `code`. Every body field
+  is listed in the setup guide, `docs/phone-logging.md`. The one that decides
+  how writes combine is `increment`: `increment: true` adds to the day (a phone
+  recording another session), while omitting it replaces the day (what `/admin`
+  does when editing). Callers should always send `date` from the phone's local
+  clock; the server normalizes to UTC midnight, so an evening tap in Eastern
+  would otherwise land on tomorrow. Remember Reading is stored as `content`.
 
 ## Current state
 
