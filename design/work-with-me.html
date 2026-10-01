@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Work with me · Hejoric</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --background:#faf8f4;--surface:#efece4;--text-primary:#1a1917;--text-secondary:#5c574d;
+  /* proposed: muted darkened from #8a8478 (3.5:1) to #6f6a5f (5.0:1) */
+  --text-muted:#6f6a5f;--border:rgba(26,25,23,.12);--border-soft:rgba(26,25,23,.08);
+  --code:#2f6fb0;--music:#d8593f;--language:#1f9e75;--fitness:#e0952a;--reading:#6e5ad6;
+  --btn-bg:#1a1917;--btn-fg:#faf8f4;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --background:#1a1917;--surface:#262420;--text-primary:#faf8f4;--text-secondary:rgba(250,248,244,.66);
+  --text-muted:rgba(250,248,244,.5);--border:rgba(250,248,244,.12);--border-soft:rgba(250,248,244,.07);
+  --code:#638fc3;--music:#e0826e;--language:#57b697;--fitness:#e8af5f;--reading:#9284de;
+  --btn-bg:#faf8f4;--btn-fg:#1a1917;}}
+:root[data-theme="dark"]{
+  --background:#1a1917;--surface:#262420;--text-primary:#faf8f4;--text-secondary:rgba(250,248,244,.66);
+  --text-muted:rgba(250,248,244,.5);--border:rgba(250,248,244,.12);--border-soft:rgba(250,248,244,.07);
+  --code:#638fc3;--music:#e0826e;--language:#57b697;--fitness:#e8af5f;--reading:#9284de;
+  --btn-bg:#faf8f4;--btn-fg:#1a1917;}
+*{box-sizing:border-box;margin:0}
+body{background:var(--background);color:var(--text-primary);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible{outline:2px solid var(--code);outline-offset:3px;border-radius:3px}
+.wrap{max-width:64rem;margin:0 auto;padding:0 24px}
+.label{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted)}
+.serif{font-family:"Instrument Serif",Georgia,serif}
+.link{font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-secondary);transition:opacity .15s}
+.link:hover{opacity:.7}
+.skip{position:absolute;left:-999px;top:8px;background:var(--btn-bg);color:var(--btn-fg);padding:8px 12px;border-radius:4px;z-index:99}
+.skip:focus{left:12px}
+
+/* nav */
+nav{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--border);background:color-mix(in srgb,var(--background) 85%,transparent);backdrop-filter:blur(6px)}
+nav .wrap{height:64px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+.mark{display:grid;grid-template-columns:7px 7px;gap:2px}.mark i{width:7px;height:7px;border-radius:2px}
+.navlinks{display:flex;align-items:center;gap:28px;font-size:14px;color:var(--text-secondary)}
+.navlinks a:hover{color:var(--text-primary)}
+.btn{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:6px;font-size:13px;font-weight:600;letter-spacing:.01em;transition:opacity .15s;white-space:nowrap}
+.btn:hover{opacity:.8}
+.btn-solid{background:var(--btn-bg);color:var(--btn-fg)}
+.btn-line{border:1px solid color-mix(in srgb,var(--text-primary) 28%,transparent);color:var(--text-primary)}
+.btn-sm{height:34px;padding:0 14px;font-size:12.5px}
+.nav-text{display:inline}
+@media (max-width:640px){.nav-text{display:none}.navlinks{gap:18px}}
+
+/* hero */
+.hero{padding:64px 0 40px;display:grid;gap:40px;grid-template-columns:minmax(0,1fr) 250px;align-items:start}
+.status{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:500;color:var(--text-secondary);border:1px solid var(--border);border-radius:999px;padding:6px 12px 6px 10px}
+.status .dot{width:8px;height:8px;border-radius:50%;background:var(--language);box-shadow:0 0 0 3px color-mix(in srgb,var(--language) 22%,transparent)}
+.greet{display:block;margin-top:26px;font-size:30px;line-height:1.1;font-style:italic;color:var(--language);height:1.1em;overflow:hidden}
+.greet span{display:block;animation:rot 10s cubic-bezier(.7,0,.3,1) infinite}
+.greet b{display:block;height:1.1em;font-weight:400}
+@keyframes rot{0%,16%{transform:translateY(0)}22%,41%{transform:translateY(-20%)}47%,66%{transform:translateY(-40%)}72%,91%{transform:translateY(-60%)}97%,100%{transform:translateY(-80%)}}
+@media (prefers-reduced-motion:reduce){.greet span{animation:none}}
+h1{font-size:64px;line-height:1.02;letter-spacing:-.01em;font-weight:400;margin-top:6px}
+h1 small{display:block;font-size:.42em;letter-spacing:0;color:var(--text-secondary);margin-top:10px;font-style:italic}
+.lede{margin-top:22px;max-width:560px;font-size:17px;line-height:1.7;color:var(--text-secondary)}
+.lede strong{color:var(--text-primary);font-weight:500}
+.ctas{margin-top:28px;display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.ctas .quiet{display:flex;gap:18px;margin-left:8px}
+figure img{display:block;width:100%;height:312px;object-fit:cover;border-radius:4px;filter:contrast(1.04)}
+figcaption{margin-top:12px;font-size:14.5px;font-style:italic;color:var(--text-muted)}
+
+/* proof strip */
+.proof{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.proof>div{padding:20px 20px 22px 0}
+.proof>div+div{padding-left:20px;border-left:1px solid var(--border-soft)}
+.proof .n{font-size:30px;line-height:1.1}
+.proof .n em{color:var(--text-muted);font-size:.7em}
+.proof p{margin-top:6px;font-size:13px;line-height:1.5;color:var(--text-secondary)}
+
+/* work */
+.sec{padding-top:64px}
+.sechead{display:flex;justify-content:space-between;align-items:baseline}
+h2.label{font-size:11px}
+.work{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.card{border:1px solid var(--border);border-radius:8px;padding:28px 28px 26px;display:flex;flex-direction:column;transition:border-color .15s}
+.card:hover{border-color:color-mix(in srgb,var(--text-primary) 30%,transparent)}
+.meta{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--code)}
+.card h3{margin-top:12px;font-size:30px;line-height:1.12;font-weight:400}
+.card .out{margin-top:10px;font-size:15.5px;line-height:1.6;color:var(--text-primary)}
+.card ul{margin-top:14px;padding:0;list-style:none;display:grid;gap:8px}
+.card li{position:relative;padding-left:16px;font-size:14px;line-height:1.55;color:var(--text-secondary)}
+.card li:before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:1.5px;background:color-mix(in srgb,var(--code) 55%,var(--background))}
+.chips{margin-top:18px;display:flex;flex-wrap:wrap;gap:6px}
+.chips span{font-size:11.5px;font-weight:500;color:var(--text-secondary);background:var(--surface);border-radius:4px;padding:4px 8px}
+.card .foot{margin-top:auto;padding-top:20px;display:flex;align-items:center;gap:22px}
+.note{font-size:12.5px;font-style:italic;color:var(--text-muted)}
+.also{margin-top:28px;border-top:1px solid var(--border)}
+.also a{display:grid;grid-template-columns:170px 1fr auto;gap:20px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--border-soft);transition:opacity .15s}
+.also a:hover{opacity:.7}
+.also b{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:22px}
+.also span{font-size:14px;color:var(--text-secondary);line-height:1.5}
+.also i{font-style:normal;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+
+/* ledger */
+.ledger{margin-top:14px;border-top:1px solid var(--border);border-bottom:1px solid var(--border-soft);display:grid;grid-template-columns:90px 1fr 150px;gap:20px;align-items:center;padding:16px 0}
+.ledger .cat{font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--code)}
+.weeks{display:grid;grid-template-columns:repeat(53,1fr);gap:3px}
+.weeks i{aspect-ratio:1;border-radius:2.5px;background:var(--surface)}
+.weeks i.l1{background:color-mix(in srgb,var(--code) 25%,var(--background))}
+.weeks i.l2{background:color-mix(in srgb,var(--code) 48%,var(--background))}
+.weeks i.l3{background:color-mix(in srgb,var(--code) 72%,var(--background))}
+.weeks i.l4{background:color-mix(in srgb,var(--code) 95%,var(--background))}
+.ledger .stat{text-align:right;font-size:15px;font-style:italic;color:var(--text-muted)}
+.ledger-foot{margin-top:14px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:baseline}
+.ledger-foot .serif{font-size:15px;font-style:italic;color:var(--text-muted)}
+
+/* contact band */
+.contact{margin-top:72px;border-top:1px solid var(--border);padding:56px 0;text-align:center}
+.contact p{max-width:640px;margin:0 auto;font-size:30px;line-height:1.35}
+.contact p em{color:var(--text-secondary)}
+.contact .ctas{justify-content:center}
+footer{border-top:1px solid var(--border)}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:26px;padding-bottom:26px;flex-wrap:wrap}
+footer .row{display:flex;flex-wrap:wrap;gap:10px 20px;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--text-secondary)}
+
+@media (max-width:1023px){
+  .hero{grid-template-columns:minmax(0,1fr) 200px;gap:32px}
+  h1{font-size:52px}
+  figure img{height:250px}
+}
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr;padding-top:36px;gap:0}
+  .hero figure{display:none}
+  .greet{font-size:24px;margin-top:22px}
+  h1{font-size:44px}
+  .lede{font-size:16px}
+  .ctas .btn{flex:1 1 calc(50% - 6px);justify-content:center}
+  .ctas .quiet{margin-left:0;width:100%;justify-content:center;padding-top:6px}
+  .proof{grid-template-columns:1fr 1fr}
+  .proof>div{padding:18px 14px 18px 0!important;border-left:0!important}
+  .proof>div:nth-child(even){padding-left:16px!important;border-left:1px solid var(--border-soft)!important}
+  .proof>div:nth-child(-n+2){border-bottom:1px solid var(--border-soft)}
+  .proof .n{font-size:26px}
+  .work{grid-template-columns:1fr}
+  .card{padding:22px 20px}
+  .card h3{font-size:27px}
+  .also a{grid-template-columns:1fr auto;gap:4px 16px}
+  .also span{grid-column:1/-1;grid-row:2}
+  .ledger{grid-template-columns:1fr auto;gap:10px 12px}
+  .ledger .weeks{grid-column:1/-1;grid-row:2;gap:2px}
+  .ledger .weeks i{aspect-ratio:1/2.4;border-radius:1.5px}
+  .ledger .stat{grid-row:1;grid-column:2}
+  .contact p{font-size:24px}
+  .sec{padding-top:52px}
+  /* phone photo: small avatar beside the status line instead of a full-bleed block */
+  .avatar{display:block!important}
+}
+.idrow{display:flex;align-items:center;gap:12px}
+.avatar{display:none;flex:none;width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:50% 30%}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav aria-label="Primary">
+  <div class="wrap">
+    <a class="brand" href="home-on-the-web.html"><span class="mark" aria-hidden="true"><i style="background:var(--code)"></i><i style="background:var(--music)"></i><i style="background:var(--fitness)"></i><i style="background:var(--language)"></i></span>Hejoric</a>
+    <div class="navlinks">
+      <a class="nav-text" href="home-on-the-web.html">Home</a>
+      <a class="nav-text" href="#work">Projects</a>
+      <a href="#">About</a>
+      <a class="btn btn-line btn-sm" href="#">Resume</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main" class="wrap">
+  <section class="hero">
+    <div>
+      <div class="idrow"><img class="avatar" src="../public/jose-lawn.jpg" alt="">
+      <span class="status"><span class="dot" aria-hidden="true"></span>UVA CS, class of 2027 · Open to new-grad software engineering roles, 2027</span></div>
+      <span class="label" style="display:block;margin-top:26px">Work with me</span>
+      <h1 class="serif">I'm Jose Ricardo Herrera.<small>Online I go by Hejoric.</small></h1>
+      <p class="lede">I build <strong>usable niche tools for real organizations</strong> and run them in production: a nonprofit's site and infrastructure, a retail store's ERP. That means as much time on deploys, data migrations, and DNS as on features, and I'd take that over the other way around.</p>
+      <div class="ctas">
+        <a class="btn btn-solid" href="#">Resume (PDF)</a>
+        <a class="btn btn-line" href="#">Email me</a>
+        <span class="quiet"><a class="link" href="#">GitHub ↗</a><a class="link" href="#">LinkedIn ↗</a></span>
+      </div>
+    </div>
+    <figure>
+      <img src="../public/jose-lawn.jpg" alt="Jose on the Lawn at UVA">
+      <figcaption class="serif">On the Lawn at UVA. Fourth year, class of 2027.</figcaption>
+    </figure>
+  </section>
+
+  <section class="proof" aria-label="Highlights">
+    <div><div class="n serif">$178 <em>→</em> $12<em>/yr</em></div><p>Hosting cost for a 501(c)(3), migrated with zero downtime</p></div>
+    <div><div class="n serif">500+</div><p>Products migrated into a self-hosted Odoo ERP</p></div>
+    <div><div class="n serif">310</div><p>GitHub contributions in the last 12 months, live</p></div>
+    <div><div class="n serif">AWS</div><p>Certified Cloud Practitioner</p></div>
+  </section>
+
+  <section class="sec" id="work">
+    <div class="sechead"><h2 class="label">Selected work</h2><a class="link" href="#">All projects →</a></div>
+    <div class="work">
+      <article class="card">
+        <span class="meta">Technical lead · volunteer · Jul 2026 - now</span>
+        <h3 class="serif">Loudoun Nature Conservation Project</h3>
+        <p class="out">Cut a nonprofit's hosting from $178 to about $12 a year by rebuilding its site and moving everything to Cloudflare.</p>
+        <ul>
+          <li>Managed WordPress rebuilt as a static Astro site on Cloudflare Pages</li>
+          <li>Hosting, DNS, and registrar moved off Bluehost with zero downtime</li>
+          <li>Keystatic CMS so staff edit in the browser, every change still version-controlled</li>
+        </ul>
+        <div class="chips"><span>Astro</span><span>TypeScript</span><span>Tailwind</span><span>Cloudflare</span><span>Keystatic</span></div>
+        <div class="foot"><a class="btn btn-solid btn-sm" href="#">Live site ↗</a><a class="link" href="#">GitHub ↗</a></div>
+      </article>
+      <article class="card">
+        <span class="meta">Client deployment · cutover Fall 2026</span>
+        <h3 class="serif">Retail ERP Deployment</h3>
+        <p class="out">Replacing a retail business's 15+ year old Monica 9 system with a self-hosted Odoo 18 stack.</p>
+        <ul>
+          <li>Odoo in Docker on a Linux VPS behind a Cloudflare Tunnel</li>
+          <li>Custom Python modules written against the ORM's PostgreSQL schema</li>
+          <li>500+ products migrated; POS, multi-location inventory, role-based permissions</li>
+        </ul>
+        <div class="chips"><span>Odoo</span><span>Python</span><span>Docker</span><span>PostgreSQL</span><span>Linux</span></div>
+        <div class="foot"><span class="note serif">Private client work. Happy to walk through it in an interview.</span></div>
+      </article>
+    </div>
+    <div class="also">
+      <a href="#"><b>hejoric.com</b><span>This site. Next.js 16 on Vercel, Prisma and Neon, live GitHub contribution data.</span><i>Live ↗</i></a>
+      <a href="#"><b>TSA Helper</b><span>Owned deployment and DevOps on a 5-person Agile team shipping a Django platform to Heroku.</span><i>Details →</i></a>
+    </div>
+  </section>
+
+  <section class="sec" id="ledger">
+    <div class="sechead"><h2 class="label">The Ledger</h2><span class="label">Last 12 months</span></div>
+    <div class="ledger">
+      <span class="cat">Code</span>
+      <div class="weeks" id="weeks" role="img" aria-label="Weekly GitHub contributions over the last 12 months, 310 in total"></div>
+      <span class="stat serif">310 contributions</span>
+    </div>
+    <div class="ledger-foot">
+      <a class="link" href="#">See the full tracker →</a>
+      <span class="serif">Music, languages, the gym, and reading live on the tracker, hand-logged.</span>
+    </div>
+  </section>
+
+  <section class="contact">
+    <p class="serif">Hiring for 2027? I'd like to hear about it. <em>Say hi, I like the questions.</em></p>
+    <div class="ctas"><a class="btn btn-solid" href="#">Email me</a><a class="btn btn-line" href="#">Resume (PDF)</a></div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="label">© 2026 Jose Ricardo Herrera</span>
+    <div class="row"><a href="#">GitHub</a><a href="#">LinkedIn</a><a href="#">YouTube</a><a href="#">Instagram</a><a href="#">TikTok</a><a href="#">X</a></div>
+  </div>
+</footer>
+<script>
+// Real weekly levels scraped from the live homepage Ledger on 2026-09-27 (oldest to newest).
+const levels="20100020000000002104400034420000000212041444310244443";
+document.getElementById("weeks").innerHTML=[...levels].map(l=>`<i class="l${l}"></i>`).join("").replaceAll(' class="l0"',"");
+</script>
+</body>
+</html>

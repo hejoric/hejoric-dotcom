@@ -34,10 +34,11 @@ Nothing in this repo generates, estimates, or seeds activity data.
 
 | Route | What it does |
 | --- | --- |
-| `/` | Hero, the Ledger (52-week strip), Selected Work, About teaser |
+| `/` | Hero with follow links, Now, the Ledger (52-week strip), photos, latest YouTube video, featured projects |
 | `/projects` | Every project from Postgres, filterable by tech tag client-side |
 | `/tracker` | Full-year heatmaps: GitHub-backed Code plus any hand-logged category |
 | `/about` | Bio, experience, education, skills, resume link |
+| `/work` | Work with me: availability, resume, proof numbers, projects |
 | `/blog`, `/blog/[slug]` | Post list from Postgres; body is MDX stored in the DB |
 | `/admin` | Google-gated forms to log activity and publish projects and posts |
 | `/api/activity`, `/api/projects` | `GET` public, `POST` admin only |

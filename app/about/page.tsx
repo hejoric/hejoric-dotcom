@@ -146,15 +146,16 @@ export default function AboutPage() {
         </div>
         <div className="hidden sm:block">
           <Image
-            src="/headshot.png"
-            alt="Jose Ricardo Herrera"
-            width={300}
-            height={360}
+            src="/jose-gym.jpg"
+            alt="Jose at the gym"
+            width={800}
+            height={1000}
             className="h-[360px] w-[300px] rounded object-cover contrast-[1.04]"
             priority
           />
           <div className="mt-3.5 font-display text-[14.5px] italic text-text-muted">
-            Charlottesville, VA
+            The one I love. On and off this fall, so I&apos;ve been filling the
+            gaps with salsa and bachata.
           </div>
         </div>
       </div>
@@ -256,17 +257,6 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
-      </section>
-
-      <section className="mt-11">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-text-muted">
-          Now
-        </span>
-        <p className="mt-3.5 max-w-[640px] font-display text-[22px] italic leading-[1.5] text-text-primary">
-          Getting the retail ERP ready for its production cutover this fall,
-          Korean 101 and chapter 1 of Integrated Korean, learning Snow by RHCP,
-          and working on getting the gym back to consistent.
-        </p>
       </section>
     </div>
   );

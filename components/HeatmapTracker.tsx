@@ -40,6 +40,7 @@ export default function HeatmapTracker({
             key={category.key}
             label={category.label}
             colorVar={category.colorVar}
+            inkVar={category.inkVar}
             data={data}
             weeks={calendar.weeks}
             months={calendar.months}
