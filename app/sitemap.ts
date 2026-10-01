@@ -19,6 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: "https://hejoric.com/projects", lastModified: new Date() },
     { url: "https://hejoric.com/tracker", lastModified: new Date() },
     { url: "https://hejoric.com/about", lastModified: new Date() },
+    { url: "https://hejoric.com/work", lastModified: new Date() },
     // /blog is only worth indexing once something is published there.
     ...(posts.length > 0
       ? [{ url: "https://hejoric.com/blog", lastModified: new Date() }]

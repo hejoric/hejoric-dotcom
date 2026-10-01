@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Direction C · Home on the web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--background:#faf8f4;--surface:#efece4;--text-primary:#1a1917;--text-secondary:#5c574d;--text-muted:#6f6a5f;--border:rgba(26,25,23,.12);--border-soft:rgba(26,25,23,.08);
+--code:#2f6fb0;--music:#d8593f;--language:#1f9e75;--fitness:#e0952a;--reading:#6e5ad6;--music-ink:#b8452d;--language-ink:#177a5a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--background:#1a1917;--surface:#262420;--text-primary:#faf8f4;--text-secondary:rgba(250,248,244,.66);--text-muted:rgba(250,248,244,.5);--border:rgba(250,248,244,.12);--border-soft:rgba(250,248,244,.07);--code:#638fc3;--music:#e0826e;--language:#57b697;--fitness:#e8af5f;--reading:#9284de;--music-ink:#e0826e;--language-ink:#57b697}}
+:root[data-theme="dark"]{--background:#1a1917;--surface:#262420;--text-primary:#faf8f4;--text-secondary:rgba(250,248,244,.66);--text-muted:rgba(250,248,244,.5);--border:rgba(250,248,244,.12);--border-soft:rgba(250,248,244,.07);--code:#638fc3;--music:#e0826e;--language:#57b697;--fitness:#e8af5f;--reading:#9284de;--music-ink:#e0826e;--language-ink:#57b697}
+*{box-sizing:border-box;margin:0}
+body{background:var(--background);color:var(--text-primary);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+a:focus-visible{outline:2px solid var(--code);outline-offset:3px;border-radius:3px}
+.wrap{max-width:64rem;margin:0 auto;padding:0 24px}
+.serif{font-family:"Instrument Serif",Georgia,serif;font-weight:400}
+.label{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted)}
+.link{font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-secondary);transition:opacity .15s}
+.link:hover{opacity:.7}
+.skip{position:absolute;left:-999px;top:8px;background:var(--text-primary);color:var(--background);padding:8px 12px;border-radius:4px;z-index:99}.skip:focus{left:12px}
+nav{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--border);background:color-mix(in srgb,var(--background) 85%,transparent);backdrop-filter:blur(6px)}
+nav .wrap{height:64px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+.mark{display:grid;grid-template-columns:7px 7px;gap:2px}.mark i{width:7px;height:7px;border-radius:2px}
+.nl{display:flex;align-items:center;gap:26px;font-size:14px;color:var(--text-secondary)}
+.nl a:hover{color:var(--text-primary)}
+.nl .work{font-size:13px;color:var(--text-muted);border-left:1px solid var(--border);padding-left:22px}
+
+.hero{padding:60px 0 8px;display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:48px;align-items:start}
+h1{font-size:64px;line-height:1.06;letter-spacing:-.01em}
+.greet{display:block;height:1.2em;overflow:hidden;font-style:italic;color:var(--language)}
+.greet span{display:flex;flex-direction:column;animation:rot 10s cubic-bezier(.7,0,.3,1) infinite}
+.greet b{display:block;height:1.4em;line-height:1.1em;font-weight:400}
+@keyframes rot{0%,16%{transform:translateY(0)}22%,41%{transform:translateY(-20%)}47%,66%{transform:translateY(-40%)}72%,91%{transform:translateY(-60%)}97%,100%{transform:translateY(-80%)}}
+@media (prefers-reduced-motion:reduce){.greet span{animation:none}}
+.lede{margin-top:22px;max-width:590px;font-size:17px;line-height:1.72;color:var(--text-secondary)}
+.lede a{color:var(--text-primary);border-bottom:1px solid color-mix(in srgb,var(--text-primary) 35%,transparent)}
+.follow{margin-top:24px;display:flex;flex-wrap:wrap;gap:8px}
+.follow a{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border:1px solid var(--border);border-radius:999px;font-size:13px;font-weight:500;transition:border-color .15s}
+.follow a:hover{border-color:color-mix(in srgb,var(--text-primary) 35%,transparent)}
+.follow i{width:7px;height:7px;border-radius:2px}
+figure img{display:block;width:100%;object-fit:cover;border-radius:4px;filter:contrast(1.04)}
+.hero figure img{height:312px}
+figcaption{margin-top:10px;font-size:14px;font-style:italic;color:var(--text-muted);line-height:1.4}
+
+/* Now */
+.now{margin-top:44px;display:grid;grid-template-columns:110px minmax(0,1fr);gap:24px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:22px 0}
+.now p{font-size:24px;line-height:1.45;font-style:italic}
+.now .tags{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+
+section{padding-top:60px}
+.sh{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+h2.label{font-size:11px}
+
+/* Ledger, the centerpiece */
+.ledger-intro{margin-top:10px;max-width:640px;font-size:15.5px;line-height:1.65;color:var(--text-secondary)}
+.rows{margin-top:18px;border-top:1px solid var(--border)}
+.row{display:grid;grid-template-columns:100px minmax(0,1fr) 150px;gap:22px;align-items:center;padding:18px 0;border-bottom:1px solid var(--border-soft)}
+.cat{font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.weeks{display:grid;grid-template-columns:repeat(53,minmax(0,1fr));gap:3px}
+.weeks i{aspect-ratio:1/1.6;border-radius:2.5px;background:var(--surface)}
+.stat{text-align:right;font-size:15px;font-style:italic;color:var(--text-muted)}
+.months{grid-column:2;display:flex;justify-content:space-between;font-size:10.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);padding-top:8px}
+.lfoot{margin-top:14px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.lfoot .serif{font-size:15px;font-style:italic;color:var(--text-muted)}
+
+/* photos */
+.photos{margin-top:18px;display:grid;grid-template-columns:1.1fr 1fr 1.25fr;gap:16px;align-items:start}
+.photos img{height:300px}
+
+/* built */
+.built{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.built .n{font-size:11px;font-weight:600;letter-spacing:.18em;color:var(--code)}
+.built h3{margin-top:8px;font-size:26px;line-height:1.15}
+.built p{margin-top:8px;font-size:14.5px;line-height:1.65;color:var(--text-secondary)}
+.built .go{margin-top:12px;display:flex;gap:20px}
+
+/* video journal */
+.yt{margin-top:18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;border:1px solid var(--border);border-radius:10px;padding:22px 24px}
+.yt p{font-size:22px;line-height:1.4}
+.yt p em{color:var(--text-secondary)}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 16px;border-radius:6px;font-size:13px;font-weight:600;white-space:nowrap;transition:opacity .15s}
+.btn:hover{opacity:.8}
+.solid{background:var(--text-primary);color:var(--background)}
+.line{border:1px solid color-mix(in srgb,var(--text-primary) 26%,transparent)}
+
+.close{margin-top:72px;border-top:1px solid var(--border);padding:52px 0;text-align:center}
+.close p{max-width:640px;margin:0 auto;font-size:30px;line-height:1.35}
+.close .acts{margin-top:22px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.close small{display:block;margin-top:22px;font-size:13px;color:var(--text-muted)}
+.close small a{color:var(--text-secondary);border-bottom:1px solid var(--border)}
+footer{border-top:1px solid var(--border)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:24px;padding-bottom:24px;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--text-secondary)}
+footer .r{display:flex;gap:18px;flex-wrap:wrap}
+
+@media (max-width:1023px){.hero{grid-template-columns:minmax(0,1fr) 200px;gap:32px}h1{font-size:52px}.hero figure img{height:250px}}
+@media (max-width:760px){
+  .nl .hide{display:none}.nl{gap:18px}.nl .work{padding-left:14px}
+  .hero{grid-template-columns:1fr;padding-top:36px;gap:24px}
+  .hero figure{order:-1;display:grid;grid-template-columns:72px 1fr;gap:14px;align-items:center}
+  .hero figure img{width:72px;height:72px;border-radius:50%;object-position:50% 28%}
+  .hero figure figcaption{margin:0}
+  h1{font-size:44px}
+  .lede{font-size:16px}
+  .now{grid-template-columns:1fr;gap:8px}.now p{font-size:21px}
+  .row{grid-template-columns:1fr auto;gap:10px}
+  .row .weeks{grid-column:1/-1;grid-row:2;gap:2px}
+  .months{grid-column:1/-1}
+  .photos{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:78%;overflow-x:auto;scroll-snap-type:x mandatory;margin-right:-24px;padding-right:24px}
+  .photos figure{scroll-snap-align:start}
+  .photos img{height:340px}
+  .built{grid-template-columns:1fr;gap:28px}
+  .yt{grid-template-columns:1fr}.yt p{font-size:20px}
+  .close p{font-size:24px}
+  section{padding-top:48px}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav aria-label="Primary"><div class="wrap">
+  <a class="brand" href="#"><span class="mark" aria-hidden="true"><i style="background:var(--code)"></i><i style="background:var(--music)"></i><i style="background:var(--fitness)"></i><i style="background:var(--language)"></i></span>Hejoric</a>
+  <div class="nl"><a href="#ledger">Tracker</a><a class="hide" href="#built">Projects</a><a class="hide" href="#">About</a><a class="work" href="work-with-me.html">Work with me</a></div>
+</div></nav>
+
+<main id="main" class="wrap">
+  <section class="hero" style="padding-top:60px">
+    <div>
+      <h1 class="serif"><span class="greet" aria-hidden="true"><span><b>Hola,</b><b>What's up,</b><b>こんにちは,</b><b>안녕하세요,</b><b>Hola,</b></span></span>I'm Hejoric.</h1>
+      <p class="lede">Jose Ricardo Herrera, fourth year CS at UVA. This is my home on the web: what I'm building, what I'm learning on guitar and piano, the Korean and Japanese I'm studying, the gym, and the stuff in between. All of it in one place, and everything on the graph below actually happened. <a href="#">Say hi</a> if you want to talk about any of it!</p>
+      <div class="follow" aria-label="Follow along">
+        <a href="#"><i style="background:var(--music)"></i>YouTube</a>
+        <a href="#"><i style="background:var(--fitness)"></i>Instagram</a>
+        <a href="#"><i style="background:var(--reading)"></i>TikTok</a>
+        <a href="#"><i style="background:var(--code)"></i>GitHub</a>
+        <a href="#"><i style="background:var(--text-muted)"></i>X</a>
+      </div>
+    </div>
+    <figure>
+      <img src="../public/jose-lawn.jpg" alt="Jose on the Lawn at UVA">
+      <figcaption class="serif">On the Lawn at UVA. Fourth year, class of 2027.</figcaption>
+    </figure>
+  </section>
+
+  <div class="now">
+    <h2 class="label">Now</h2>
+    <div>
+      <p class="serif">Getting the retail ERP ready for its production cutover this fall, Korean 101 and chapter 1 of Integrated Korean, learning Snow by RHCP, and working on getting the gym back to consistent.</p>
+      <div class="tags"><span style="color:var(--code)">Code</span><span style="color:var(--language-ink)">Language</span><span style="color:var(--music-ink)">Music</span><span style="color:var(--fitness)">Fitness</span></div>
+    </div>
+  </div>
+
+  <section id="ledger">
+    <div class="sh"><h2 class="label">The Ledger</h2><a class="link" href="#">Full tracker →</a></div>
+    <p class="ledger-intro">A GitHub contribution graph, but for everything. Code pulls live from GitHub. The rest I log by hand, so a thin row means I didn't do the thing.</p>
+    <div class="rows">
+      <div class="row"><span class="cat" style="color:var(--code)">Code</span><div class="weeks" data-cat="code" data-lv="20100020000000002104400034420000000212041444310244443" role="img" aria-label="Weekly GitHub contributions, last 12 months"></div><span class="stat serif">310 contributions</span></div>
+      <div class="row"><span class="cat" style="color:var(--music-ink)">Music</span><div class="weeks" data-cat="music" data-lv="00000000000000000000000000000000000000000000000000010" role="img" aria-label="Weekly music practice logged, last 12 months"></div><span class="stat serif">1 day</span></div>
+      <div class="row" style="border:0;padding:0"><span></span><div class="months" aria-hidden="true"><span>Oct</span><span>Jan</span><span>Apr</span><span>Jul</span><span>Sep</span></div></div>
+    </div>
+    <div class="lfoot"><span class="serif">Language, Fitness, and Reading I log by hand, so a row only shows up once there's something real in it.</span></div>
+  </section>
+
+  <section>
+    <div class="sh"><h2 class="label">Lately, in photos</h2><a class="link" href="#">Instagram ↗</a></div>
+    <div class="photos">
+      <figure><img src="../public/jose-gym.jpg" alt="Jose at the gym"><figcaption class="serif">The one I love. On and off this fall, so I've been filling the gaps with salsa and bachata.</figcaption></figure>
+      <figure><img src="../public/jose-lawn.jpg" alt="Jose on the Lawn at UVA" style="object-position:50% 30%"><figcaption class="serif">On the Lawn at UVA. Fourth year, class of 2027.</figcaption></figure>
+      <figure><img src="../public/jose-coding.jpg" alt="Jose coding at a cafe"><figcaption class="serif">Natural habitat.</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="sh"><h2 class="label">On YouTube</h2></div>
+    <div class="yt">
+      <p class="serif">A video journal of my life: playing, gameplay, travel. <em>The goal is weekly, and showing people what being a UVA student is actually like.</em></p>
+      <a class="btn solid" href="#">Watch on YouTube ↗</a>
+    </div>
+  </section>
+
+  <section id="built">
+    <div class="sh"><h2 class="label">Things I've built</h2><a class="link" href="#">All projects →</a></div>
+    <div class="built">
+      <article><span class="n">01</span><h3 class="serif">Loudoun Nature Conservation Project</h3><p>Rebuilt a nonprofit's site as a static Astro site on Cloudflare, cutting hosting from $178 to about $12 a year. Staff edit pages in the browser, every change version-controlled.</p><div class="go"><a class="link" href="#">Live ↗</a><a class="link" href="#">GitHub ↗</a></div></article>
+      <article><span class="n">02</span><h3 class="serif">Retail ERP Deployment</h3><p>Replacing a retail store's 15+ year old system with self-hosted Odoo 18: custom Python modules, 500+ products migrated, cutover this fall.</p><div class="go"><span class="serif" style="font-style:italic;color:var(--text-muted);font-size:14px">Private client work</span></div></article>
+    </div>
+  </section>
+
+  <section class="close">
+    <p class="serif">Questions about any of it, from Snow to DNS? <em style="color:var(--text-secondary)">Reach out any time, I like the questions.</em></p>
+    <div class="acts"><a class="btn solid" href="#">Say hi</a><a class="btn line" href="#">Follow on YouTube</a></div>
+    <small>Hiring? The work version of me lives on <a href="work-with-me.html">Work with me</a>, with my resume.</small>
+  </section>
+</main>
+<footer><div class="wrap"><span>© 2026 Jose Ricardo Herrera</span><div class="r"><a href="#">YouTube</a><a href="#">Instagram</a><a href="#">TikTok</a><a href="#">X</a><a href="#">GitHub</a><a href="#">LinkedIn</a><a href="work-with-me.html">Work with me</a></div></div></footer>
+<script>
+// Real weekly levels scraped from the live Ledger on 2026-09-27 (oldest to newest).
+const ramp={1:25,2:48,3:72,4:95};
+document.querySelectorAll(".weeks").forEach(w=>{const c=w.dataset.cat;w.innerHTML=[...w.dataset.lv].map(l=>l==="0"?"<i></i>":`<i style="background:color-mix(in srgb,var(--${c}) ${ramp[l]}%,var(--background))"></i>`).join("");});
+</script>
+</body>
+</html>

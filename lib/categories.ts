@@ -6,12 +6,15 @@
 //   "manual" - self-logged through /admin, stored in ActivityLog
 //
 // Nothing is generated or estimated. A category with no data renders nothing.
+//
+// `colorVar` fills heatmap cells; `inkVar` is the same hue darkened enough to
+// pass WCAG AA as small label text (see app/globals.css).
 export const CATEGORIES = [
-  { key: "code", label: "Code", colorVar: "--cat-code", source: "github" },
-  { key: "music", label: "Music", colorVar: "--cat-music", source: "manual" },
-  { key: "language", label: "Language", colorVar: "--cat-language", source: "manual" },
-  { key: "fitness", label: "Fitness", colorVar: "--cat-fitness", source: "manual" },
-  { key: "content", label: "Reading", colorVar: "--cat-reading", source: "manual" },
+  { key: "code", label: "Code", colorVar: "--cat-code", inkVar: "--cat-code-ink", source: "github" },
+  { key: "music", label: "Music", colorVar: "--cat-music", inkVar: "--cat-music-ink", source: "manual" },
+  { key: "language", label: "Language", colorVar: "--cat-language", inkVar: "--cat-language-ink", source: "manual" },
+  { key: "fitness", label: "Fitness", colorVar: "--cat-fitness", inkVar: "--cat-fitness-ink", source: "manual" },
+  { key: "content", label: "Reading", colorVar: "--cat-reading", inkVar: "--cat-reading-ink", source: "manual" },
 ] as const;
 
 export type Category = (typeof CATEGORIES)[number];

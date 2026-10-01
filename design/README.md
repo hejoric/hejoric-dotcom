@@ -19,9 +19,11 @@ Captured 2026-07-02, right after the redesign shipped. They are a record of
 that release, not a picture of the current site. Since then the site has
 diverged in at least four visible ways:
 
-- The homepage "Lately" strip is gone. The `LatelyItem` model was dropped in
-  the 2026-09-02 real-data pass, because its rows were hand-seeded placeholders
-  (the grey `thumbnail` / `art` / `cover` boxes visible in `home-*.png`).
+- The homepage "Lately" strip is no longer DB-backed. The `LatelyItem` model
+  was dropped in the 2026-09-02 real-data pass, because its rows were
+  hand-seeded placeholders (the grey `thumbnail` / `art` / `cover` boxes
+  visible in `home-*.png`). It came back on 2026-09-27 as a static strip of
+  real photos (`components/PhotoStrip.tsx`).
 - `Blog` is no longer in the nav. It is hidden until a real post exists.
 - The Ledger drew all five categories. Categories with no logged data now
   render nothing, and Code reads the live GitHub contribution calendar rather
@@ -30,3 +32,11 @@ diverged in at least four visible ways:
   Nature Conservation Project and Retail ERP Deployment.
 
 Re-capture before using any of these to represent the site as it stands.
+
+## `home-on-the-web.html` and `work-with-me.html`
+
+The 2026-09-27 mockups behind the current homepage ("Direction C, home on the
+web") and the `/work` page. They are standalone HTML that load the photos from
+`../public/`, so open them straight from this folder. The shipped pages in
+`app/page.tsx` and `app/work/page.tsx` are the source of truth; these only
+record the approved direction.

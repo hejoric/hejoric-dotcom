@@ -8,6 +8,7 @@ import {
   listLabels,
   type Category,
 } from "@/lib/categories";
+import { GITHUB_HREF } from "@/lib/links";
 import { plural } from "@/lib/utils";
 
 export default function LedgerSection({
@@ -25,19 +26,31 @@ export default function LedgerSection({
     (category) => category.source === "manual" && !tracked.includes(category)
   );
 
-  if (tracked.length === 0) return null;
+  // One column per week. The columns are fluid rather than a fixed pixel size,
+  // so the whole year (recent weeks included) fits a phone without scrolling.
+  const columns = {
+    gridTemplateColumns: `repeat(${calendar.weeks.length}, minmax(0, 1fr))`,
+  };
 
   return (
-    <section className="mx-auto max-w-5xl px-6 pt-10">
-      <div className="flex items-baseline justify-between">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-text-muted">
+    <section id="ledger" className="mx-auto max-w-5xl scroll-mt-20 px-6 pt-16">
+      <div className="flex items-baseline justify-between gap-4">
+        <h2 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-text-muted">
           The Ledger
-        </span>
-        <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-text-muted">
-          Last 12 months
-        </span>
+        </h2>
+        <Link
+          href="/tracker"
+          className="text-[11.5px] font-semibold uppercase tracking-[0.14em] text-text-secondary transition-opacity duration-150 hover:opacity-70"
+        >
+          Full tracker &rarr;
+        </Link>
       </div>
-      <div className="mt-3 border-t border-border">
+      <p className="mt-2.5 max-w-[640px] text-[15.5px] leading-[1.65] text-text-secondary">
+        A GitHub contribution graph, but for everything. Code pulls live from
+        GitHub. The rest I log by hand, so a thin row means I didn&apos;t do
+        the thing.
+      </p>
+      <div className="mt-5 border-t border-border">
         {tracked.map((category) => {
           const data = days[category.key];
           const stats = computeStats(calendar.keys, data);
@@ -53,32 +66,35 @@ export default function LedgerSection({
           return (
             <div
               key={category.key}
-              className="grid gap-y-2 border-b border-border-soft py-[15px] sm:grid-cols-[110px_1fr_120px] sm:items-center sm:gap-6"
+              className="grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-2.5 border-b border-border-soft py-[18px] sm:grid-cols-[100px_minmax(0,1fr)_150px] sm:gap-x-6"
             >
               <span
                 className="text-[11.5px] font-semibold uppercase tracking-[0.14em]"
-                style={{ color: `var(${category.colorVar})` }}
+                style={{ color: `var(${category.inkVar})` }}
               >
                 {category.label}
               </span>
-              <div className="overflow-x-auto">
-                <div className="flex w-max gap-[3px]">
-                  {weekly.map((count, i) => (
-                    <span
-                      key={i}
-                      className="heatmap-cell h-[10px] w-[10px] flex-none rounded-[2.5px]"
-                      style={{
-                        backgroundColor: heatmapCellColor(
-                          category.colorVar,
-                          getHeatmapLevel(count)
-                        ),
-                        animationDelay: `${i * 12}ms`,
-                      }}
-                    />
-                  ))}
-                </div>
+              <div
+                className="col-span-2 row-start-2 grid gap-[2px] sm:col-span-1 sm:row-start-auto sm:gap-[3px]"
+                style={columns}
+                role="img"
+                aria-label={`${category.label}, weekly activity over the last 12 months`}
+              >
+                {weekly.map((count, i) => (
+                  <span
+                    key={i}
+                    className="heatmap-cell aspect-[1/2.2] rounded-[2px] sm:aspect-[1/1.6] sm:rounded-[2.5px]"
+                    style={{
+                      backgroundColor: heatmapCellColor(
+                        category.colorVar,
+                        getHeatmapLevel(count)
+                      ),
+                      animationDelay: `${i * 12}ms`,
+                    }}
+                  />
+                ))}
               </div>
-              <span className="hidden text-right font-display text-[15px] italic text-text-muted sm:block">
+              <span className="text-right font-display text-[15px] italic text-text-muted sm:col-start-3 sm:row-start-1">
                 {category.source === "github" && github
                   ? plural(github.total, "contribution")
                   : plural(stats.activeDays, "day")}
@@ -86,21 +102,55 @@ export default function LedgerSection({
             </div>
           );
         })}
-      </div>
-      <div className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-        <Link
-          href="/tracker"
-          className="text-[11.5px] font-semibold uppercase tracking-[0.14em] text-text-secondary transition-opacity duration-150 hover:opacity-70"
-        >
-          See the full tracker &rarr;
-        </Link>
-        {untracked.length > 0 && (
-          <span className="font-display text-[15px] italic text-text-muted">
-            {listLabels(untracked)} I log by hand, so a row only shows up
-            once there&apos;s something real in it.
-          </span>
+        {/* The hero points at this graph, so when the live Code row cannot
+            load, say so here instead of dropping the section silently. */}
+        {!github && (
+          <div className="grid gap-y-2 border-b border-border-soft py-[18px] sm:grid-cols-[100px_minmax(0,1fr)] sm:gap-x-6">
+            <span
+              className="text-[11.5px] font-semibold uppercase tracking-[0.14em]"
+              style={{ color: "var(--cat-code-ink)" }}
+            >
+              Code
+            </span>
+            <p className="text-sm leading-[1.7] text-text-secondary">
+              This row pulls live from GitHub and it isn&apos;t loading right
+              now, so it&apos;s left out rather than guessed.{" "}
+              <a
+                href={GITHUB_HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border-b border-text-muted transition-opacity duration-150 hover:opacity-70"
+              >
+                See it on GitHub
+              </a>
+              .
+            </p>
+          </div>
+        )}
+        {tracked.length > 0 && (
+          <div className="grid pt-2 sm:grid-cols-[100px_minmax(0,1fr)_150px] sm:gap-x-6" aria-hidden>
+            <div className="grid sm:col-start-2" style={columns}>
+              {calendar.months.map((segment, i) => (
+                <span
+                  key={i}
+                  // Twelve labels crowd a phone, so every other one steps aside
+                  // there (invisible, not hidden, to keep the column spans).
+                  className={`overflow-hidden whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.1em] text-text-muted ${i % 2 === 1 ? "max-sm:invisible" : ""}`}
+                  style={{ gridColumn: `span ${segment.weeks}` }}
+                >
+                  {segment.weeks >= 3 ? segment.name : ""}
+                </span>
+              ))}
+            </div>
+          </div>
         )}
       </div>
+      {untracked.length > 0 && (
+        <p className="mt-4 font-display text-[15px] italic text-text-muted">
+          {listLabels(untracked)} I log by hand, so a row only shows up once
+          there&apos;s something real in it.
+        </p>
+      )}
     </section>
   );
 }

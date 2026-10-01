@@ -8,6 +8,8 @@ interface ProjectCardProps {
   index: number;
   /** "card" = bordered (projects grid), "plain" = borderless (homepage) */
   variant?: "card" | "plain";
+  /** Cap the description at four lines, for teasers that link to the full list. */
+  clampDescription?: boolean;
 }
 
 export default function ProjectCard({
@@ -19,6 +21,7 @@ export default function ProjectCard({
   featured,
   index,
   variant = "card",
+  clampDescription = false,
 }: ProjectCardProps) {
   const number = String(index + 1).padStart(2, "0");
   const label =
@@ -32,7 +35,9 @@ export default function ProjectCard({
       <h3 className="mt-3 font-display text-[28px] leading-tight text-text-primary">
         {title}
       </h3>
-      <p className="mt-3 text-[14.5px] leading-[1.7] text-text-secondary">
+      <p
+        className={`mt-3 text-[14.5px] leading-[1.7] text-text-secondary ${clampDescription ? "line-clamp-4" : ""}`}
+      >
         {description}
       </p>
       <span className="mt-4 block text-[11px] font-medium uppercase tracking-[0.12em] text-text-muted">
