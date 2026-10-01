@@ -98,7 +98,7 @@ AdminProjectForm, AdminBlogForm.
 - `github.ts` - contribution calendar fetch (1-hour `revalidate`)
 - `activity.ts` - merges GitHub + hand-logged rows into one 365-day window
 - `calendar.ts` - builds the week grid, month segments, and streak stats in UTC on the server, so markup never depends on the visitor's clock
-- `categories.ts` - the five categories, their sources, accents, and heatmap ramp
+- `categories.ts` - the five categories, their sources, accents, and heatmap cell colors
 - `prisma.ts`, `auth.ts`, `utils.ts`, `admin-styles.ts`
 
 Rendering: pages are static with `export const revalidate = 300`, so `/admin`
