@@ -43,6 +43,7 @@ This is the constraint that shapes the tracker, and it must not be broken:
 npm run dev          # local dev server
 npm run build        # production build
 npm run lint         # eslint . (not `next lint`, removed in Next 16)
+npm test             # node:test unit tests in lib/ (Node 22.18+, for .ts imports)
 npm run db:push      # prisma db push (sync schema)
 npm run db:seed      # tsx prisma/seed.ts (upsert the real project list)
 npx prisma studio    # browse/edit the DB directly
