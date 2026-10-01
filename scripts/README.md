@@ -14,7 +14,7 @@ Does the database actually have the tables and columns the code expects?
 ./scripts/check-drift.sh origin/main     # against a git ref's schema
 ```
 
-Compares the live database (whatever `DATABASE_URL` points at) to the models in
+Compares the live database (whatever `DATABASE_URL_UNPOOLED` points at) to the models in
 a schema file, via `prisma migrate diff`. It only ever prints SQL, it never
 executes any. Exit 0 means no drift, exit 1 means drift, and the SQL printed is
 what the database is *missing* relative to that schema:

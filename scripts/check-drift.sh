@@ -5,8 +5,8 @@
 # LatelyItem table had been dropped from the shared Neon DB while main's
 # homepage still queried it, so only `/` returned HTTP 500.
 #
-# Compares the LIVE database (read from the datasource in prisma/schema.prisma,
-# i.e. whatever DATABASE_URL points at) against the models in a schema file.
+# Compares the LIVE database (the datasource in prisma.config.ts, i.e. whatever
+# DATABASE_URL_UNPOOLED points at) against the models in a schema file.
 #
 #   ./scripts/check-drift.sh                      # working tree's schema
 #   ./scripts/check-drift.sh origin/main          # a git ref's schema
@@ -21,7 +21,10 @@ REF="${1:-}"
 if [ -n "$REF" ]; then
   TARGET="$(mktemp -t schema.XXXXXX).prisma"
   trap 'rm -f "$TARGET"' EXIT
-  git show "$REF:prisma/schema.prisma" > "$TARGET" || { echo "cannot read $REF:prisma/schema.prisma"; exit 2; }
+  git show "$REF:prisma/schema.prisma" > /dev/null || { echo "cannot read $REF:prisma/schema.prisma"; exit 2; }
+  # Refs from before Prisma 7 still carry `url`/`directUrl` in the datasource
+  # block, which v7 rejects. Only the models matter here, so drop those lines.
+  git show "$REF:prisma/schema.prisma" | grep -Ev '^[[:space:]]*(url|directUrl)[[:space:]]*=' > "$TARGET"
   echo "Comparing live DB  ->  schema at $REF"
 else
   TARGET="prisma/schema.prisma"
@@ -31,8 +34,8 @@ fi
 # --from is the live DB, --to is the desired models, so the SQL printed is what
 # you would have to run on the DB to satisfy the code.
 OUT="$(npx prisma migrate diff \
-  --from-schema-datasource prisma/schema.prisma \
-  --to-schema-datamodel "$TARGET" \
+  --from-config-datasource \
+  --to-schema "$TARGET" \
   --script 2>&1)"
 
 if printf '%s' "$OUT" | grep -qi "empty migration"; then

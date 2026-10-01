@@ -5,9 +5,9 @@
 // Safe to re-run. It only touches the rows it owns (the `seed-*` ids), so
 // projects added later through /admin are left alone.
 
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+// Prisma 7 no longer loads .env itself, so load it before the client is built.
+import "dotenv/config";
+import { prisma } from "../lib/prisma";
 
 const projects = [
   {
