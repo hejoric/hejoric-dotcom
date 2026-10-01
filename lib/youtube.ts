@@ -37,19 +37,13 @@ export interface LatestVideo {
 
 const VIDEO_ID = /^[\w-]{11}$/;
 
-function decodeEntities(text: string): string {
+function decodeXml(text: string): string {
   return text
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
     .replace(/&quot;/g, '"')
     .replace(/&#39;|&apos;/g, "'")
-    .replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
-    .replace(/&#x([\da-f]+);/gi, (_, code) => String.fromCodePoint(parseInt(code, 16)))
     .replace(/&amp;/g, "&");
-}
-
-function isValidDate(iso: string): boolean {
-  return !Number.isNaN(Date.parse(iso));
 }
 
 /** First entry of the channel's Atom feed. */
@@ -62,9 +56,9 @@ export function parseFeed(xml: string): LatestVideo | null {
   const title = entry.match(/<title>([^<]*)<\/title>/)?.[1];
   const url = entry.match(/<link rel="alternate" href="([^"]+)"/)?.[1];
   const published = entry.match(/<published>([^<]+)<\/published>/)?.[1];
-  if (!id || !title || !url || !published || !isValidDate(published)) return null;
+  if (!id || !title || !url || !published) return null;
 
-  return { id, title: decodeEntities(title), url, published };
+  return { id, title: decodeXml(title), url, published };
 }
 
 /** The JSON a YouTube page embeds as `var ytInitialData = {...};`. */
