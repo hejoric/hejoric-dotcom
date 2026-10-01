@@ -27,6 +27,14 @@
   --cat-language-ink: #177a5a;
   --cat-fitness-ink: #98600f;
   --cat-reading-ink: #6e5ad6;
+
+  /* A hand-logged Ledger week with one logged day: the accent's own hue and
+     saturation, 8 lightness points closer to the page. Mixing toward the page
+     instead would wash the color out. Keep these in step with the accents. */
+  --cat-music-floor: #df7661;
+  --cat-language-floor: #26c08e;
+  --cat-fitness-floor: #e5a74e;
+  --cat-reading-floor: #8b7bde;
 }
 
 .dark {
@@ -52,6 +60,12 @@
   --cat-language-ink: var(--cat-language);
   --cat-fitness-ink: var(--cat-fitness);
   --cat-reading-ink: var(--cat-reading);
+
+  /* Same rule, 8 points darker. A mix toward the near-black page goes muddy. */
+  --cat-music-floor: #d9654c;
+  --cat-language-floor: #459f82;
+  --cat-fitness-floor: #e39d3b;
+  --cat-reading-floor: #7564d5;
 }
 
 body {

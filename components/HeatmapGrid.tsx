@@ -2,7 +2,11 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { MonthSegment } from "@/lib/calendar";
-import { getHeatmapLevel, heatmapCellColor } from "@/lib/categories";
+import {
+  categoryCellColor,
+  heatmapCellColor,
+  type Category,
+} from "@/lib/categories";
 import { plural } from "@/lib/utils";
 
 // Day cell size and the gap between columns. Month labels are sized off the
@@ -15,10 +19,7 @@ const LEVELS = [0, 1, 2, 3, 4];
 const TOOLTIP_MAX_WIDTH = 240;
 
 interface HeatmapGridProps {
-  label: string;
-  colorVar: string;
-  /** Darker variant of `colorVar` for the label text (WCAG AA at 12px). */
-  inkVar: string;
+  category: Category;
   /** `YYYY-MM-DD` -> count. Days absent from the map are zero. */
   data: Record<string, number>;
   /** `YYYY-MM-DD` -> public note. Only public notes are ever passed in. */
@@ -37,9 +38,7 @@ interface HeatmapGridProps {
 }
 
 export default function HeatmapGrid({
-  label,
-  colorVar,
-  inkVar,
+  category,
   data,
   notes = {},
   weeks,
@@ -112,13 +111,13 @@ export default function HeatmapGrid({
         <span className="flex items-center gap-2.5">
           <span
             className="h-2.5 w-2.5 rounded-[3px]"
-            style={{ backgroundColor: `var(${colorVar})` }}
+            style={{ backgroundColor: `var(${category.colorVar})` }}
           />
           <span
             className="text-xs font-semibold uppercase tracking-[0.16em]"
-            style={{ color: `var(${inkVar})` }}
+            style={{ color: `var(${category.inkVar})` }}
           >
-            {label}
+            {category.label}
           </span>
         </span>
         <span className="font-display text-[15px] italic text-text-muted sm:text-right">
@@ -155,10 +154,7 @@ export default function HeatmapGrid({
                   const cellStyle = {
                     width: CELL,
                     height: CELL,
-                    backgroundColor: heatmapCellColor(
-                      colorVar,
-                      getHeatmapLevel(count)
-                    ),
+                    backgroundColor: categoryCellColor(category, count),
                     animationDelay: `${wi * 14 + di * 3}ms`,
                   };
 
@@ -200,7 +196,7 @@ export default function HeatmapGrid({
                     >
                       <span
                         aria-hidden
-                        className="h-1 w-1 rounded-full bg-text-primary opacity-80"
+                        className="h-1 w-1 rounded-full bg-text-primary dark:bg-background dark:opacity-90"
                       />
                     </button>
                   );
@@ -215,19 +211,39 @@ export default function HeatmapGrid({
           {note}
         </p>
         <div className="hidden items-center gap-1.5 sm:flex" aria-hidden>
-          <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-text-muted">
-            Less
-          </span>
-          {LEVELS.map((level) => (
-            <span
-              key={level}
-              className="h-[10px] w-[10px] rounded-[2.5px]"
-              style={{ backgroundColor: heatmapCellColor(colorVar, level) }}
-            />
-          ))}
-          <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-text-muted">
-            More
-          </span>
+          {category.source === "github" ? (
+            <>
+              <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-text-muted">
+                Less
+              </span>
+              {LEVELS.map((level) => (
+                <span
+                  key={level}
+                  className="h-[10px] w-[10px] rounded-[2.5px]"
+                  style={{
+                    backgroundColor: heatmapCellColor(category.colorVar, level),
+                  }}
+                />
+              ))}
+              <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-text-muted">
+                More
+              </span>
+            </>
+          ) : (
+            <>
+              <span
+                className="h-[10px] w-[10px] rounded-[2.5px]"
+                style={{ backgroundColor: categoryCellColor(category, 0) }}
+              />
+              <span
+                className="h-[10px] w-[10px] rounded-[2.5px]"
+                style={{ backgroundColor: categoryCellColor(category, 1) }}
+              />
+              <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-text-muted">
+                Logged
+              </span>
+            </>
+          )}
         </div>
       </div>
       {tooltip && (
