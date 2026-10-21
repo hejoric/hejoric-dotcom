@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { RESUME_HREF } from "@/lib/links";
 
 export const metadata: Metadata = { title: "Page not found" };
 
@@ -17,9 +16,10 @@ export default function NotFound() {
       <p className="mt-6 max-w-[560px] leading-[1.8] text-text-secondary">The link may be old, or the page moved. Here&apos;s where everything lives now.</p>
       <div className="mt-8 flex flex-wrap gap-3">
         <Link href="/" className={buttonSolid}>Home</Link>
+        <Link href="/tracker" className={buttonLine}>Tracker</Link>
         <Link href="/projects" className={buttonLine}>Projects</Link>
         <Link href="/about" className={buttonLine}>About</Link>
-        <a href={RESUME_HREF} className={buttonLine}>Resume</a>
+        <Link href="/work" className={buttonLine}>Work with me</Link>
       </div>
     </div>
   );
