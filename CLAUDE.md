@@ -28,7 +28,7 @@ This is the constraint that shapes the tracker, and it must not be broken:
 
 ## Stack
 
-- **Next.js 16** (App Router, Turbopack by default) + **React 19.2** + **TypeScript 5.9**
+- **Next.js 16** (App Router, Turbopack by default) + **React 19.3** + **TypeScript 5.9**
 - **Tailwind CSS v3** - hand-built, no component libraries
 - **Prisma 7** + **Neon** serverless Postgres, via `@prisma/adapter-neon`.
   The CLI reads the direct URL from `prisma.config.ts`; the generated client

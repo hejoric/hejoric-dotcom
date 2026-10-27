@@ -84,10 +84,10 @@ npx prisma studio    # browse the database
 
 ## Dependency maintenance
 
-Nothing the deployed site loads at runtime has a known advisory. `npm audit`
-still reports four highs, all in `deepmerge-ts` and `mysql2`, which the Prisma
-7.10 CLI pins exactly. The CLI only runs at install, build, and migration time,
-never inside the serverless functions, and no 7.x release fixes them yet.
+Nothing the deployed site loads at runtime has a known advisory. What `npm audit`
+still reports sits in build and dev tooling (the Prisma CLI, Tailwind's build
+step, and ESLint's react-hooks plugin), which never runs inside the serverless
+functions.
 
 Dependabot alerts and automated security fixes are enabled, and
 `.github/dependabot.yml` groups minor and patch bumps into one weekly PR while
