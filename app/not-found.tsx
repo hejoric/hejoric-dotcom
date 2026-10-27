@@ -13,7 +13,7 @@ export default function NotFound() {
     <div className="mx-auto max-w-5xl px-6 pb-16 pt-10 sm:pt-16">
       <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-text-muted">404</p>
       <h1 className="mt-3 font-display text-5xl tracking-[-0.01em] text-text-primary sm:text-[56px] sm:leading-none">This page doesn&apos;t exist.</h1>
-      <p className="mt-6 max-w-[560px] leading-[1.8] text-text-secondary">The link may be old, or the page moved. Here&apos;s where everything lives now.</p>
+      <p className="mt-6 max-w-[560px] text-pretty leading-[1.8] text-text-secondary">The link may be old, or the page moved. Here&apos;s where everything lives now.</p>
       <div className="mt-8 flex flex-wrap gap-3">
         <Link href="/" className={buttonSolid}>Home</Link>
         <Link href="/tracker" className={buttonLine}>Tracker</Link>
