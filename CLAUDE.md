@@ -165,8 +165,7 @@ created end-to-end from `/admin`.
 - `package.json` has no `"type"` field on purpose. Declaring `"commonjs"`
   makes Turbopack fail on every ESM `.ts` file in `lib/`.
 - The resume PDF is served from `public/resume.pdf`, linked from the Footer and About.
-- Photos (`jose-gym.jpg` on `/`, `jose-coding.jpg` on `/projects`, `headshot.png`
-  on `/about`) all use the same treatment: `rounded object-cover contrast-[1.04]`
+- Photos (`jose-lawn.jpg` on `/` and `/work`, `jose-coding.jpg` on `/projects`, `jose-gym.jpg` on `/about`) all use the same treatment: `rounded object-cover contrast-[1.04]`
   with an italic serif `figcaption` under it. They run in full color on purpose;
   the "category color is the site's only color" rule governs UI chrome, not
   photography. Each sits in the right column of a grid that collapses to one
