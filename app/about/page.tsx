@@ -84,11 +84,12 @@ const skills: { label: string; items: string; colorClass: string }[] = [
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-16">
-      {/* The photo column spans the intro and Experience, and the figure is
-          sticky inside it, so the photo travels beside Experience instead of
-          leaving a gap there. top-24 clears the 64px navbar. */}
+      {/* From sm the photo sits beside the intro and Experience runs full
+          width below. From lg the photo column spans both rows and the figure
+          is sticky inside it, so the photo travels beside Experience instead
+          of leaving a gap there. top-24 clears the 64px navbar. */}
       <div className="grid items-start gap-12 sm:grid-cols-[minmax(0,1fr)_300px] sm:gap-x-16">
-        <div>
+        <div className="sm:col-start-1 sm:row-start-1">
           <h1 className="font-display text-5xl tracking-[-0.01em] text-text-primary sm:text-[56px] sm:leading-none">
             About me.
           </h1>
@@ -146,67 +147,8 @@ export default function AboutPage() {
               Say hi &rarr;
             </a>
           </div>
-
-          <section className="mt-12">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-text-muted">
-              Experience
-            </span>
-            <div className="mt-3 border-t border-border">
-              {experience.map((job) => (
-                <div key={job.org} className="border-b border-border-soft py-[22px]">
-                  <div className="grid items-baseline gap-1 sm:grid-cols-[1fr_auto] sm:gap-6">
-                    <div>
-                      <div className="font-display text-[22px] text-text-primary">
-                        {job.href ? (
-                          <a
-                            href={job.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="transition-opacity duration-150 hover:opacity-70"
-                          >
-                            {job.org}
-                            <svg
-                              viewBox="0 0 12 12"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="1.25"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              aria-hidden="true"
-                              className="ml-1.5 inline-block h-3 w-3 align-middle"
-                            >
-                              <path d="M3.5 8.5l5-5M4 3.5h4.5V8" />
-                            </svg>
-                          </a>
-                        ) : (
-                          job.org
-                        )}
-                      </div>
-                      <div className="mt-1 text-[13.5px] text-text-secondary">
-                        {job.role}
-                      </div>
-                    </div>
-                    <span className="font-display text-[14.5px] italic text-text-muted sm:text-right">
-                      {job.dates}
-                      <span className="block">{job.location}</span>
-                    </span>
-                  </div>
-                  <ul className="mt-3.5 max-w-[680px] space-y-2">
-                    {job.points.map((point) => (
-                      <li
-                        key={point}
-                        className="relative pl-4 text-[14.5px] leading-[1.7] text-text-secondary before:absolute before:left-0 before:top-[9px] before:h-[5px] before:w-[5px] before:rounded-[1.5px] before:bg-text-muted"
-                      >
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </section>
         </div>
-        <figure className="hidden sm:sticky sm:top-24 sm:block">
+        <figure className="hidden sm:col-start-2 sm:row-start-1 sm:block lg:sticky lg:top-24 lg:row-span-2 lg:row-start-1">
           <Image
             src="/jose-gym.jpg"
             alt="Jose at the gym"
@@ -220,6 +162,64 @@ export default function AboutPage() {
             gaps with salsa and bachata.
           </figcaption>
         </figure>
+        <section className="sm:col-span-2 sm:col-start-1 sm:row-start-2 lg:col-span-1 lg:col-start-1">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-text-muted">
+            Experience
+          </span>
+          <div className="mt-3 border-t border-border">
+            {experience.map((job) => (
+              <div key={job.org} className="border-b border-border-soft py-[22px]">
+                <div className="grid items-baseline gap-1 sm:grid-cols-[1fr_auto] sm:gap-6">
+                  <div>
+                    <div className="font-display text-[22px] text-text-primary">
+                      {job.href ? (
+                        <a
+                          href={job.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="transition-opacity duration-150 hover:opacity-70"
+                        >
+                          {job.org}
+                          <svg
+                            viewBox="0 0 12 12"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.25"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                            className="ml-1.5 inline-block h-3 w-3 align-middle"
+                          >
+                            <path d="M3.5 8.5l5-5M4 3.5h4.5V8" />
+                          </svg>
+                        </a>
+                      ) : (
+                        job.org
+                      )}
+                    </div>
+                    <div className="mt-1 text-[13.5px] text-text-secondary">
+                      {job.role}
+                    </div>
+                  </div>
+                  <span className="font-display text-[14.5px] italic text-text-muted sm:text-right">
+                    {job.dates}
+                    <span className="block">{job.location}</span>
+                  </span>
+                </div>
+                <ul className="mt-3.5 max-w-[680px] space-y-2">
+                  {job.points.map((point) => (
+                    <li
+                      key={point}
+                      className="relative pl-4 text-[14.5px] leading-[1.7] text-text-secondary before:absolute before:left-0 before:top-[9px] before:h-[5px] before:w-[5px] before:rounded-[1.5px] before:bg-text-muted"
+                    >
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
 
       <section className="mt-10">
