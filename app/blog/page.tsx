@@ -2,19 +2,28 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import BlogCard from "@/components/BlogCard";
 
-export const metadata: Metadata = {
-  title: "Blog",
-  description:
-    "Notes on what I'm building and what I'm learning, by Jose Ricardo Herrera (Hejoric).",
-  openGraph: {
-    title: "Blog | hejoric",
-    description:
-      "Notes on what I'm building and what I'm learning, by Jose Ricardo Herrera (Hejoric).",
-    url: "https://hejoric.com/blog",
-    type: "website",
-  },
-  alternates: { canonical: "https://hejoric.com/blog" },
-};
+const DESCRIPTION =
+  "Notes on what I'm building and what I'm learning, by Jose Ricardo Herrera (Hejoric).";
+
+// While nothing is published the index is a bare "check back soon" page, so
+// keep it out of search results. The next revalidation after the first post
+// goes live drops the tag and the page becomes indexable on its own.
+export async function generateMetadata(): Promise<Metadata> {
+  const published = await prisma.blogPost.count({ where: { published: true } });
+
+  return {
+    title: "Blog",
+    description: DESCRIPTION,
+    openGraph: {
+      title: "Blog | hejoric",
+      description: DESCRIPTION,
+      url: "https://hejoric.com/blog",
+      type: "website",
+    },
+    alternates: { canonical: "https://hejoric.com/blog" },
+    ...(published === 0 && { robots: { index: false, follow: true } }),
+  };
+}
 
 // Content comes from Postgres, so re-render on a short interval instead of
 // freezing at build time (edits made in /admin appear within five minutes).

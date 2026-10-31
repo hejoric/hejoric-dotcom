@@ -1,7 +1,4 @@
-"use client";
-
 import Image from "next/image";
-import { useState } from "react";
 import ProjectCard from "@/components/ProjectCard";
 
 interface Project {
@@ -16,25 +13,16 @@ interface Project {
 
 interface ProjectsClientProps {
   projects: Project[];
-  allTags: string[];
 }
 
-export default function ProjectsClient({
-  projects,
-  allTags,
-}: ProjectsClientProps) {
-  const [activeTag, setActiveTag] = useState<string | null>(null);
-
-  const filtered = activeTag
-    ? projects.filter((p) => p.techStack.includes(activeTag))
-    : projects;
-
+// No tag filter on purpose: with a handful of projects most tags match a single
+// card, so the filter only added rows of buttons. Bring it back at about 8.
+export default function ProjectsClient({ projects }: ProjectsClientProps) {
   return (
     <>
-      {/* At lg the heading and the tag filter stack in the left column so the
-          photo beside them has something to stand next to, instead of leaving
-          a hole above the grid. Below lg everything is one column, ordered
-          heading, photo, filter. */}
+      {/* The photo sits beside the heading from lg up. Below lg it stacks under
+          the heading, and below sm it is hidden so the first project shows
+          early on a phone. */}
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start lg:gap-x-12">
         <div className="lg:col-start-1 lg:row-start-1">
           <h1 className="font-display text-5xl tracking-[-0.01em] text-text-primary sm:text-[56px] sm:leading-none">
@@ -49,48 +37,22 @@ export default function ProjectsClient({
             </span>
           </p>
         </div>
-        <figure className="w-full max-w-[400px] lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:w-[300px]">
+        <figure className="hidden w-full max-w-[400px] sm:block lg:col-start-2 lg:row-start-1 lg:w-[300px]">
           <Image
             src="/jose-coding.jpg"
             alt="Jose working on a laptop at a cafe"
             width={1200}
             height={900}
             className="aspect-[4/3] w-full rounded object-cover contrast-[1.04]"
-            priority
           />
           <figcaption className="mt-3.5 font-display text-[14.5px] italic text-text-muted">
             Natural habitat.
           </figcaption>
         </figure>
-        <div className="flex flex-wrap gap-x-5 gap-y-2.5 lg:col-start-1 lg:row-start-2">
-          <button
-            onClick={() => setActiveTag(null)}
-            className={`text-[11px] font-semibold uppercase tracking-[0.12em] transition-opacity duration-150 ${
-              activeTag === null
-                ? "border-b-[1.5px] border-text-primary pb-0.5 text-text-primary"
-                : "text-text-muted hover:text-text-primary"
-            }`}
-          >
-            All
-          </button>
-          {allTags.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => setActiveTag(tag === activeTag ? null : tag)}
-              className={`text-[11px] font-semibold uppercase tracking-[0.12em] transition-opacity duration-150 ${
-                activeTag === tag
-                  ? "border-b-[1.5px] border-text-primary pb-0.5 text-text-primary"
-                  : "text-text-muted hover:text-text-primary"
-              }`}
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
       </div>
 
       <div className="mt-10 grid gap-6 sm:grid-cols-2">
-        {filtered.map((project, i) => (
+        {projects.map((project, i) => (
           <ProjectCard
             key={project.id}
             title={project.title}
@@ -102,11 +64,6 @@ export default function ProjectsClient({
             index={i}
           />
         ))}
-        {filtered.length === 0 && (
-          <p className="col-span-full text-center text-text-secondary">
-            No projects match that filter.
-          </p>
-        )}
       </div>
     </>
   );

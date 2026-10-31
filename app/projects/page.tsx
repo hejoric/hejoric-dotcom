@@ -25,13 +25,9 @@ export default async function ProjectsPage() {
     orderBy: [{ featured: "desc" }, { order: "asc" }, { createdAt: "desc" }],
   });
 
-  const allTags = Array.from(
-    new Set(projects.flatMap((p) => p.techStack))
-  ).sort();
-
   return (
     <div className="mx-auto max-w-5xl px-6 py-16">
-      <ProjectsClient projects={projects} allTags={allTags} />
+      <ProjectsClient projects={projects} />
     </div>
   );
 }

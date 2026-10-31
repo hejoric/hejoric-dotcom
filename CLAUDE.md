@@ -76,7 +76,7 @@ without it the Code heatmap is omitted with a notice.
 
 Routes (`app/`):
 - `/` - `page.tsx`: Hero (rotating greeting) + "The Ledger" 52-week strip + Selected Work (2 featured projects) + serif About teaser
-- `/projects` - filterable grid, tech-tag filter is client-side (`projects-client.tsx`)
+- `/projects` - project grid (`projects-client.tsx`). The tech-tag filter was removed while there are only a handful of projects; bring it back at about 8
 - `/blog` + `/blog/[slug]` - list from DB; body is MDX stored in `BlogPost.content`. **Not in the nav** until a real post exists (`components/Navbar.tsx`)
 - `/tracker` - full-year heatmaps for every category that has data
 - `/about` - bio, experience, education, skills, resume link (static, sourced from `Jose_Herrera_Resume.pdf`)
@@ -158,7 +158,7 @@ created end-to-end from `/admin`.
  via the `.heatmap-cell` animation (respects `prefers-reduced-motion`). 53
  columns at 18px fits `max-w-5xl` exactly.
 - Server Components by default; `"use client"` only where state/interactivity is needed
-  (Navbar, projects filter, theme toggle, heatmap tooltip, admin forms).
+  (Navbar, theme toggle, heatmap tooltip, admin forms).
 - `ThemeToggle` renders both icons and swaps them with Tailwind's `dark:`
   variant. Do not reintroduce a `mounted` state gate: it caused a layout hole
   on first paint and trips the `react-hooks/set-state-in-effect` rule.
@@ -170,7 +170,9 @@ created end-to-end from `/admin`.
   the "category color is the site's only color" rule governs UI chrome, not
   photography. Each sits in the right column of a grid that collapses to one
   column below `lg`, because the display headings need the full measure at
-  smaller widths. Crop and compress before committing: the originals are
+  smaller widths. The `/projects` photo is hidden below `sm` so the first
+  project shows early on a phone, and the `/about` photo is sticky beside the
+  intro and Experience. Crop and compress before committing: the originals are
   2252x4000 phone shots.
 - **Auth:** single-admin allowlist. `isAdmin(email)` in `lib/auth.ts` is the one source of
   truth, used by the `signIn` callback (non-admins cannot complete login), the `/admin`
