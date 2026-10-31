@@ -81,6 +81,26 @@ for path in /api/projects /api/activity; do
   fi
 done
 
+# A missing blog slug must 404 with the site's not-found metadata. The old
+# generateMetadata titled it "Post Not Found" (and leaked a draft's title and
+# excerpt), so assert that string is gone. Skipped when nothing is listening.
+if [ "$unreachable" -eq 0 ]; then
+  path="/blog/does-not-exist"
+  resp="$(curl -sL --max-time 30 -w $'\n%{http_code}' "$BASE$path" 2>/dev/null)"
+  code="$(printf '%s' "$resp" | tail -n 1)"
+  html="$(printf '%s' "$resp" | sed '$d')"
+  problems=""
+  [ "$code" != "404" ] && problems="$problems status=$code (want 404);"
+  printf '%s' "$html" | grep -q 'Post Not Found' \
+    && problems="$problems found \"Post Not Found\";"
+  if [ -z "$problems" ]; then
+    printf '  PASS  %-12s %s  not-found metadata\n' "$path" "$code"
+  else
+    printf '  FAIL  %-12s %s  -> %s\n' "$path" "$code" "$problems"
+    fail=1
+  fi
+fi
+
 echo
 if [ "$fail" -eq 0 ]; then
   echo "All routes rendered."
