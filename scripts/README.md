@@ -52,6 +52,8 @@ Status codes alone are not evidence here, for three specific reasons:
 So each route asserts a status **and** a marker string from its `<h1>` **and**
 the absence of error markers. A route that 200s without its marker is a
 failure. `/api/projects` and `/api/activity` must additionally parse as JSON.
+`/blog/does-not-exist` must return 404 without the old `Post Not Found` title,
+which guards the blog's not-found metadata.
 
 If you rename a page heading, update the marker in `ROUTES` or the check will
 fail on a page that is fine.
