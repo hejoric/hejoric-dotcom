@@ -18,7 +18,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     where: { slug },
   });
 
-  if (!post) return { title: "Post Not Found" };
+  // Same metadata as the site 404 page, so a draft or a missing slug leaks
+  // nothing derived from the post.
+  if (!post || !post.published) {
+    return { title: "Page not found", robots: { index: false } };
+  }
 
   return {
     title: post.title,
