@@ -171,9 +171,10 @@ created end-to-end from `/admin`.
   photography. Each sits in the right column of a grid that collapses to one
   column below `lg`, because the display headings need the full measure at
   smaller widths. The `/projects` photo is hidden below `sm` so the first
-  project shows early on a phone. On `/about`, Experience is its own grid row:
-  full width below the intro and photo from `md`, and from `lg` it moves into
-  the left column while the photo spans both rows and is sticky beside it.
+  project shows early on a phone. On `/about`, the photo sits beside the intro
+  from `sm` in a 200px column, growing to 300px at `md`; Experience is its own
+  grid row below both until `lg`, when it moves into the left column while the
+  photo spans both rows and is sticky beside it.
   Crop and compress before committing: the originals are
   2252x4000 phone shots.
 - **Auth:** single-admin allowlist. `isAdmin(email)` in `lib/auth.ts` is the one source of

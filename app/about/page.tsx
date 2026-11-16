@@ -84,12 +84,12 @@ const skills: { label: string; items: string; colorClass: string }[] = [
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-16">
-      {/* From md the photo sits beside the intro and Experience runs full
-          width below. From lg the photo column spans both rows and the figure
-          is sticky inside it, so the photo travels beside Experience instead
-          of leaving a gap there. top-24 clears the 64px navbar. */}
-      <div className="grid items-start gap-12 md:grid-cols-[minmax(0,1fr)_300px] md:gap-x-16">
-        <div className="md:col-start-1 md:row-start-1">
+      {/* From sm the photo sits beside the intro and Experience runs full
+          width below. The photo column grows from 200px to 300px at md. From
+          lg the photo spans both rows and is sticky beside Experience. top-24
+          clears the 64px navbar. */}
+      <div className="grid items-start gap-12 sm:grid-cols-[minmax(0,1fr)_200px] sm:gap-x-8 md:grid-cols-[minmax(0,1fr)_300px] md:gap-x-16">
+        <div className="sm:col-start-1 sm:row-start-1">
           <h1 className="font-display text-5xl tracking-[-0.01em] text-text-primary sm:text-[56px] sm:leading-none">
             About me.
           </h1>
@@ -148,13 +148,13 @@ export default function AboutPage() {
             </a>
           </div>
         </div>
-        <figure className="hidden md:col-start-2 md:row-start-1 md:block lg:sticky lg:top-24 lg:row-span-2 lg:row-start-1">
+        <figure className="hidden sm:col-start-2 sm:row-start-1 sm:block sm:w-[200px] md:w-[300px] lg:sticky lg:top-24 lg:row-span-2 lg:row-start-1">
           <Image
             src="/jose-gym.jpg"
             alt="Jose at the gym"
             width={800}
             height={1000}
-            className="h-[360px] w-[300px] rounded object-cover contrast-[1.04]"
+            className="h-[240px] w-[200px] rounded object-cover contrast-[1.04] md:h-[360px] md:w-[300px]"
             priority
           />
           <figcaption className="mt-3.5 font-display text-[14.5px] italic text-text-muted">
@@ -162,7 +162,7 @@ export default function AboutPage() {
             gaps with salsa and bachata.
           </figcaption>
         </figure>
-        <section className="md:col-span-2 md:col-start-1 md:row-start-2 lg:col-span-1 lg:col-start-1">
+        <section className="sm:col-span-2 sm:col-start-1 sm:row-start-2 lg:col-span-1 lg:col-start-1">
           <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-text-muted">
             Experience
           </span>
