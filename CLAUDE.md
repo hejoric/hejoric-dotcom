@@ -168,9 +168,9 @@ created end-to-end from `/admin`.
 - Photos (`jose-lawn.jpg` on `/` and `/work`, `jose-coding.jpg` on `/projects`, `jose-gym.jpg` on `/about`) all use the same treatment: `rounded object-cover contrast-[1.04]`
   with an italic serif `figcaption` under it. They run in full color on purpose;
   the "category color is the site's only color" rule governs UI chrome, not
-  photography. Each sits in the right column of a grid that collapses to one
-  column below `lg`, because the display headings need the full measure at
-  smaller widths. The `/projects` photo is hidden below `sm` so the first
+  photography. Except on `/about`, each sits in the right column of a grid
+  that collapses to one column below `lg`, because the display headings need
+  the full measure at smaller widths. The `/projects` photo is hidden below `sm` so the first
   project shows early on a phone. On `/about`, the photo sits beside the intro
   from `sm` in a 200px column, growing to 300px at `md`; Experience is its own
   grid row below both until `lg`, when it moves into the left column while the

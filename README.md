@@ -35,7 +35,7 @@ Nothing in this repo generates, estimates, or seeds activity data.
 | Route | What it does |
 | --- | --- |
 | `/` | Hero with follow links, Now, the Ledger (52-week strip), photos, latest YouTube video, featured projects |
-| `/projects` | Every project from Postgres, filterable by tech tag client-side |
+| `/projects` | Every project from Postgres |
 | `/tracker` | Full-year heatmaps: GitHub-backed Code plus any hand-logged category |
 | `/about` | Bio, experience, education, skills, resume link |
 | `/work` | Work with me: availability, resume, proof numbers, projects |
@@ -45,7 +45,8 @@ Nothing in this repo generates, estimates, or seeds activity data.
 | `/api/posts` | `POST` admin only (upsert by slug) |
 
 `/blog` is deliberately absent from the nav until there is a post worth
-reading; the route still works.
+reading; the route still works, but stays out of the sitemap and is marked
+`noindex` until a post is published.
 
 ## Local development
 
